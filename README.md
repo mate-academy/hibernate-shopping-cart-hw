@@ -41,4 +41,4 @@ We will continue working on our Cinema project.
         }
         ```
 
-__You can check yourself using this__ [checklist](TODO: add link)  
+__You can check yourself using this__ [checklist](https://mate-academy.github.io/jv-program-common-mistakes/hibernate/add-shopping-cart/hibernate-shopping-cart-hw)  
