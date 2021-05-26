@@ -41,4 +41,7 @@ We will continue working on our Cinema project.
         }
         ```
 
-__You can check yourself using this__ [checklist](https://mate-academy.github.io/jv-program-common-mistakes/hibernate/add-shopping-cart/hibernate-shopping-cart-hw)  
+__You can check yourself using this__ [checklist](https://mate-academy.github.io/jv-program-common-mistakes/hibernate/add-shopping-cart/add-shopping-cart-hw)
+
+### Model structure 
+![pic](Hibernate_Cinema_Uml.png)
