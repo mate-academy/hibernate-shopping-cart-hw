@@ -1,4 +1,4 @@
-# Hibernate implement shopping cart
+# Implement shopping cart
 We will continue working on our Cinema project.
 
 - Create models
