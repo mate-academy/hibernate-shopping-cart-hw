@@ -13,7 +13,6 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "shopping_cart")
 public class ShoppingCart {
-
     @Id
     private Long id;
 
