@@ -26,8 +26,6 @@ public class Main {
             = (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
     private static final AuthenticationService authenticationService
             = (AuthenticationService) injector.getInstance(AuthenticationService.class);
-    private static final UserService userService
-            = (UserService) injector.getInstance(UserService.class);
 
     public static void main(String[] args) {
         Movie fastAndFurious = new Movie("Fast and Furious");
