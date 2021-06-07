@@ -45,8 +45,10 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
     public Optional<MovieSession> get(Long id) {
         try (Session session = sessionFactory.openSession()) {
             Query<MovieSession> getByIdQuery = session
-                    .createQuery("FROM MovieSession ms left join fetch ms.movie "
-                            + "left join fetch ms.cinemaHall WHERE ms.id = :id",
+                    .createQuery("FROM MovieSession ms "
+                                    + "LEFT JOIN FETCH ms.movie "
+                                    + "LEFT JOIN FETCH ms.cinemaHall "
+                                    + "WHERE ms.id = :id",
                             MovieSession.class);
             getByIdQuery.setParameter("id", id);
             return Optional.ofNullable(getByIdQuery.getSingleResult());
