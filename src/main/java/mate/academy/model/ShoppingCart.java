@@ -19,6 +19,7 @@ public class ShoppingCart {
     private List<Ticket> tickets;
     @OneToOne
     @MapsId
+    @JoinColumn(name = "id")
     private User user;
 
     public Long getId() {
