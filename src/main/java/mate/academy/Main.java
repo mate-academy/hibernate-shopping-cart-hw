@@ -73,6 +73,6 @@ public class Main {
         System.out.println(registeredBohdan);
 
         shoppingCartService.addSession(tomorrowMovieSession, registeredBohdan);
-        System.out.println(shoppingCartService.getByUser(registeredBohdan));
+        System.out.println(shoppingCartService.getByUser(registeredBohdan).getId());
     }
 }
