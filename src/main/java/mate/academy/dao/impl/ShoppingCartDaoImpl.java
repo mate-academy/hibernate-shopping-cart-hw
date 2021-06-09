@@ -44,7 +44,6 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             Query<ShoppingCart> getByUserQuery = session.createQuery(
                     "FROM ShoppingCart sc "
                             + "LEFT JOIN FETCH sc.ticketList tl "
-                            + "LEFT JOIN FETCH tl.user "
                             + "LEFT JOIN FETCH tl.movieSession ms "
                             + "LEFT JOIN FETCH ms.movie "
                             + "LEFT JOIN FETCH ms.cinemaHall "
@@ -52,6 +51,9 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
                     ShoppingCart.class);
             getByUserQuery.setParameter("userId", user.getId());
             return getByUserQuery.getSingleResult();
+        } catch (Exception e) {
+            throw new DataProcessingException("Can't get shopping cart by user "
+                    + user + " from DB.", e);
         }
     }
 
