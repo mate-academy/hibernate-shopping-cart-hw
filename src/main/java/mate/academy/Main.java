@@ -3,6 +3,7 @@ package mate.academy;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
@@ -66,7 +67,12 @@ public class Main {
         System.out.println(movieSessionService.findAvailableSessions(
                         fastAndFurious.getId(), LocalDate.now()));
 
-        User bob = authenticationService.register("bob@gmail.com", "qwerty");
+        User bob = null;
+        try {
+            bob = authenticationService.register("bob@gmail.com", "qwerty");
+        } catch (RegistrationException e) {
+            System.out.println("Can't register user, email already exists");
+        }
         System.out.println(bob);
         try {
             System.out.println(authenticationService.login("bob@gmail.com", "qwerty"));
@@ -85,6 +91,8 @@ public class Main {
         }
         shoppingCartService.addSession(tomorrowMovieSession, bob);
         ShoppingCart bobsCart = shoppingCartService.getByUser(bob);
+        System.out.println(bobsCart);
         shoppingCartService.clear(bobsCart);
+        System.out.println(bobsCart);
     }
 }
