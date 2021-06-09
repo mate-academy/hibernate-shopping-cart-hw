@@ -91,8 +91,6 @@ public class Main {
         }
         shoppingCartService.addSession(tomorrowMovieSession, bob);
         ShoppingCart bobsCart = shoppingCartService.getByUser(bob);
-        System.out.println(bobsCart);
         shoppingCartService.clear(bobsCart);
-        System.out.println(bobsCart);
     }
 }
