@@ -1,9 +1,5 @@
 package mate.academy.dao.impl;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Root;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Dao;
@@ -41,12 +37,13 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
     @Override
     public ShoppingCart getByUser(User user) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            CriteriaBuilder cb = session.getCriteriaBuilder();
-            CriteriaQuery<ShoppingCart> query = cb.createQuery(ShoppingCart.class);
-            Root<ShoppingCart> cartRoot = query.from(ShoppingCart.class);
-            cartRoot.fetch("tickets", JoinType.LEFT);
-            query.where(cb.equal(cartRoot.get("user"), user));
-            return session.createQuery(query).getSingleResult();
+            return session.createQuery("from ShoppingCart sc "
+                    + "left join fetch sc.tickets t "
+                    + "left join fetch t.movieSession ms "
+                    + "left join fetch ms.cinemaHall "
+                    + "left join fetch ms.movie "
+                    + "where sc.user = :user", ShoppingCart.class)
+                    .setParameter("user", user).getSingleResult();
         }
     }
 
