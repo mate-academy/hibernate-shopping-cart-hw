@@ -1,6 +1,5 @@
 package mate.academy.dao.impl;
 
-import java.util.Optional;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Dao;
@@ -43,17 +42,16 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
     }
 
     @Override
-    public Optional<ShoppingCart> getByUser(User user) {
-        try(Session session = sessionFactory.openSession()) {
-            return Optional.ofNullable(session
-                    .createQuery("FROM ShoppingCart AS sc "
+    public ShoppingCart getByUser(User user) {
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("FROM ShoppingCart AS sc "
                             + "LEFT JOIN FETCH sc.ticekts AS t "
                             + "LEFT JOIN FETCH t.movieSession AS ms "
                             + "LEFT JOIN FETCH ms.movie "
                             + "LEFT JOIN FETCH ms.cinemaHall "
                             + "LEFT JOIN FETCH sc.user.id =: userId", ShoppingCart.class)
                     .setParameter("userId", user.getId())
-                    .getSingleResult());
+                    .getSingleResult();
         } catch (Exception e) {
             throw new DataProcessingException("Can't get shopping cart by user "
                     + user, e);
