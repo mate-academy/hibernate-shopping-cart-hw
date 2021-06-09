@@ -26,11 +26,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        User user = new User();
-        user.setEmail(email);
-        user.setPassword(password);
-        userService.add(user);
-        return user;
+        if (userService.findByEmail(email).isEmpty()) {
+            userService.add(new User(email, password));
+        }
+        throw new RegistrationException("User with this name "
+                + email + " already exists!");
     }
 
     private boolean matchPasswords(String rawPassword, User userFromDb) {
