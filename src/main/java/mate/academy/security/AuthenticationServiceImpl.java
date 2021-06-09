@@ -2,6 +2,7 @@ package mate.academy.security;
 
 import java.util.Optional;
 import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.User;
@@ -19,11 +20,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (userFromDb.isPresent() && matchPasswords(password, userFromDb.get())) {
             return userFromDb.get();
         }
-        throw new AuthenticationException("Incorrect email or password!");
+        throw new AuthenticationException("Can't authenticate user. "
+                + "Incorrect email or password!");
     }
 
     @Override
-    public User register(String email, String password) {
+    public User register(String email, String password) throws RegistrationException {
         User user = new User();
         user.setEmail(email);
         user.setPassword(password);
