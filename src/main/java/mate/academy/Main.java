@@ -2,6 +2,7 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.exception.AuthenticationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
@@ -71,7 +72,12 @@ public class Main {
         User user = new User();
         user.setEmail("new email");
         user.setPassword("1234");
-        User userFromDB = authenticationService.register(user.getEmail(), user.getPassword());
+        User userFromDB = null;
+        try {
+            userFromDB = authenticationService.register(user.getEmail(), user.getPassword());
+        } catch (AuthenticationException e) {
+            e.printStackTrace();
+        }
         shoppingCartService.addSession(tomorrowMovieSession, userFromDB);
     }
 }

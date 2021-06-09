@@ -18,20 +18,24 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        Optional<User> userFromDb = userService.findByEmail(email);
-        if (userFromDb.isEmpty() || !matchPasswords(password, userFromDb.get())) {
-            throw new AuthenticationException("Incorrect email or password!");
+        Optional<User> userFromDB = userService.findByEmail(email);
+        if (userFromDB.isPresent() && userFromDB.get().getPassword()
+                .equals(HashUtil.hashPassword(password, userFromDB.get().getSalt()))) {
+            return userFromDB.get();
         }
-        return userFromDb.get();
+        throw new AuthenticationException("Can't authenticate user " + userFromDB);
     }
 
     @Override
-    public User register(String email, String password) {
+    public User register(String email, String password) throws AuthenticationException {
+        Optional<User> userFromDB = userService.findByEmail(email);
+        if (userFromDB.isPresent()) {
+            throw new AuthenticationException("Can't register user with email: " + userFromDB);
+        }
         User user = new User();
         user.setEmail(email);
         user.setPassword(password);
         userService.add(user);
-        shoppingCartService.registerNewShoppingCart(user);
         return user;
     }
 
