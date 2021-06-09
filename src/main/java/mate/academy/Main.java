@@ -8,10 +8,13 @@ import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.model.ShoppingCart;
+import mate.academy.model.User;
 import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
+import mate.academy.service.ShoppingCartService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -66,8 +69,9 @@ public class Main {
 
         AuthenticationService authenticationService =
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
+        User user = null;
         try {
-            authenticationService.register("uncle_bob@gmail.com", "qwerty");
+            user = authenticationService.register("uncle_bob@gmail.com", "qwerty");
         } catch (RegistrationException e) {
             logger.error(e.getMessage());
         }
@@ -76,15 +80,12 @@ public class Main {
         } catch (AuthenticationException e) {
             logger.error(e.getMessage());
         }
-        try {
-            authenticationService.register("uncle_bob@gmail.com", "qwerty");
-        } catch (RegistrationException e) {
-            logger.error(e.getMessage());
-        }
-        try {
-            authenticationService.login("unknown_email@gmail.com", "qwerty");
-        } catch (AuthenticationException e) {
-            logger.error(e.getMessage());
-        }
+
+        ShoppingCartService shoppingCartService =
+                (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
+
+        shoppingCartService.addSession(tomorrowMovieSession, user);
+        ShoppingCart shoppingCart = shoppingCartService.getByUser(user);
+        shoppingCartService.clear(shoppingCart);
     }
 }

@@ -44,12 +44,12 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
     @Override
     public ShoppingCart getByUser(User user) {
         try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("FROM ShoppingCart AS sc "
-                            + "LEFT JOIN FETCH sc.ticekts AS t "
+            return session.createQuery("FROM ShoppingCart sc "
+                            + "LEFT JOIN FETCH sc.tickets AS t "
                             + "LEFT JOIN FETCH t.movieSession AS ms "
                             + "LEFT JOIN FETCH ms.movie "
                             + "LEFT JOIN FETCH ms.cinemaHall "
-                            + "LEFT JOIN FETCH sc.user.id =: userId", ShoppingCart.class)
+                            + "WHERE sc.user.id =: userId", ShoppingCart.class)
                     .setParameter("userId", user.getId())
                     .getSingleResult();
         } catch (Exception e) {
@@ -65,7 +65,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
         try {
             session = sessionFactory.openSession();
             transaction = session.beginTransaction();
-            session.save(shoppingCart);
+            session.update(shoppingCart);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {

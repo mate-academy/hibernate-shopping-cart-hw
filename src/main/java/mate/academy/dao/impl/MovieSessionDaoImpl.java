@@ -78,7 +78,7 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
                             + "LEFT JOIN FETCH ms.cinemaHall "
                             + "WHERE ms.id =: id", MovieSession.class)
                     .setParameter("id", id)
-                    .getSingleResult());
+                    .uniqueResult());
         } catch (Exception e) {
             throw new DataProcessingException("Can't get a movie session by id: " + id, e);
         }
