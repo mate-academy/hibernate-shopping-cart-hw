@@ -17,10 +17,6 @@ public class Ticket {
     @ManyToOne
     private User user;
 
-    public Ticket() {
-
-    }
-
     public Long getId() {
         return id;
     }
