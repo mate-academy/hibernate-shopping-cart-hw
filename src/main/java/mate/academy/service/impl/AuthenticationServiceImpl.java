@@ -37,5 +37,5 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
         throw new RegistrationException("User with such email:  "
                     + email + "already exists in DB");
-        }
     }
+}
