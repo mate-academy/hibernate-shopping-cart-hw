@@ -2,11 +2,14 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import mate.academy.exception.AuthenticationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
 import mate.academy.model.User;
+import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
@@ -25,8 +28,10 @@ public class Main {
             (UserService) injector.getInstance(UserService.class);
     private static final ShoppingCartService shoppingCartService =
             (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
+    private static final AuthenticationService authenticationService =
+            (AuthenticationService) injector.getInstance(AuthenticationService.class);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws AuthenticationException {
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
         movieService.add(fastAndFurious);
@@ -68,10 +73,10 @@ public class Main {
         bobby.setEmail("bobbyboobynson@email.com");
         bobby.setPassword("80085");
 
-        userService.add(bobby);
+        authenticationService.register(bobby.getEmail(), bobby.getPassword());
+        System.out.println("Now Bobby is a registered user and have a shopping cart!");
 
-        shoppingCartService.registerNewShoppingCart(bobby);
-        System.out.println("Now Bobby have a shopping cart!");
+        authenticationService.login(bobby.getEmail(), bobby.getPassword());
 
         shoppingCartService.addSession(tomorrowMovieSession, bobby);
         System.out.println("Now Bobby have a ticket!");
