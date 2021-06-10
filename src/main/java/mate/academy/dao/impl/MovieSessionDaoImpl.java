@@ -15,6 +15,7 @@ import mate.academy.model.MovieSession;
 import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 @Dao
 public class MovieSessionDaoImpl implements MovieSessionDao {
@@ -53,9 +54,9 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
             Predicate datePredicate = criteriaBuilder.between(root.get("showTime"),
                     date.atStartOfDay(), date.atTime(END_OF_DAY));
             Predicate allConditions = criteriaBuilder.and(moviePredicate, datePredicate);
-            criteriaQuery.select(root).where(allConditions);
             root.fetch("movie");
             root.fetch("cinemaHall");
+            criteriaQuery.select(root).where(allConditions);
             return session.createQuery(criteriaQuery).getResultList();
         } catch (Exception e) {
             throw new DataProcessingException("Can't get available sessions for movie with id: "
@@ -66,7 +67,12 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
     @Override
     public Optional<MovieSession> get(Long id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return Optional.ofNullable(session.get(MovieSession.class, id));
+            Query<MovieSession> getMovieSessionQuery = session.createQuery("from MovieSession ms "
+                    + "left join fetch ms.cinemaHall "
+                    + "left join fetch ms.movie "
+                    + "where ms.id = :id", MovieSession.class);
+            getMovieSessionQuery.setParameter("id", id);
+            return getMovieSessionQuery.uniqueResultOptional();
         } catch (Exception e) {
             throw new DataProcessingException("Can't get a movie session by id: " + id, e);
         }
