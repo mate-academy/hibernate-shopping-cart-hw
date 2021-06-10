@@ -39,7 +39,8 @@ public class ShoppingCardDaoImpl implements ShoppingCartDao {
             return session.createQuery("from ShoppingCart s "
                     + "left join fetch s.tickets t "
                     + "left join fetch t.movieSession m "
-                    + "left join fetch m.movie left join fetch m.cinemaHall "
+                    + "left join fetch m.movie "
+                    + "left join fetch m.cinemaHall "
                     + "where s.user = :user", ShoppingCart.class)
                     .setParameter("user", user)
                     .getSingleResult();
