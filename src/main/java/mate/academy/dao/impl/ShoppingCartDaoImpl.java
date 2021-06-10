@@ -49,7 +49,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             getByUserQuery.setParameter("id", user.getId());
             return getByUserQuery.getSingleResult();
         } catch (Exception e) {
-            throw new DataProcessingException("Can`t get user: " + user, e);
+            throw new DataProcessingException("Can`t get shopping cart by user: " + user, e);
         }
     }
 
