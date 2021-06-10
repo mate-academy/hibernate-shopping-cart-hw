@@ -74,6 +74,5 @@ public class Main {
         System.out.println("Shopping cart with tickets:\n" + shoppingCartService.getByUser(user));
         shoppingCartService.clear(shoppingCartService.getByUser(user));
         System.out.println("Shopping cart cleared:\n" + shoppingCartService.getByUser(user));
-        System.out.println(shoppingCartService.getByUser(user));
     }
 }
