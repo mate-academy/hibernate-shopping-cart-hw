@@ -18,16 +18,16 @@ import javax.persistence.Table;
 public class ShoppingCart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
     @OneToMany
     @JoinTable(name = "shopping_carts_tickets",
-    joinColumns = @JoinColumn(name = "shopping_cart_id"),
-    inverseJoinColumns = @JoinColumn(name = "ticket_id"))
-    List<Ticket> tickets;
+            joinColumns = @JoinColumn(name = "shopping_cart_id"),
+            inverseJoinColumns = @JoinColumn(name = "ticket_id"))
+    private List<Ticket> tickets;
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     @JoinColumn(name = "shopping_cart_id")
-    User user;
+    private User user;
 
     public ShoppingCart() {
     }

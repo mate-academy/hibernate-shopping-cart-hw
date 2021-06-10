@@ -13,11 +13,11 @@ import javax.persistence.Table;
 public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
-    MovieSession movieSession;
+    private MovieSession movieSession;
     @ManyToOne(fetch = FetchType.LAZY)
-    User user;
+    private User user;
 
     public Ticket() {
     }
