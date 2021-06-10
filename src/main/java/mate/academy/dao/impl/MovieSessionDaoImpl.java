@@ -78,8 +78,3 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
         }
     }
 }
-//    Query<MovieSession> getQuery = session
-//            .createQuery("from MovieSession ms left join fetch ms"
-//                    + ".movie where ms.id = :id", MovieSession.class);
-//            getQuery.setParameter("id", id);
-//                    return getQuery.uniqueResultOptional();
