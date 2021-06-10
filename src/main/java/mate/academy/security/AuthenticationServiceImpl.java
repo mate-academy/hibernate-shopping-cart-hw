@@ -6,11 +6,14 @@ import mate.academy.exception.RegisterException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.User;
+import mate.academy.service.ShoppingCartService;
 import mate.academy.service.UserService;
 import mate.academy.util.HashUtil;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
+    @Inject
+    private ShoppingCartService shoppingCartService;
     @Inject
     private UserService userService;
 
@@ -29,7 +32,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new RegisterException("User with email: " + email
                     + " is already exists in DB.");
         }
-        return userService.add(new User(email, password));
+        User newUser = userService.add(new User(email, password));
+        shoppingCartService.registerNewShoppingCart(newUser);
+        return newUser;
     }
 
     private boolean matchPasswords(String rawPassword, User userFromDb) {
