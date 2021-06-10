@@ -1,9 +1,10 @@
 package mate.academy.service.impl;
 
 import java.util.ArrayList;
-import java.util.List;
+
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
+
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.MovieSession;
@@ -43,8 +44,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void clear(ShoppingCart shoppingCart) {
-        List<Ticket> newList = new ArrayList<>();
-        shoppingCart.setTickets(newList);
+        shoppingCart.setTickets(new ArrayList<>());
         shoppingCardDao.update(shoppingCart);
     }
 }

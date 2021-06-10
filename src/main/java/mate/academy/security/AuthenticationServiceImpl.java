@@ -26,17 +26,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public User register(String email, String password) throws AuthenticationException {
-        try {
-            User user = new User();
-            user.setEmail(email);
-            user.setPassword(password);
-            userService.add(user);
-            shoppingCartService.registerNewShoppingCart(user);
-            return user;
-        } catch (Exception e) {
-            throw new AuthenticationException("Username is already taken");
-        }
+    public User register(String email, String password) {
+        User user = new User();
+        user.setEmail(email);
+        user.setPassword(password);
+        userService.add(user);
+        shoppingCartService.registerNewShoppingCart(user);
+        return user;
     }
 
     private boolean matchPasswords(String rawPassword, User userFromDb) {
