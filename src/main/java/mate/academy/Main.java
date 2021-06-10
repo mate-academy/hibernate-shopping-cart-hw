@@ -3,6 +3,7 @@ package mate.academy;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegisterException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
@@ -18,7 +19,7 @@ import mate.academy.service.ShoppingCartService;
 public class Main {
     private static final Injector inject = Injector.getInstance("mate.academy");
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws RegisterException {
         MovieService movieService = (MovieService)
                 inject.getInstance(MovieService.class);
 
@@ -69,7 +70,11 @@ public class Main {
 
         AuthenticationService authenticationService = (AuthenticationService)
                 inject.getInstance(AuthenticationService.class);
-        user1 = authenticationService.register(user1.getEmail(), user1.getPassword());
+        try {
+            user1 = authenticationService.register(user1.getEmail(), user1.getPassword());
+        } catch (RegisterException e) {
+            throw new RegisterException("User already exists in the DB ");
+        }
         try {
             user1 = authenticationService.login(user1.getEmail(), user1.getPassword());
         } catch (AuthenticationException e) {
