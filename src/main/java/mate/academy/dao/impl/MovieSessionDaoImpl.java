@@ -66,7 +66,7 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
                             + "WHERE ms.id = :sessionId",
                     MovieSession.class);
             query.setParameter("sessionId", id);
-            return Optional.ofNullable(query.getSingleResult());
+            return query.uniqueResultOptional();
         } catch (Exception e) {
             throw new DataProcessingException("Can't get a movie session by id: " + id, e);
         }

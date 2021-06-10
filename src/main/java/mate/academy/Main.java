@@ -7,6 +7,7 @@ import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
 import mate.academy.model.ShoppingCart;
+import mate.academy.model.Ticket;
 import mate.academy.model.User;
 import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
@@ -80,7 +81,9 @@ public class Main {
         cartService.addSession(yesterdayMovieSession, chris);
 
         ShoppingCart byUser = cartService.getByUser(chris);
-        byUser.getTickets().forEach(System.out::println);
+        byUser.getTickets().stream()
+                .map(Ticket::getMovieSession)
+                .forEach(System.out::println);
 
         cartService.clear(cartService.getByUser(chris));
     }
