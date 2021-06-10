@@ -70,9 +70,8 @@ public class Main {
 
         System.out.println(newUser);
 
-        User user = new User();
-        user.setPassword("1234");
-        user.setEmail("TEST@qwerty.net");
+        User user = new User("TEST@qwerty.net", "1234");
+
         try {
             System.out.println(authenticationService.login(user.getEmail(), user.getPassword()));
         } catch (AuthenticationException e) {
