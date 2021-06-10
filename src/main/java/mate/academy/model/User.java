@@ -19,6 +19,9 @@ public class User {
     private String password;
     private byte[] salt;
 
+    public User() {
+    }
+
     public User(String email, String password) {
         this.email = email;
         this.password = password;
@@ -61,7 +64,6 @@ public class User {
         return "User{"
                 + "id=" + id
                 + ", email='" + email + '\''
-                + ", salt=" + Arrays.toString(salt)
                 + '}';
     }
 }
