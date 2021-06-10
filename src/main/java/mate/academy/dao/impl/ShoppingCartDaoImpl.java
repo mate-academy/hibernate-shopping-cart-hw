@@ -26,7 +26,8 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Can't add shopping cart " + shoppingCart + " to Db", e);
+            throw new DataProcessingException("Can't add shopping cart "
+                    + shoppingCart + " to Db", e);
         } finally {
             if (session != null) {
                 session.close();
@@ -43,7 +44,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
                     + "LEFT JOIN FETCH t.movieSession ms "
                     + "LEFT JOIN FETCH ms.movie m "
                     + "LEFT JOIN FETCH ms.cinemaHall ch "
-                    + "WHERE u.id = :id", ShoppingCart.class);
+                    + "WHERE sc.id = :id", ShoppingCart.class);
             getByUserQuery.setParameter("id", user.getId());
             return getByUserQuery.getSingleResult();
         } catch (Exception e) {
