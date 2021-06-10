@@ -23,12 +23,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public User register(String email, String password) {
-        User user = new User();
-        user.setEmail(email);
-        user.setPassword(password);
-        userService.add(user);
-        return user;
+    public User register(String email, String password) throws AuthenticationException {
+        if (!userService.findByEmail(email).isEmpty()) {
+            throw new AuthenticationException("User with email: " + email
+                    + " is already exists in DB");
+        }
+        return userService.add(new User(email, password));
     }
 
     private boolean matchPasswords(String rawPassword, User userFromDb) {
