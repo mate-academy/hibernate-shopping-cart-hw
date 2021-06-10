@@ -46,8 +46,14 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
     public ShoppingCart getByUser(User user) {
         try (Session session = sessionFactory.openSession()) {
             Query<ShoppingCart> shoppingCartQuery = session
-                    .createQuery("from ShoppingCart where user = :user", ShoppingCart.class);
-            shoppingCartQuery.setParameter("user", user);
+                    .createQuery("from ShoppingCart as sc "
+                            + "left join fetch sc.tickets as t "
+                            + "left join fetch t.movieSession as m "
+                            + "left join fetch t.user "
+                            + "left join fetch m.movie "
+                            + "left join fetch m.cinemaHall "
+                            + "where sc.user.id = :userId", ShoppingCart.class);
+            shoppingCartQuery.setParameter("userId", user.getId());
             return shoppingCartQuery.getSingleResult();
         } catch (Exception e) {
             throw new DataProcessingException("Can't get a shopping cart by user: " + user, e);

@@ -65,8 +65,8 @@ public class Main {
                         fastAndFurious.getId(), LocalDate.now()));
 
         User registerBob = authenticationService.register("bob@gmail.com", "qwerty");
-        User authenticateBob = authenticationService.login("bob@gmail.com", "qwerty");
 
-        shoppingCartService.addSession(tomorrowMovieSession, authenticateBob);
+        shoppingCartService.addSession(tomorrowMovieSession, registerBob);
+        System.out.println(shoppingCartService.getByUser(registerBob));
     }
 }
