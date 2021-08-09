@@ -9,7 +9,6 @@ import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
 import mate.academy.model.ShoppingCart;
-import mate.academy.model.Ticket;
 import mate.academy.model.User;
 import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
@@ -85,6 +84,6 @@ public class Main {
         ShoppingCart shoppingCart = shoppingCartService.getByUser(user);
         shoppingCart.getTickets().forEach(System.out::println);
 
-        shoppingCartService.addSession(tomorrowMovieSession,user);
+        shoppingCartService.addSession(tomorrowMovieSession, user);
     }
 }
