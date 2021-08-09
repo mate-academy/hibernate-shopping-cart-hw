@@ -78,5 +78,8 @@ public class Main {
         }
         shoppingCartService.addSession(yesterdayMovieSession, ron);
         shoppingCartService.addSession(tomorrowMovieSession, bob);
+        System.out.println(shoppingCartService.getByUser(ron));
+        shoppingCartService.clear(shoppingCartService.getByUser(ron));
+        System.out.println(shoppingCartService.getByUser(ron));
     }
 }
