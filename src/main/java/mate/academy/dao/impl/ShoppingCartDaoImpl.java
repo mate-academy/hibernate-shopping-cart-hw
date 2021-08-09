@@ -41,7 +41,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
                     + "LEFT JOIN FETCH sh.tickets t "
                     + " WHERE sh.user = :user", ShoppingCart.class)
                     .setParameter("user", user)
-                    .getSingleResult();
+                    .uniqueResult();
         } catch (Exception e) {
             throw new DataProcessingException("Can't get shopping cart for user: "
                     + user + " from DB!", e);
