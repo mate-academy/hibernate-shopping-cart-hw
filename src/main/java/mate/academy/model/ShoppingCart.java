@@ -28,11 +28,11 @@ public class ShoppingCart {
         this.id = id;
     }
 
-    public List<Ticket> getUserTicket() {
+    public List<Ticket> getTickets() {
         return tickets;
     }
 
-    public void setUserTicket(List<Ticket> userTicket) {
+    public void setTickets(List<Ticket> userTicket) {
         this.tickets = userTicket;
     }
 
