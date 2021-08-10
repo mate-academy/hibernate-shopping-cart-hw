@@ -15,7 +15,7 @@ public class ShoppingCart {
     @Id
     private Long id;
     @OneToMany
-    private List<Ticket> userTicket;
+    private List<Ticket> tickets;
     @OneToOne
     @MapsId
     private User user;
@@ -29,11 +29,11 @@ public class ShoppingCart {
     }
 
     public List<Ticket> getUserTicket() {
-        return userTicket;
+        return tickets;
     }
 
     public void setUserTicket(List<Ticket> userTicket) {
-        this.userTicket = userTicket;
+        this.tickets = userTicket;
     }
 
     public User getUser() {
@@ -54,20 +54,20 @@ public class ShoppingCart {
         }
         ShoppingCart that = (ShoppingCart) o;
         return Objects.equals(id, that.id)
-                && Objects.equals(userTicket, that.userTicket)
+                && Objects.equals(tickets, that.tickets)
                 && Objects.equals(user, that.user);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userTicket, user);
+        return Objects.hash(id, tickets, user);
     }
 
     @Override
     public String toString() {
         return "ShoppingCart{"
                 + "id=" + id
-                + ", userTicket=" + userTicket
+                + ", tickets=" + tickets
                 + ", user=" + user
                 + '}';
     }
