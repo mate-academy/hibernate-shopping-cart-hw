@@ -7,7 +7,6 @@ import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
-import mate.academy.model.Ticket;
 import mate.academy.model.User;
 import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
@@ -77,9 +76,6 @@ public class Main {
         } catch (RegistrationException e) {
             System.out.println("Can't register user with email " + email);
         }
-        Ticket ticket = new Ticket();
-        ticket.setUser(eugen);
-        ticket.setMovieSession(yesterdayMovieSession);
 
         System.out.println();
         System.out.println(userService.findByEmail("eugenesinica@gmail.com").get());
