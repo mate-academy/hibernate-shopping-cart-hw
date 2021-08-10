@@ -67,7 +67,8 @@ public class ShoppingCart {
             return false;
         }
         ShoppingCart that = (ShoppingCart) o;
-        return Objects.equals(id, that.id) && Objects.equals(tickets, that.tickets)
+        return Objects.equals(id, that.id)
+                && Objects.equals(tickets, that.tickets)
                 && Objects.equals(user, that.user);
     }
 

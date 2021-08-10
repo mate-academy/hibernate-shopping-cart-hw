@@ -64,8 +64,10 @@ public class Ticket {
             return false;
         }
         Ticket ticket = (Ticket) o;
-        return Objects.equals(id, ticket.id) && Objects.equals(movieSession,
-                ticket.movieSession) && Objects.equals(user, ticket.user);
+        return Objects.equals(id, ticket.id)
+                && Objects.equals(movieSession,
+                ticket.movieSession)
+                && Objects.equals(user, ticket.user);
     }
 
     @Override
