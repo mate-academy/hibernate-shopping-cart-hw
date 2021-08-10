@@ -13,10 +13,24 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique = true)
+    @Column(unique = true, length = 50)
     private String email;
     private String password;
     private byte[] salt;
+
+    public User() {
+    }
+
+    public User(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
+
+    public User(String email, String password, byte[] salt) {
+        this.email = email;
+        this.password = password;
+        this.salt = salt;
+    }
 
     public Long getId() {
         return id;
