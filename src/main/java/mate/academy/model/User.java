@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Arrays;
 
 @Entity
 @Table(name = "users")
@@ -13,7 +14,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique = true)
+    @Column(unique = true, length = 50)
     private String email;
     private String password;
     private byte[] salt;
@@ -48,5 +49,15 @@ public class User {
 
     public void setSalt(byte[] salt) {
         this.salt = salt;
+    }
+
+    @Override
+    public String toString() {
+        return "User{"
+                + "id=" + id
+                + ", email='" + email + '\''
+                + ", password='" + password + '\''
+                + ", salt=" + Arrays.toString(salt)
+                + '}';
     }
 }
