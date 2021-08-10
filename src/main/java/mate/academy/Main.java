@@ -52,7 +52,6 @@ public class Main {
                         .of(2021, 10, 11, 10, 1)));
 
         User user = authenticationService.register("vova", "123");
-        shoppingCartService.registerNewShoppingCart(user);
         shoppingCartService.addSession(movieSessionService.get(1L), user);
     }
 }
