@@ -20,7 +20,7 @@ public class ShoppingCart {
             inverseJoinColumns = @JoinColumn(name = "ticket_id"))
     private List<Ticket> tickets;
     @OneToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "id")
     @MapsId
     private User user;
 
