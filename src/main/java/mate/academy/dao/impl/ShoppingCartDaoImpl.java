@@ -3,12 +3,14 @@ package mate.academy.dao.impl;
 import java.io.Serializable;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.exception.DataProcessingException;
+import mate.academy.lib.Dao;
 import mate.academy.model.ShoppingCart;
 import mate.academy.model.User;
 import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+@Dao
 public class ShoppingCartDaoImpl implements ShoppingCartDao {
     @Override
     public ShoppingCart add(ShoppingCart shoppingCart) {
