@@ -3,6 +3,7 @@ package mate.academy;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
@@ -70,7 +71,7 @@ public class Main {
             User nekto = authenticationService.register("persik@gmail.com", "123456");
             shoppingCartService.addSession(tomorrowMovieSession, nekto);
             shoppingCartService.clearShoppingCart(shoppingCartService.getByUser(nekto));
-        } catch (AuthenticationException e) {
+        } catch (RegistrationException e) {
             System.out.println(e.getMessage());
         }
 
@@ -78,7 +79,7 @@ public class Main {
             User perdo = authenticationService.register("kukusik@gmail.com", "123456");
             shoppingCartService.addSession(yesterdayMovieSession, perdo);
             shoppingCartService.clearShoppingCart(shoppingCartService.getByUser(perdo));
-        } catch (AuthenticationException e) {
+        } catch (RegistrationException e) {
             System.out.println(e.getMessage());
         }
 
