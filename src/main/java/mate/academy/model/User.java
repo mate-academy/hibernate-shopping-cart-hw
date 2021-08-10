@@ -72,7 +72,7 @@ public class User {
         return Objects.equals(id, user.id)
                 && Objects.equals(email, user.email)
                 && Objects.equals(password, user.password)
-                && Arrays.equals(salt,user.salt);
+                && Arrays.equals(salt, user.salt);
     }
 
     @Override
