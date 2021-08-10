@@ -31,7 +31,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         user.setEmail(email);
         user.setPassword(password);
         userService.add(user);
-        user = userService.findByEmail(email).get();
         shoppingCartService.registerNewShoppingCart(user);
         return user;
     }
