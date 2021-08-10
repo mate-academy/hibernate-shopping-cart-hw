@@ -40,7 +40,6 @@ public class Main {
     public static final UserService userService = (UserService) injector
             .getInstance(UserService.class);
     public static final TicketDao ticketDao = (TicketDao) injector.getInstance(TicketDao.class);
-
     public static final AuthenticationService authenticationService =
             (AuthenticationService) injector
                     .getInstance(AuthenticationService.class);
