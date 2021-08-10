@@ -14,7 +14,7 @@ import javax.persistence.Table;
 @Table(name = "shopping_carts")
 public class ShoppingCart {
     @Id
-    private long id;
+    private Long id;
     @OneToMany
     @JoinTable(name = "shopping_carts_tickets",
             joinColumns = @JoinColumn(name = "shopping_cart_id"),
@@ -27,11 +27,11 @@ public class ShoppingCart {
     public ShoppingCart() {
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
