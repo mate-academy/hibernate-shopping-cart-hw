@@ -15,7 +15,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Inject
     private UserService userService;
     @Inject
-    ShoppingCartService shoppingCartService;
+    private ShoppingCartService shoppingCartService;
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
