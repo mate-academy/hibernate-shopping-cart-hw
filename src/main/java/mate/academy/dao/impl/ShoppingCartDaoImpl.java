@@ -11,11 +11,10 @@ import org.hibernate.Transaction;
 
 @Dao
 public class ShoppingCartDaoImpl implements ShoppingCartDao {
-    private Session session = HibernateUtil.getSessionFactory().openSession();
-    private Transaction transaction = session.beginTransaction();
-
     @Override
     public ShoppingCart add(ShoppingCart shoppingCart) {
+        Session session = null;
+        Transaction transaction = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
@@ -48,6 +47,8 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
 
     @Override
     public void update(ShoppingCart shoppingCart) {
+        Session session = null;
+        Transaction transaction = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
