@@ -16,7 +16,6 @@ import javax.persistence.Table;
 @Table(name = "shopping_cart")
 public class ShoppingCart {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @OneToMany
     @JoinTable(name = "shopping_cart_tickets",
