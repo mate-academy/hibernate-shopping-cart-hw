@@ -5,6 +5,7 @@ import mate.academy.exception.AuthenticationException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.User;
+import mate.academy.service.ShoppingCartService;
 import mate.academy.service.UserService;
 import mate.academy.util.HashUtil;
 
@@ -12,6 +13,8 @@ import mate.academy.util.HashUtil;
 public class AuthenticationServiceImpl implements AuthenticationService {
     @Inject
     private UserService userService;
+    @Inject
+    private ShoppingCartService shoppingCartService;
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
@@ -23,11 +26,20 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public User register(String email, String password) {
+    public User register(String email, String password) throws AuthenticationException {
+        /** This code works to prevent duplicates but want Hibernate to produce
+         * exception on write, not read
+         *
+         * if (userService.findByEmail(email).isPresent()) {
+         *     throw new AuthenticationException("Registration failed. "
+         *             + "User with provided email already exists");
+         * }
+         */
         User user = new User();
         user.setEmail(email);
         user.setPassword(password);
-        userService.add(user);
+        user = userService.add(user);
+        shoppingCartService.registerNewShoppingCart(user);
         return user;
     }
 
