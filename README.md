@@ -7,7 +7,7 @@ We will continue working on our Cinema project.
 - Create DAO
     - ShoppingCartDao
         ```java
-        import java.util.Optional;public interface ShoppingCartDao {
+        public interface ShoppingCartDao {
             ShoppingCart add(ShoppingCart shoppingCart);
         
             Optional<ShoppingCart> getByUser(User user);
