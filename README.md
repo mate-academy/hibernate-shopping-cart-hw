@@ -10,7 +10,7 @@ We will continue working on our Cinema project.
         public interface ShoppingCartDao {
             ShoppingCart add(ShoppingCart shoppingCart);
         
-            ShoppingCart getByUser(User user);
+            Optional<ShoppingCart> getByUser(User user);
         
             void update(ShoppingCart shoppingCart);
         }
