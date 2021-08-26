@@ -16,7 +16,7 @@ public class Ticket {
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
     private MovieSession movieSession;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private User user;
 
     public Ticket() {
@@ -56,7 +56,7 @@ public class Ticket {
         return "Ticket{"
                 + "id=" + id
                 + ", movieSession=" + movieSession
-                + ", user=" + user
+//                + ", user=" + user
                 + '}';
     }
 }
