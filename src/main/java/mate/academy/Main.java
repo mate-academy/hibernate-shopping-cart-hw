@@ -6,11 +6,13 @@ import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.model.ShoppingCart;
 import mate.academy.model.User;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
 import mate.academy.service.ShoppingCartService;
+import mate.academy.service.UserService;
 import mate.academy.util.HashUtil;
 
 public class Main {
@@ -64,10 +66,16 @@ public class Main {
         bohdan.setEmail("Bohdan");
         bohdan.setSalt(HashUtil.getSalt());
         bohdan.setPassword(HashUtil.hashPassword("chupika", bohdan.getSalt()));
+        UserService userService =
+                (UserService) injector.getInstance(UserService.class);
+        userService.add(bohdan);
         ShoppingCartService shoppingCartService =
                 (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
+
         shoppingCartService.registerNewShoppingCart(bohdan);
+        ShoppingCart shoppingCart = shoppingCartService.getByUser(bohdan);
         shoppingCartService.addSession(tomorrowMovieSession, bohdan);
+        shoppingCartService.clear(shoppingCart);
         System.out.println(shoppingCartService.getByUser(bohdan));
     }
 }
