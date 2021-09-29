@@ -49,6 +49,8 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
                     .from(ShoppingCart.class);
             shoppingCartRoot.fetch("tickets", JoinType.LEFT);
             shoppingCartRoot.fetch("user", JoinType.LEFT);
+            getShoppingCartByUserQuery.where(criteriaBuilder
+                    .equal(shoppingCartRoot.get("user"), user));
             getShoppingCartByUserQuery.distinct(true).select(shoppingCartRoot);
             return session.createQuery(getShoppingCartByUserQuery).uniqueResultOptional();
         }
