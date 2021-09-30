@@ -15,7 +15,7 @@ import javax.persistence.Table;
 public class ShoppingCart {
     @Id
     private Long id;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.MERGE)
     private List<Ticket> tickets;
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
