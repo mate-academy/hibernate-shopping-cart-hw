@@ -70,9 +70,6 @@ public class Main {
         ShoppingCartService shoppingCartService = (ShoppingCartService) injector
                 .getInstance(ShoppingCartService.class);
 
-        shoppingCartService.registerNewShoppingCart(user1);
-        shoppingCartService.registerNewShoppingCart(user2);
-
         shoppingCartService.addSession(yesterdayMovieSession, user1);
         shoppingCartService.addSession(tomorrowMovieSession, user2);
 
