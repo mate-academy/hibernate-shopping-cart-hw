@@ -9,6 +9,7 @@ import mate.academy.model.User;
 import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 @Dao
 public class ShoppingCartDaoImpl implements ShoppingCartDao {
@@ -37,8 +38,19 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
 
     @Override
     public Optional<ShoppingCart> getByUser(User user) {
+        Long id = user.getId();
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return Optional.ofNullable(session.get(ShoppingCart.class, user.getId()));
+
+            Query<ShoppingCart> query
+                    = session.createQuery("from ShoppingCart sc "
+                    + "JOIN FETCH sc.user "
+                    // + "JOIN FETCH sc.tickets " //why this line brings an empty optional?
+                    + "where sc.user = :user", ShoppingCart.class);
+            query.setParameter("user", user);
+            Optional<ShoppingCart> shoppingCart = query.uniqueResultOptional();
+            //Optional<ShoppingCart> shoppingCartEager
+            // = Optional.ofNullable(session.get(ShoppingCart.class, user.getId()));
+            return shoppingCart;
         } catch (Exception e) {
             throw new DataProcessingException("Can't get a shopping cart by user id: "
                 + user.getId(), e);
