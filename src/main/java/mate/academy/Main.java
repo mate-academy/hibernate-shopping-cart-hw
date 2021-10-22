@@ -68,7 +68,7 @@ public class Main {
 
         ShoppingCartService shoppingCartService
                 = (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
-        shoppingCartService.addSession(yesterdayMovieSession,registerUser);
+        shoppingCartService.addSession(yesterdayMovieSession,userDB);
         UserService userService = (UserService) injector.getInstance(UserService.class);
         userService.findByEmail(userDB.getEmail());
         ShoppingCart byUser = shoppingCartService.getByUser(userDB);

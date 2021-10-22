@@ -22,7 +22,6 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             transaction = session.beginTransaction();
             session.save(shoppingCart);
             transaction.commit();
-            session.close();
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
@@ -38,18 +37,13 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
 
     @Override
     public Optional<ShoppingCart> getByUser(User user) {
-        Long id = user.getId();
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-
             Query<ShoppingCart> query
                     = session.createQuery("from ShoppingCart sc "
-                    + "JOIN FETCH sc.user "
-                    // + "JOIN FETCH sc.tickets " //why this line brings an empty optional?
+                    + "LEFT JOIN FETCH sc.tickets t " //what is JOIN FETCH and LEFT JOIN FETCH
                     + "where sc.user = :user", ShoppingCart.class);
             query.setParameter("user", user);
             Optional<ShoppingCart> shoppingCart = query.uniqueResultOptional();
-            //Optional<ShoppingCart> shoppingCartEager
-            // = Optional.ofNullable(session.get(ShoppingCart.class, user.getId()));
             return shoppingCart;
         } catch (Exception e) {
             throw new DataProcessingException("Can't get a shopping cart by user id: "
@@ -66,7 +60,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             transaction = session.beginTransaction();
             session.update(shoppingCart);
             transaction.commit();
-            session.close();
+            session.close(); //why shouldn't we close session?
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
