@@ -2,16 +2,17 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
 import mate.academy.model.User;
+import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
 import mate.academy.service.ShoppingCartService;
-import mate.academy.service.UserService;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.academy");
@@ -62,17 +63,20 @@ public class Main {
                 fastAndFurious.getId(), LocalDate.now()));
 
         // testing new methods:
-        UserService userService = (UserService) injector.getInstance(UserService.class);
-
-        User user = new User();
-        user.setEmail("1@1.1");
-        user.setPassword("1234");
-        userService.add(user);
+        AuthenticationService authenticationService
+                = (AuthenticationService) injector.getInstance(AuthenticationService.class);
+        String email = "1@1.1";
+        String password = "1234";
+        User user;
+        try {
+            user = authenticationService.register(email, password);
+        } catch (RegistrationException e) {
+            throw new RuntimeException("Can't register user", e);
+        }
 
         ShoppingCartService shoppingCartService
                 = (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
 
-        shoppingCartService.registerNewShoppingCart(user);
         System.out.println(shoppingCartService.getByUser(user));
         shoppingCartService.addSession(yesterdayMovieSession, user);
         System.out.println(shoppingCartService.getByUser(user));
