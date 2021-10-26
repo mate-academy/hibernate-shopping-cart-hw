@@ -8,17 +8,20 @@ import mate.academy.model.ShoppingCart;
 import mate.academy.model.User;
 import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 @Dao
 public class ShoppingCartDaoImpl implements ShoppingCartDao {
+    private static SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+
     @Override
     public ShoppingCart add(ShoppingCart shoppingCart) {
         Transaction transaction = null;
         Session session = null;
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
+            session = sessionFactory.openSession();
             transaction = session.beginTransaction();
             session.save(shoppingCart);
             transaction.commit();
@@ -37,9 +40,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
 
     @Override
     public Optional<ShoppingCart> getByUser(User user) {
-        Session session = null;
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
+        try (Session session = sessionFactory.openSession()) {
             Query<ShoppingCart> getShoppingCartByUserIdQuery =
                     session.createQuery("select distinct sc FROM shopping_cart sc "
                             + "LEFT JOIN FETCH sc.user "
@@ -53,10 +54,6 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             return getShoppingCartByUserIdQuery.uniqueResultOptional();
         } catch (Exception e) {
             throw new DataProcessingException("Can't get a ShoppingCart by user: " + user, e);
-        } finally {
-            if (session != null) {
-                session.close();
-            }
         }
     }
 
@@ -65,7 +62,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
         Session session = null;
         Transaction transaction = null;
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
+            session = sessionFactory.openSession();
             transaction = session.beginTransaction();
             session.merge(shoppingCart);
             transaction.commit();

@@ -5,23 +5,20 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.MapsId;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity(name = "shopping_cart")
 public class ShoppingCart {
     @Id
     private Long id;
-    @ManyToMany
+    @OneToMany
     private List<Ticket> tickets;
     @MapsId
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
-
-    public ShoppingCart() {
-    }
 
     public List<Ticket> getTickets() {
         return tickets;

@@ -21,20 +21,12 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void addSession(MovieSession movieSession, User user) {
-        Ticket ticket = new Ticket();
-        ticket.setUser(user);
-        ticket.setMovieSession(movieSession);
+        Ticket ticket = new Ticket(movieSession, user);
         ticketDao.add(ticket);
-        Optional<ShoppingCart> userFromDbOptional = shoppingCartDao.getByUser(user);
-        if (userFromDbOptional.isPresent()) {
-            ShoppingCart shoppingCart = userFromDbOptional.get();
-            shoppingCart.getTickets().add(ticket);
-            shoppingCartDao.update(shoppingCart);
-            return;
-        }
-        ShoppingCart shoppingCart = createNewShoppingCart(user);
-        createNewShoppingCart(user).getTickets().add(ticket);
-        shoppingCartDao.add(shoppingCart);
+        Optional<ShoppingCart> shoppingCartFromDbOptional = shoppingCartDao.getByUser(user);
+        ShoppingCart shoppingCart = shoppingCartFromDbOptional.get();
+        shoppingCart.getTickets().add(ticket);
+        shoppingCartDao.update(shoppingCart);
     }
 
     @Override
@@ -44,20 +36,16 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void registerNewShoppingCart(User user) {
-        shoppingCartDao.add(createNewShoppingCart(user));
+        ShoppingCart shoppingCart = new ShoppingCart();
+        shoppingCart.setUser(user);
+        ArrayList<Ticket> tickets = new ArrayList<>();
+        shoppingCart.setTickets(tickets);
+        shoppingCartDao.add(shoppingCart);
     }
 
     @Override
     public void clear(ShoppingCart shoppingCart) {
         shoppingCart.setTickets(new ArrayList<>());
         shoppingCartDao.update(shoppingCart);
-    }
-
-    private ShoppingCart createNewShoppingCart(User user) {
-        ShoppingCart shoppingCart = new ShoppingCart();
-        shoppingCart.setUser(user);
-        ArrayList<Ticket> tickets = new ArrayList<>();
-        shoppingCart.setTickets(tickets);
-        return shoppingCart;
     }
 }
