@@ -59,7 +59,6 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             transaction = session.beginTransaction();
             session.update(shoppingCart);
             transaction.commit();
-            session.close(); //why shouldn't we close session?
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
