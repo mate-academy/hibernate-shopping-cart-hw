@@ -22,9 +22,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public void addSession(MovieSession movieSession, User user) {
         Optional<ShoppingCart> shoppingCart = shoppingCartDao.getByUser(user);
-        if (shoppingCart.isEmpty()) {
-            throw new RuntimeException("Shopping cart doesn't exist for user " + user);
-        }
         Ticket ticket = new Ticket(movieSession, user);
         ticketDao.add(ticket);
         shoppingCart.get().getTickets().add(ticket);
@@ -45,12 +42,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void clear(ShoppingCart shoppingCart) {
-        Optional<ShoppingCart> shoppingCartFromDB =
-                shoppingCartDao.getByUser(shoppingCart.getUser());
-        if (shoppingCartFromDB.isEmpty()) {
-            throw new RuntimeException("Shopping cart doesn't exist");
-        }
-        shoppingCartFromDB.get().getTickets().clear();
-        shoppingCartDao.update(shoppingCartFromDB.get());
+        shoppingCart.getTickets().clear();
+        shoppingCartDao.update(shoppingCart);
     }
 }
