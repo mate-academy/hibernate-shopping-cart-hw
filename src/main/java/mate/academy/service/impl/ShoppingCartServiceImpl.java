@@ -21,11 +21,11 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void addSession(MovieSession movieSession, User user) {
-        Optional<ShoppingCart> shoppingCart = shoppingCartDao.getByUser(user);
+        ShoppingCart shoppingCart = getByUser(user);
         Ticket ticket = new Ticket(movieSession, user);
         ticketDao.add(ticket);
-        shoppingCart.get().getTickets().add(ticket);
-        shoppingCartDao.update(shoppingCart.get());
+        shoppingCart.getTickets().add(ticket);
+        shoppingCartDao.update(shoppingCart);
     }
 
     @Override
