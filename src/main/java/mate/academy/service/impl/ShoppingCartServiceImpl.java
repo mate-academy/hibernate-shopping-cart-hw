@@ -22,19 +22,13 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public void addSession(MovieSession movieSession, User user) {
         Ticket newTicket = new Ticket(movieSession, user);
         Ticket newTicketWithIdFromDb = ticketDao.add(newTicket);
-        if (shoppingCartDao.getByUser(user).isEmpty()) {
-            throw new RuntimeException("User with id: " + user.getId() + "isn't present");
-        }
-        ShoppingCart shoppingCartByUser = shoppingCartDao.getByUser(user).get();
+        ShoppingCart shoppingCartByUser = getByUser(user);
         shoppingCartByUser.getTickets().add(newTicketWithIdFromDb);
         shoppingCartDao.update(shoppingCartByUser);
     }
 
     @Override
     public ShoppingCart getByUser(User user) {
-        if (shoppingCartDao.getByUser(user).isEmpty()) {
-            throw new RuntimeException("User with id: " + user.getId() + "isn't present");
-        }
         return shoppingCartDao.getByUser(user).get();
     }
 
