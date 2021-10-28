@@ -1,7 +1,6 @@
 package mate.academy.service.impl;
 
 import java.util.ArrayList;
-import java.util.List;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
 import mate.academy.lib.Inject;
@@ -23,15 +22,19 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public void addSession(MovieSession movieSession, User user) {
         Ticket newTicket = new Ticket(movieSession, user);
         Ticket newTicketWithIdFromDb = ticketDao.add(newTicket);
+        if (shoppingCartDao.getByUser(user).isEmpty()) {
+            throw new RuntimeException("User with id: " + user.getId() + "isn't present");
+        }
         ShoppingCart shoppingCartByUser = shoppingCartDao.getByUser(user).get();
-        List<Ticket> ticketsByShoppingCart = shoppingCartByUser.getTickets();
-        ticketsByShoppingCart.add(newTicketWithIdFromDb);
-        shoppingCartByUser.setTickets(ticketsByShoppingCart);
+        shoppingCartByUser.getTickets().add(newTicketWithIdFromDb);
         shoppingCartDao.update(shoppingCartByUser);
     }
 
     @Override
     public ShoppingCart getByUser(User user) {
+        if (shoppingCartDao.getByUser(user).isEmpty()) {
+            throw new RuntimeException("User with id: " + user.getId() + "isn't present");
+        }
         return shoppingCartDao.getByUser(user).get();
     }
 
