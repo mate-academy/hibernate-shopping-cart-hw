@@ -18,7 +18,7 @@ public class HashUtil {
             }
             return hashedPwd.toString();
         } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("Can`t hash password!", e);
+            throw new RuntimeException("Can`t hash password.", e);
         }
     }
 
