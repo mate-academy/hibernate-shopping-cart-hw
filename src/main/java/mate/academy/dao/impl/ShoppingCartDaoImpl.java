@@ -45,7 +45,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
                         + "LEFT JOIN FETCH ms.cinemaHall "
                         + "WHERE sc.user = :user ";
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Query getShoppingCartByUserQuery = session.createQuery(getByUser);
+            Query getShoppingCartByUserQuery = session.createQuery(getShoppingCartByUser);
             getShoppingCartByUserQuery.setParameter("user", user);
             return getShoppingCartByUserQuery.uniqueResultOptional();
         } catch (Exception e) {
