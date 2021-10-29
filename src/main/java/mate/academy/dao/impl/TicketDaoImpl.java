@@ -23,7 +23,7 @@ public class TicketDaoImpl implements TicketDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Can't insert shopping cart " + ticket, e);
+            throw new DataProcessingException("Can't insert ticked " + ticket, e);
         } finally {
             if (session != null) {
                 session.close();
