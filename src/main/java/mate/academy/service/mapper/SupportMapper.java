@@ -38,5 +38,4 @@ public interface SupportMapper {
     MovieSessionDto movieSessionEntityToDto(MovieSession movieSession);
 
     List<TicketDto> ticketEntitiesToListDto(List<Ticket> tickets);
-
 }
