@@ -83,6 +83,8 @@ public class Main {
         shoppingCartService.addSession(tomorrowMovieSession, register1);
         ShoppingCart byUser1 = shoppingCartService.getByUser(register1);
         System.out.println(byUser1);
+        shoppingCartService.clear(byUser1);
+        System.out.println(byUser1);
         Movie movie = movieService.get(1L);
 
         SupportMapper mapper = Mappers.getMapper(SupportMapper.class);
