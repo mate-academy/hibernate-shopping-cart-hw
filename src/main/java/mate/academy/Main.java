@@ -8,7 +8,6 @@ import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
-import mate.academy.model.ShoppingCart;
 import mate.academy.model.User;
 import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
@@ -72,7 +71,8 @@ public class Main {
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
         try {
             userBob = authenticationService.register(userBob.getEmail(), userBob.getPassword());
-            userAlice = authenticationService.register(userAlice.getEmail(), userAlice.getPassword());
+            userAlice = authenticationService
+                    .register(userAlice.getEmail(), userAlice.getPassword());
             authenticationService.register(userBob.getEmail(), userBob.getPassword());
         } catch (RegistrationException e) {
             System.out.printf("RegistrationException was thrown: %s%n", e);
