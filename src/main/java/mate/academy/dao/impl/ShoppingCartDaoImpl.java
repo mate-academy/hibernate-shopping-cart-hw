@@ -24,10 +24,11 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             transaction.commit();
             return shoppingCart;
         } catch (Exception e) {
-            if (transaction != null){
+            if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Can't insert shopping cart " + shoppingCart + " to DB.", e);
+            throw new DataProcessingException("Can't insert shopping cart "
+                    + shoppingCart + " to DB.", e);
         } finally {
             if (session != null) {
                 session.close();
@@ -38,13 +39,13 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
     @Override
     public Optional<ShoppingCart> getByUser(User user) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-           Query<ShoppingCart> query = session.createQuery("from ShoppingCart  sc " +
-                   "left join fetch sc.tickets t " +
-                   "left join fetch t.user " +
-                   "left join fetch t.movieSession ms " +
-                   "left join fetch ms.cinemaHall " +
-                   "left join fetch ms.movie " +
-                   "where sc.user = :user", ShoppingCart.class);
+            Query<ShoppingCart> query = session.createQuery("from ShoppingCart  sc "
+                    + "left join fetch sc.tickets t "
+                    + "left join fetch t.user "
+                    + "left join fetch t.movieSession ms "
+                    + "left join fetch ms.cinemaHall "
+                    + "left join fetch ms.movie "
+                    + "where sc.user = :user", ShoppingCart.class);
             query.setParameter("user", user);
             return query.uniqueResultOptional();
         } catch (Exception e) {
@@ -62,7 +63,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             session.merge(shoppingCart);
             transaction.commit();
         } catch (Exception e) {
-            if (transaction != null){
+            if (transaction != null) {
                 transaction.rollback();
             }
             throw new DataProcessingException("Can't update shopping cart: " + shoppingCart, e);
