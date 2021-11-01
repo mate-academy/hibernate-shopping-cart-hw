@@ -1,6 +1,5 @@
 package mate.academy.dao.impl;
 
-import java.util.List;
 import java.util.Optional;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.exception.DataProcessingException;
@@ -26,7 +25,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             transaction = session.beginTransaction();
             session.save(shoppingCart);
             transaction.commit();
-        } catch (Exception e){
+        } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
@@ -42,8 +41,15 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
     @Override
     public Optional<ShoppingCart> getByUser(User user) {
         try (Session session = sessionFactory.openSession()) {
-            Query<ShoppingCart> query = session.createQuery("from ShoppingCart s where s.id = :id", ShoppingCart.class);
-            return Optional.ofNullable(query.setParameter("id", user.getId()).getSingleResult());
+            Query<ShoppingCart> query = session
+                    .createQuery("from ShoppingCart sc "
+                            + "left join fetch sc.tickets t "
+                            + "left join fetch t.movieSession ms "
+                            + "left join fetch t.user "
+                            + "left join fetch ms.movie "
+                            + "left join fetch ms.cinemaHall "
+                            + "where sc.user = :user", ShoppingCart.class);
+            return Optional.ofNullable(query.setParameter("user", user).getSingleResult());
         } catch (Exception e) {
             throw new DataProcessingException("Can't find shopping cart by user " + user, e);
         }
@@ -64,7 +70,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             }
             throw new DataProcessingException("Can't update shopping cart " + shoppingCart, e);
         } finally {
-            if (session != null){
+            if (session != null) {
                 session.close();
             }
         }
