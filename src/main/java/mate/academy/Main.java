@@ -6,10 +6,14 @@ import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.model.ShoppingCart;
+import mate.academy.model.User;
 import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
+import mate.academy.service.ShoppingCartService;
+import mate.academy.service.UserService;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.academy");
@@ -21,6 +25,10 @@ public class Main {
             (MovieSessionService) injector.getInstance(MovieSessionService.class);
     private static final AuthenticationService authenticationService =
             (AuthenticationService) injector.getInstance(AuthenticationService.class);
+    private static final UserService userService =
+            (UserService) injector.getInstance(UserService.class);
+    private static final ShoppingCartService shoppingCartService =
+            (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
 
     public static void main(String[] args) {
         Movie fastAndFurious = new Movie("Fast and Furious");
@@ -53,5 +61,22 @@ public class Main {
         } catch (RegistrationException e) {
             System.out.println(e.getMessage());
         }
+
+        User userFromDB = userService.findByEmail("bob@gmail.com").get();
+        ShoppingCart shoppingCart = shoppingCartService.getByUser(userFromDB);
+        System.out.println("Empty Shopping Cart " + shoppingCart);
+        System.out.println();
+        System.out.println("Add 2 tickets to Session " + tomorrowMovieSession);
+        shoppingCartService.addSession(tomorrowMovieSession, userFromDB);
+        shoppingCartService.addSession(tomorrowMovieSession, userFromDB);
+        shoppingCart = shoppingCartService.getByUser(userFromDB);
+        System.out.println("Shopping Cart after added 2 tickets " + shoppingCart);
+        System.out.println();
+
+        System.out.println("Clear ShoppingCart ");
+        shoppingCartService.clear(shoppingCart);
+        shoppingCart = shoppingCartService.getByUser(userFromDB);
+        System.out.println("Shopping Cart after clear" + shoppingCart);
+        System.out.println();
     }
 }
