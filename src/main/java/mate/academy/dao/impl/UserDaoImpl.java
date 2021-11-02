@@ -11,13 +11,13 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 @Dao
-public class UserDaoImpl implements UserDao {
+public class UserDaoImpl extends AbstractDao implements UserDao {
     @Override
     public User add(User user) {
         Session session = null;
         Transaction transaction = null;
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
+            session = factory.openSession();
             transaction = session.beginTransaction();
             session.save(user);
             transaction.commit();
@@ -37,7 +37,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Optional<User> findByEmail(String email) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try (Session session = factory.openSession()) {
             Query<User> query = session.createQuery("FROM User u "
                     + "WHERE u.email = :email", User.class);
             query.setParameter("email", email);
