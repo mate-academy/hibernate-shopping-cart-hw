@@ -25,15 +25,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         newTicket.setMovieSession(movieSession);
         newTicket.setUser(user);
         ticketDao.add(newTicket);
-        Optional<ShoppingCart> shoppingCartOptional = shoppingCartDao.getByUser(user);
-        if (shoppingCartOptional.isEmpty()) {
-            registerNewShoppingCart(user);
-            ShoppingCart shoppingCart = shoppingCartDao.getByUser(user).get();
-            shoppingCart.getTickets().add(newTicket);
-            shoppingCartDao.update(shoppingCart);
-            return;
-        }
-        ShoppingCart shoppingCart = shoppingCartOptional.get();
+        ShoppingCart shoppingCart= shoppingCartDao.getByUser(user).orElseThrow();
         shoppingCart.getTickets().add(newTicket);
         shoppingCartDao.update(shoppingCart);
     }
