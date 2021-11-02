@@ -8,17 +8,20 @@ import mate.academy.model.ShoppingCart;
 import mate.academy.model.User;
 import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 @Dao
 public class ShoppingCartDaoImpl implements ShoppingCartDao {
+    private static final SessionFactory SESSION_FACTORY = HibernateUtil.getSessionFactory();
+
     @Override
     public ShoppingCart add(ShoppingCart shoppingCart) {
         Transaction transaction = null;
         Session session = null;
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
+            session = SESSION_FACTORY.openSession();
             transaction = session.beginTransaction();
             session.save(shoppingCart);
             transaction.commit();
@@ -37,7 +40,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
 
     @Override
     public Optional<ShoppingCart> getByUser(User user) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try (Session session = SESSION_FACTORY.openSession()) {
             Query<ShoppingCart> query = session.createQuery("FROM ShoppingCart sc "
                     + "LEFT JOIN FETCH sc.tickets t "
                     + "LEFT JOIN FETCH t.movieSession ms "
@@ -56,7 +59,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
         Transaction transaction = null;
         Session session = null;
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
+            session = SESSION_FACTORY.openSession();
             transaction = session.beginTransaction();
             session.update(shoppingCart);
             transaction.commit();

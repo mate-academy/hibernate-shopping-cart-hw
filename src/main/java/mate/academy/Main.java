@@ -59,9 +59,7 @@ public class Main {
                 fastAndFurious.getId(), LocalDate.now()));
 
         UserService userService = (UserService) injector.getInstance(UserService.class);
-        User user = new User();
-        user.setEmail("bibob@gmail.com");
-        user.setPassword("qwerty");
+        User user = new User("bibob@gmail.com", "qwerty");
         userService.add(user);
 
         ShoppingCartService shoppingCartService = (ShoppingCartService)
