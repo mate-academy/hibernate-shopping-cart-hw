@@ -58,9 +58,7 @@ public class Main {
         User user = new User();
         user.setEmail("test@ukr.net");
         user.setPassword("qwerty");
-        User userFromDB = userService.add(user);
-        shoppingCartService.registerNewShoppingCart(userFromDB);
-        //shoppingCartService.registerNewShoppingCart(userFromDB);
+        shoppingCartService.registerNewShoppingCart(user);
         shoppingCartService.addSession(tomorrowMovieSession, user);
         shoppingCartService.addSession(tomorrowMovieSession, user);
         System.out.println(shoppingCartService.getByUser(user));
@@ -68,5 +66,7 @@ public class Main {
         System.out.println(movieSessionService.findAvailableSessions(
                 fastAndFurious.getId(), LocalDate.now()));
         shoppingCartService.clear(shoppingCartService.getByUser(user));
+        user.setId(1L);
+        System.out.println(shoppingCartService.getByUser(user).getTickets());
     }
 }
