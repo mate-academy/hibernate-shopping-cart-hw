@@ -10,18 +10,11 @@ import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
 import mate.academy.model.ShoppingCart;
 import mate.academy.model.User;
-import mate.academy.model.dto.CinemaHallDto;
-import mate.academy.model.dto.MovieDto;
-import mate.academy.model.dto.MovieSessionDto;
-import mate.academy.model.dto.ShoppingCartDto;
-import mate.academy.model.dto.UserDto;
 import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
 import mate.academy.service.ShoppingCartService;
-import mate.academy.service.mapper.SupportMapper;
-import org.mapstruct.factory.Mappers;
 
 public class Main {
     public static final Injector injector = Injector.getInstance("mate.academy");
@@ -86,12 +79,5 @@ public class Main {
         shoppingCartService.clear(byUser1);
         System.out.println(byUser1);
         Movie movie = movieService.get(1L);
-
-        SupportMapper mapper = Mappers.getMapper(SupportMapper.class);
-        MovieDto movieDto = mapper.movieEntityToDto(movie);
-        CinemaHallDto cinemaHallDto = mapper.cinemaHallEntityToDto(firstCinemaHall);
-        MovieSessionDto movieSessionDto = mapper.movieSessionEntityToDto(yesterdayMovieSession);
-        UserDto userDto = mapper.userEntityToDto(register1);
-        ShoppingCartDto shoppingCartDto = mapper.shoppingCartEntityToDto(byUser1);
     }
 }

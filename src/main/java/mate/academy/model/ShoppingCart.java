@@ -15,7 +15,6 @@ public class ShoppingCart {
     @Id
     private Long id;
     @OneToMany
-    @JoinColumn(name = "user_id")
     private List<Ticket> tickets;
     @OneToOne
     @MapsId
