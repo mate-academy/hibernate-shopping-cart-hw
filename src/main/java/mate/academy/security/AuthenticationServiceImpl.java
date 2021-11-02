@@ -5,7 +5,6 @@ import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
-import mate.academy.model.ShoppingCart;
 import mate.academy.model.User;
 import mate.academy.service.ShoppingCartService;
 import mate.academy.service.UserService;
@@ -34,8 +33,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             user.setEmail(email);
             user.setPassword(password);
             userService.add(user);
-            ShoppingCart shoppingCart = new ShoppingCart();
-            shoppingCart.setUser(user);
             shoppingCartService.registerNewShoppingCart(user);
             return user;
         }

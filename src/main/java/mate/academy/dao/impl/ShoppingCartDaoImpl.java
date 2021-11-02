@@ -33,7 +33,6 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             }
         }
         return shoppingCart;
-
     }
 
     @Override
@@ -51,7 +50,6 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
         } catch (Exception e) {
             throw new DataProcessingException("Can't get shopping cart by user " + user, e);
         }
-
     }
 
     @Override
