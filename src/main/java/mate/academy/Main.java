@@ -15,11 +15,11 @@ import mate.academy.service.MovieSessionService;
 import mate.academy.service.ShoppingCartService;
 
 public class Main {
-    private static final Injector INJECTOR = Injector.getInstance("mate.academy");
+    private static final Injector injector = Injector.getInstance("mate.academy");
 
     public static void main(String[] args) throws RegistrationException {
         MovieService movieService =
-                (MovieService) INJECTOR.getInstance(MovieService.class);
+                (MovieService) injector.getInstance(MovieService.class);
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
         movieService.add(fastAndFurious);
@@ -35,7 +35,7 @@ public class Main {
         secondCinemaHall.setDescription("second hall with capacity 200");
 
         CinemaHallService cinemaHallService =
-                (CinemaHallService) INJECTOR.getInstance(CinemaHallService.class);
+                (CinemaHallService) injector.getInstance(CinemaHallService.class);
         cinemaHallService.add(firstCinemaHall);
         cinemaHallService.add(secondCinemaHall);
 
@@ -53,7 +53,7 @@ public class Main {
         yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(1L));
 
         MovieSessionService movieSessionService =
-                (MovieSessionService) INJECTOR.getInstance(MovieSessionService.class);
+                (MovieSessionService) injector.getInstance(MovieSessionService.class);
         movieSessionService.add(tomorrowMovieSession);
         movieSessionService.add(yesterdayMovieSession);
 
@@ -62,12 +62,12 @@ public class Main {
                 fastAndFurious.getId(), LocalDate.now()));
 
         AuthenticationService authenticationService =
-                (AuthenticationService) INJECTOR.getInstance(AuthenticationService.class);
+                (AuthenticationService) injector.getInstance(AuthenticationService.class);
         User userOne = null;
         userOne = authenticationService.register("testUser", "123456");
         System.out.println("User is registered!");
         ShoppingCartService shoppingCartService =
-                (ShoppingCartService) INJECTOR.getInstance(ShoppingCartService.class);
+                (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
         shoppingCartService.addSession(tomorrowMovieSession, userOne);
         shoppingCartService.addSession(yesterdayMovieSession, userOne);
         System.out.println(shoppingCartService.getByUser(userOne));
