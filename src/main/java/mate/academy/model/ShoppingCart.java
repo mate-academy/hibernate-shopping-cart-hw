@@ -1,9 +1,7 @@
 package mate.academy.model;
 
 import java.util.List;
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
@@ -47,9 +45,10 @@ public class ShoppingCart {
 
     @Override
     public String toString() {
-        return "ShoppingCart{" +
-                "id=" + id +
-                ", user=" + user +
-                '}';
+        return "ShoppingCart{"
+                + "id=" + id
+                + ", user=" + user
+                + "tickets= " + tickets
+                + '}';
     }
 }

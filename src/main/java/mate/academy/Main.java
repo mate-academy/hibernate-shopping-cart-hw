@@ -2,9 +2,7 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import mate.academy.exception.RegistrationException;
-import mate.academy.lib.Inject;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
@@ -15,7 +13,6 @@ import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
 import mate.academy.service.ShoppingCartService;
-import mate.academy.util.HashUtil;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.academy");
@@ -67,7 +64,7 @@ public class Main {
         AuthenticationService authenticationService = (AuthenticationService) injector
                 .getInstance(AuthenticationService.class);
 
-        User sampleUser = authenticationService.register("sampleEmail", "1234");
+        User sampleUser = authenticationService.register("someEmail", "1234");
 
         ShoppingCartService shoppingCartService = (ShoppingCartService) injector
                 .getInstance(ShoppingCartService.class);
