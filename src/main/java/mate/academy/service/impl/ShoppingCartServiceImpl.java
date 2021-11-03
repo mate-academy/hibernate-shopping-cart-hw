@@ -1,6 +1,8 @@
 package mate.academy.service.impl;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
 import mate.academy.lib.Inject;
@@ -24,15 +26,17 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         ticket.setMovieSession(movieSession);
         ticket.setUser(user);
         ticketDao.add(ticket);
-        ShoppingCart shoppingCart = shoppingCartDao.getByUser(user).get();
-        shoppingCart.getTickets().add(ticket);
+        ShoppingCart shoppingCart = getByUser(user);
+        List<Ticket> ticketList = shoppingCart.getTickets();
+        ticketList.add(ticket);
+        shoppingCart.setTickets(ticketList);
         shoppingCartDao.update(shoppingCart);
     }
 
     @Override
     public ShoppingCart getByUser(User user) {
         return shoppingCartDao.getByUser(user)
-                .orElseThrow(() -> new RuntimeException("Cant get shopping cart to this user"));
+                .orElseThrow(() -> new NoSuchElementException("Cant get shopping cart to this user"));
     }
 
     @Override

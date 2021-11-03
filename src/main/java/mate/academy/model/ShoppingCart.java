@@ -17,7 +17,7 @@ public class ShoppingCart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany
     private List<Ticket> tickets;
     @MapsId
     @OneToOne(fetch = FetchType.LAZY)
