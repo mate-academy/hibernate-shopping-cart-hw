@@ -36,7 +36,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public ShoppingCart getByUser(User user) {
         return shoppingCartDao.getByUser(user)
-                .orElseThrow(() -> new NoSuchElementException("Cant get shopping cart to this user"));
+                .orElseThrow(() -> new NoSuchElementException(
+                        "Cant get shopping cart to this user"));
     }
 
     @Override
