@@ -47,7 +47,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
                     + "LEFT JOIN FETCH ms.cinemaHall "
                     + "WHERE sc.user = :user",ShoppingCart.class);
             getShoppingCartByUser.setParameter("user", user);
-            return Optional.ofNullable((getShoppingCartByUser.getSingleResult()));
+            return getShoppingCartByUser.uniqueResultOptional();
         } catch (Exception e) {
             throw new DataProcessingException("Can't get shopping cart by user " + user, e);
         }
@@ -66,6 +66,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             if (transaction != null) {
                 transaction.rollback();
             }
+            throw new DataProcessingException("Can't update shopping cart " + shoppingCart, e);
         } finally {
             if (session != null) {
                 session.close();
