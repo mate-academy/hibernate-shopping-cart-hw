@@ -2,15 +2,35 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Optional;
+
+import mate.academy.dao.ShoppingCartDao;
+import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.model.User;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
+import mate.academy.service.UserService;
+import mate.academy.service.impl.UserServiceImpl;
 
 public class Main {
     public static void main(String[] args) {
+        Injector injector = Injector.getInstance("mate.academy");
+
+        UserService userService = (UserService) injector.getInstance(UserService.class);
+        //User bob = new User();
+        //bob.setEmail("bob@gmail.com");
+        //bob.setPassword("1234");
+        //userService.add(bob);
+        Optional<User> user = userService.findByEmail("bob@gmail.com");
+
+
+        ShoppingCartDao shoppingCartDao = (ShoppingCartDao) injector.getInstance(ShoppingCartDao.class);
+        System.out.println(shoppingCartDao.getByUser(user.get()));
+/*
         MovieService movieService = null;
 
         Movie fastAndFurious = new Movie("Fast and Furious");
@@ -51,5 +71,7 @@ public class Main {
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(
                 fastAndFurious.getId(), LocalDate.now()));
+
+         */
     }
 }
