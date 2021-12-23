@@ -14,13 +14,14 @@ import mate.academy.model.Ticket;
 import mate.academy.model.User;
 import mate.academy.security.AuthenticationService;
 import mate.academy.service.ShoppingCartService;
+import mate.academy.service.UserService;
 
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Inject
     private ShoppingCartDao shoppingCartDao;
     private TicketDao ticketDao;
-    private AuthenticationService authenticationService;
+    private UserService userService;
 
     @Override
     public void addSession(MovieSession movieSession, User user) {
@@ -49,16 +50,22 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public void registerNewShoppingCart(User user) throws RegistrationException {
-        User newUser = authenticationService.register(user.getEmail(), user.getPassword());
+    public void registerNewShoppingCart(User user) {
         ShoppingCart shoppingCart = new ShoppingCart();
-        shoppingCart.setUser(newUser);
+        shoppingCart.setUser(user);
         shoppingCart.setTickets(new ArrayList<>());
         shoppingCartDao.add(shoppingCart);
     }
 
     @Override
     public void clear(ShoppingCart shoppingCart) {
-
+        Optional<ShoppingCart> optionalShoppingCart = shoppingCartDao
+                .getByUser(shoppingCart.getUser());
+        if (optionalShoppingCart.isPresent()) {
+            ShoppingCart shoppingCartFromDb = optionalShoppingCart.get();
+            shoppingCartFromDb.setUser(null);
+            shoppingCartFromDb.setTickets(new ArrayList<>());
+            shoppingCartDao.update(shoppingCartFromDb);
+        }
     }
 }
