@@ -21,9 +21,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private ShoppingCartDao shoppingCartDao;
     @Inject
     private TicketDao ticketDao;
-    @Inject
-    private UserService userService;
-
+пш
     @Override
     public void addSession(MovieSession movieSession, User user) {
         Ticket newTicket = new Ticket();
