@@ -6,37 +6,43 @@ import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.User;
+import mate.academy.service.ShoppingCartService;
 import mate.academy.service.UserService;
 import mate.academy.util.HashUtil;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
+    private static final String VALID_EMAIL_PATTERN
+            = "^(\\w+\\.?)+\\w+@([\\w]+\\.?)+\\w+$";
+    private static final String VALID_PASSWORD_PATTERN
+            = "^\\w{7,30}$";
     @Inject
     private UserService userService;
+    @Inject
+    private ShoppingCartService shoppingCartService;
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        Optional<User> userFromDb = userService.findByEmail(email);
-        if (userFromDb.isPresent() && matchPasswords(password, userFromDb.get())) {
-            return userFromDb.get();
+        Optional<User> userOptional = userService.findByEmail(email);
+        if (userOptional.isPresent() && checkPassword(userOptional.get(), password)) {
+            return userOptional.get();
         }
-        throw new AuthenticationException("Incorrect email or password!");
+        throw new AuthenticationException("Can't authenticate user with e-mail " + email);
     }
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        if (userService.findByEmail(email).isEmpty()) {
-            User user = new User();
-            user.setEmail(email);
-            user.setPassword(password);
-            userService.add(user);
+        if (email.matches(VALID_EMAIL_PATTERN)
+                && userService.findByEmail(email).isEmpty()
+                && password.matches(VALID_PASSWORD_PATTERN)) {
+            User user = userService.add(new User(email, password));
+            shoppingCartService.registerNewShoppingCart(user);
             return user;
         }
-        throw new RegistrationException("This email is already registered.");
+        throw new RegistrationException("Can't register user with e-mail " + email);
     }
 
-    private boolean matchPasswords(String rawPassword, User userFromDb) {
-        String hashedPassword = HashUtil.hashPassword(rawPassword, userFromDb.getSalt());
-        return hashedPassword.equals(userFromDb.getPassword());
+    private boolean checkPassword(User user, String password) {
+        return user.getPassword().equals(HashUtil.hashPassword(password, user.getSalt()));
     }
 }
