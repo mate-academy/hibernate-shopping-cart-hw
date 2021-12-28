@@ -10,9 +10,6 @@ import mate.academy.model.Ticket;
 import mate.academy.model.User;
 import mate.academy.service.ShoppingCartService;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Inject
