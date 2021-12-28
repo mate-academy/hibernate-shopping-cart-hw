@@ -18,7 +18,6 @@ public class Ticket {
     @JoinColumn(name = "movie_session_id")
     private MovieSession movieSession;
     @ManyToOne
-    @JoinColumn
     private User user;
 
     public Ticket() {
