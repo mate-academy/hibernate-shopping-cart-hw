@@ -66,9 +66,13 @@ public class Main {
         User user;
         try {
             authenticationService.register("alexander.pushkin@mail.com", "mon_natalie");
-            user = authenticationService.login("alexander.pushkin@mail.com","mon_natalie");
         } catch (Exception e) {
             throw new RuntimeException("Registration failed: ", e);
+        }
+        try {
+            user = authenticationService.login("alexander.pushkin@mail.com","mon_natalie");
+        } catch (Exception e) {
+            throw new RuntimeException("Login failed: ", e);
         }
         System.out.println(yesterdayMovieSession);
         System.out.println("----- Shopping cart testing -----");

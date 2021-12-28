@@ -6,7 +6,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -18,7 +17,8 @@ public class Ticket {
     @ManyToOne
     @JoinColumn(name = "movie_session_id")
     private MovieSession movieSession;
-    @OneToOne
+    @ManyToOne
+    @JoinColumn
     private User user;
 
     public Ticket() {
