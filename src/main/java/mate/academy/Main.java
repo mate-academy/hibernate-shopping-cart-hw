@@ -2,6 +2,7 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
@@ -71,7 +72,7 @@ public class Main {
         }
         try {
             user = authenticationService.login("test@gmail.com", "1234");
-        } catch (Exception e) {
+        } catch (AuthenticationException e) {
             throw new RuntimeException("Can't login with that e-mail: " + user.getEmail(), e);
         }
 
