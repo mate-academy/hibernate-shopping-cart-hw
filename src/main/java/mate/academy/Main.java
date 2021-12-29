@@ -68,12 +68,12 @@ public class Main {
         try {
             user = authenticationService.register("test@gmail.com", "1234");
         } catch (RegistrationException e) {
-            throw new RuntimeException("Can't register user", e);
+            throw new RuntimeException(e.getMessage());
         }
         try {
             user = authenticationService.login("test@gmail.com", "1234");
         } catch (AuthenticationException e) {
-            throw new RuntimeException("Can't login with that e-mail: " + user.getEmail(), e);
+            throw new RuntimeException(e.getMessage());
         }
 
         ShoppingCartService shoppingCartService
