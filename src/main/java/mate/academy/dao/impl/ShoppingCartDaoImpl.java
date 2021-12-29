@@ -47,6 +47,8 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
                     + "WHERE sc.id = :id", ShoppingCart.class);
             query.setParameter("id", user.getId());
             return query.uniqueResultOptional();
+        } catch (Exception e) {
+            throw new DataProcessingException("Can't find shopping cart by user " + user, e);
         }
     }
 
