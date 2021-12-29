@@ -22,12 +22,12 @@ public class UserDaoImpl implements UserDao {
             session.save(user);
             transaction.commit();
             return user;
-        } catch (Exception e) {
+        } catch (Exception exception) {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Can't insert to DB user: "
-                    + user, e);
+            throw new DataProcessingException("Can't insert user to DB: "
+                    + user, exception);
         } finally {
             if (session != null) {
                 session.close();
@@ -38,10 +38,12 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Optional<User> findByEmail(String email) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Query<User> query = session.createQuery("FROM User u "
-                    + "WHERE u.email = :email", User.class);
+            Query<User> query = session.createQuery("FROM User "
+                    + "WHERE email = :email", User.class);
             query.setParameter("email", email);
             return query.uniqueResultOptional();
+        } catch (Exception exception) {
+            throw new DataProcessingException("Can't find user with email :" + email, exception);
         }
     }
 }
