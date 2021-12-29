@@ -76,5 +76,6 @@ public class Main {
                 .getInstance(ShoppingCartService.class);
         shoppingCartService.addSession(tomorrowMovieSession, valera);
         shoppingCartService.addSession(yesterdayMovieSession, valera);
+        System.out.println(shoppingCartService.getByUser(valera).getTickets());
     }
 }
