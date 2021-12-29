@@ -70,8 +70,12 @@ public class Main {
         User user = new User();
         try {
             user = authenticationService.register(email, password);
+        } catch (RegistrationException e) {
+            System.out.println(e.getMessage());
+        }
+        try {
             authenticationService.login(email, password);
-        } catch (RegistrationException | AuthenticationException e) {
+        } catch (AuthenticationException e) {
             System.out.println(e.getMessage());
         }
 
