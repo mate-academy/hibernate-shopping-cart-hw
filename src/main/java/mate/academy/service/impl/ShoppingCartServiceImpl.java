@@ -39,7 +39,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public ShoppingCart getByUser(User user) {
         return shoppingCartDao.getByUser(user)
-                .orElseThrow(() -> new RuntimeException("user " + user + "is absent"));
+                .orElseThrow(() -> new RuntimeException("user " + user + " is absent"));
     }
 
     @Override
