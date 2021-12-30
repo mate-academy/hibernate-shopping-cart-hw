@@ -92,7 +92,7 @@ public class Main {
         System.out.println("Bob's shopping cart is " + shoppingCartByBob);
         System.out.println("Alice's shopping cart is " + shoppingCartByAlice);
         shoppingCartService.clear(shoppingCartByAlice);
-        System.out.println("Alice shopping cart after clearing :" + shoppingCartByAlice);
+        System.out.println("Alice shopping cart after clearing : " + shoppingCartByAlice);
         shoppingCartService.clear(shoppingCartByBob);
         System.out.println("Bob shopping cart after clearing :" + shoppingCartByBob);
     }
