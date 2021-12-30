@@ -27,7 +27,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                 new RuntimeException("No shopping carts for user " + user));
         List<Ticket> shoppingCartTickets = shoppingCart.getTickets();
         shoppingCartTickets.add(ticket);
-        shoppingCart.setTickets(shoppingCartTickets);
         shoppingCartDao.update(shoppingCart);
     }
 
