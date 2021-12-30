@@ -1,8 +1,6 @@
-package mate.academy.service;
+package mate.academy.service.impl;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
 import mate.academy.lib.Inject;
@@ -11,6 +9,7 @@ import mate.academy.model.MovieSession;
 import mate.academy.model.ShoppingCart;
 import mate.academy.model.Ticket;
 import mate.academy.model.User;
+import mate.academy.service.ShoppingCartService;
 
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
@@ -37,8 +36,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public void registerNewShoppingCart(User user) {
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setUser(user);
-        List<Ticket> tickets = new ArrayList<>();
-        shoppingCart.setTickets(tickets);
         shoppingCartDao.add(shoppingCart);
     }
 
