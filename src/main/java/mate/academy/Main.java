@@ -78,8 +78,8 @@ public class Main {
             throw new RuntimeException(exception);
         }
         try {
-            alice = authenticationService.login("bobovich@gmail.com", "1222d");
-            bob = authenticationService.login("alice@gmail.com", "3dd3");
+            bob = authenticationService.login("bobovich@gmail.com", "1222d");
+            alice = authenticationService.login("alice@gmail.com", "3dd3");
         } catch (AuthenticationException exception) {
             throw new RuntimeException(exception);
         }

@@ -48,7 +48,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
                     + "where sc.user = :user", ShoppingCart.class);
             query.setParameter("user", user);
             return query.uniqueResultOptional();
-        } catch (HibernateException exception) {
+        } catch (Exception exception) {
             throw new DataProcessingException(
                     "Can't get shopping cart by user " + user, exception);
         }
@@ -63,7 +63,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             transaction = session.beginTransaction();
             session.update(shoppingCart);
             transaction.commit();
-        } catch (HibernateException exception) {
+        } catch (Exception exception) {
             if (transaction != null) {
                 transaction.rollback();
             }

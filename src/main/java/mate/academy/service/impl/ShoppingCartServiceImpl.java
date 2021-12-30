@@ -21,25 +21,20 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void addSession(MovieSession movieSession, User user) {
-        Optional<ShoppingCart> shoppingCartInDbOptional = shoppingCartDao.getByUser(user);
-        if (shoppingCartInDbOptional.isEmpty()) {
-            throw new RuntimeException("User " + user + " doesn't have shopping cart");
-        }
+        ShoppingCart shoppingCart = getByUser(user);
         Ticket ticket = new Ticket();
         ticket.setUser(user);
         ticket.setMovieSession(movieSession);
         ticketDao.add(ticket);
-        ShoppingCart shoppingCart = shoppingCartInDbOptional.get();
         List<Ticket> tickets = shoppingCart.getTickets();
         tickets.add(ticket);
-        shoppingCart.setTickets(tickets);
         shoppingCartDao.update(shoppingCart);
     }
 
     @Override
     public ShoppingCart getByUser(User user) {
         return shoppingCartDao.getByUser(user)
-                .orElseThrow(() -> new RuntimeException("user " + user + " is absent"));
+                .orElseThrow(() -> new RuntimeException(user + "don't have shopping card"));
     }
 
     @Override
