@@ -23,7 +23,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public void addSession(MovieSession movieSession, User user) {
         Optional<ShoppingCart> shoppingCartInDbOptional = shoppingCartDao.getByUser(user);
         if (shoppingCartInDbOptional.isEmpty()) {
-            throw new RuntimeException("User" + user + " doesn't have shopping cart");
+            throw new RuntimeException("User " + user + " doesn't have shopping cart");
         }
         Ticket ticket = new Ticket();
         ticket.setUser(user);
