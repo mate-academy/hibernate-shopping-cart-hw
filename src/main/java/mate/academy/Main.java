@@ -94,6 +94,6 @@ public class Main {
         shoppingCartService.clear(shoppingCartByAlice);
         System.out.println("Alice shopping cart after clearing : " + shoppingCartByAlice);
         shoppingCartService.clear(shoppingCartByBob);
-        System.out.println("Bob shopping cart after clearing :" + shoppingCartByBob);
+        System.out.println("Bob shopping cart after clearing : " + shoppingCartByBob);
     }
 }
