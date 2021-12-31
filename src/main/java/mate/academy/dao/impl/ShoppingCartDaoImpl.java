@@ -13,6 +13,7 @@ import org.hibernate.query.Query;
 
 @Dao
 public class ShoppingCartDaoImpl implements ShoppingCartDao {
+
     @Override
     public ShoppingCart add(ShoppingCart shoppingCart) {
         Session session = null;
@@ -27,7 +28,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Can't insert shopping cart:" + shoppingCart, e);
+            throw new DataProcessingException("Can't insert new shopping cart: " + shoppingCart, e);
         } finally {
             if (session != null) {
                 session.close();
@@ -38,17 +39,17 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
     @Override
     public Optional<ShoppingCart> getByUser(User user) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Query<ShoppingCart> shoppingCartQuery = session.createQuery("FROM ShoppingCart sc "
+            Query<ShoppingCart> query = session.createQuery("FROM ShoppingCart sc "
                     + "LEFT JOIN FETCH sc.tickets t "
                     + "LEFT JOIN FETCH t.user "
                     + "LEFT JOIN FETCH t.movieSession ms "
                     + "LEFT JOIN FETCH ms.movie "
-                    + "Left JOIN FETCH ms.cinemaHall "
-                    + "WHERE sc.user = :user", ShoppingCart.class);
-            shoppingCartQuery.setParameter("user", user);
-            return shoppingCartQuery.uniqueResultOptional();
+                    + "LEFT JOIN FETCH ms.cinemaHall "
+                    + "WHERE sc.user =:user", ShoppingCart.class);
+            query.setParameter("user", user);
+            return Optional.ofNullable(query.uniqueResult());
         } catch (Exception e) {
-            throw new DataProcessingException("Can`t get a shopping cart by user: " + user, e);
+            throw new DataProcessingException("Can't find shopping cart by user: " + user, e);
         }
     }
 
@@ -65,7 +66,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Can't insert shopping cart:" + shoppingCart, e);
+            throw new DataProcessingException("Can't update shopping cart: " + shoppingCart, e);
         } finally {
             if (session != null) {
                 session.close();

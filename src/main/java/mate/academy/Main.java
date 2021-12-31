@@ -29,10 +29,8 @@ public class Main {
         System.out.println(movieService.get(fastAndFurious.getId()));
         movieService.getAll().forEach(System.out::println);
 
-        CinemaHall firstCinemaHall = new CinemaHall(100,
-                "first hall with capacity 100");
-        CinemaHall secondCinemaHall = new CinemaHall(200,
-                "second hall with capacity 200");
+        CinemaHall firstCinemaHall = new CinemaHall(100, "first hall with capacity 100");
+        CinemaHall secondCinemaHall = new CinemaHall(200, "second hall with capacity 200");
 
         CinemaHallService cinemaHallService = (CinemaHallService)
                 injector.getInstance(CinemaHallService.class);
@@ -66,13 +64,19 @@ public class Main {
         User user;
         try {
             user = authenticationService.register("mateacademy@gmail.com", "qwertyu");
+        } catch (RegistrationException e) {
+            throw new RuntimeException(e.getMessage());
+
+        }
+
+        try {
             user = authenticationService.login("mateacademy@gmail.com", "qwertyu");
-        } catch (RegistrationException | AuthenticationException e) {
+        } catch (AuthenticationException e) {
             throw new RuntimeException(e.getMessage());
         }
+
         ShoppingCartService shoppingCartService = (ShoppingCartService) injector
                 .getInstance(ShoppingCartService.class);
-
         shoppingCartService.addSession(tomorrowMovieSession, user);
         shoppingCartService.addSession(yesterdayMovieSession, user);
         ShoppingCart shoppingCart = shoppingCartService.getByUser(user);
