@@ -33,12 +33,12 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
                 session.close();
             }
         }
-        return  shoppingCart;
+        return shoppingCart;
     }
 
     @Override
     public Optional<ShoppingCart> getByUser(User user) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()){
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query<ShoppingCart> query = session.createQuery("from ShoppingCart sc "
                     + "left join fetch sc.tickets t "
                     + "left join fetch t.user u "
@@ -58,7 +58,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
         Session session = null;
         Transaction transaction = null;
         try {
-            session =HibernateUtil.getSessionFactory().openSession();
+            session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
             session.update(shoppingCart);
             transaction.commit();
@@ -66,7 +66,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw  new DataProcessingException("Can't update shopping cart - " + shoppingCart, e);
+            throw new DataProcessingException("Can't update shopping cart - " + shoppingCart, e);
         } finally {
             if (session != null) {
                 session.close();
