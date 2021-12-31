@@ -14,7 +14,6 @@ import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
 import mate.academy.service.ShoppingCartService;
-import mate.academy.service.UserService;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.academy");
@@ -83,8 +82,10 @@ public class Main {
 
         ShoppingCartService shoppingCartService =
                 (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
-        shoppingCartService.addSession(movieSessionService.get(yesterdayMovieSession.getId()), testUserTwo);
-        shoppingCartService.addSession(movieSessionService.get(tomorrowMovieSession.getId()), testUserOne);
+        shoppingCartService.addSession(movieSessionService.get(
+                yesterdayMovieSession.getId()), testUserTwo);
+        shoppingCartService.addSession(movieSessionService.get(
+                tomorrowMovieSession.getId()), testUserOne);
         shoppingCartService.clear(shoppingCartService.getByUser(testUserOne));
     }
 }
