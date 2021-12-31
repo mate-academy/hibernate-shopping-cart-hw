@@ -1,5 +1,6 @@
 package mate.academy.service.impl;
 
+import java.util.Collections;
 import java.util.List;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
@@ -26,7 +27,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                 .get();
         List<Ticket> tickets = shoppingCart.getTickets();
         tickets.add(ticket);
-        shoppingCart.setTickets(tickets);
         shoppingCartDao.update(shoppingCart);
     }
 
@@ -43,7 +43,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void clear(ShoppingCart shoppingCart) {
-        shoppingCart.setTickets(List.of());
+        shoppingCart.setTickets(Collections.emptyList());
         shoppingCartDao.update(shoppingCart);
     }
 }
