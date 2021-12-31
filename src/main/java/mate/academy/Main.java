@@ -67,9 +67,14 @@ public class Main {
         User elon = null;
         try {
             authenticationService.register("elon.musk@spacex.com", "MyBigRocket");
-            elon = authenticationService.login("elon.musk@spacex.com", "MyBigRocket");
-        } catch (RegistrationException | AuthenticationException e) {
+
+        } catch (RegistrationException e) {
             System.out.println(e);
+        }
+        try {
+            elon = authenticationService.login("elon.musk@spacex.com", "MyBigRocket");
+        } catch (AuthenticationException e) {
+            System.out.println(e);;
         }
 
         ShoppingCartService shoppingCartService =
