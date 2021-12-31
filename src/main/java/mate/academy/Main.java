@@ -63,26 +63,25 @@ public class Main {
 
         AuthenticationService authService =
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
-        try {
-            authService.register("bob@gmail.com", "bob");
-        } catch (RegistrationException e) {
-            System.err.println(e.getMessage());
-        }
         User bob = null;
+        try {
+            bob = authService.register("bob@gmail.com", "bob");
+        } catch (RegistrationException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
         try {
             bob = authService.login("bob@gmail.com", "bob");
         } catch (AuthenticationException e) {
-            System.err.println(e.getMessage());
+            throw new RuntimeException(e.getMessage(), e);
         }
 
         ShoppingCartService shoppingCartService =
                 (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
         shoppingCartService.addSession(tomorrowMovieSession, bob);
+        shoppingCartService.getByUser(bob);
         System.out.println(shoppingCartService.getByUser(bob));
         shoppingCartService.addSession(yesterdayMovieSession, bob);
-        System.out.println(shoppingCartService.getByUser(bob));
-        shoppingCartService.clear(shoppingCartService.getByUser(bob));
-        System.out.println(shoppingCartService.getByUser(bob));
+        System.err.println(shoppingCartService.getByUser(bob));
         shoppingCartService.clear(shoppingCartService.getByUser(bob));
     }
 }
