@@ -2,11 +2,14 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
 import mate.academy.model.User;
+import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
@@ -60,15 +63,24 @@ public class Main {
         System.out.println(movieSessionService.findAvailableSessions(
                 fastAndFurious.getId(), LocalDate.now()));
 
+        AuthenticationService authenticationService =
+                (AuthenticationService) injector.getInstance(AuthenticationService.class);
+        try {
+            authenticationService.register("katedeshchynska@gmail.com", "12345678");
+        } catch (RegistrationException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            System.out.println(authenticationService
+                    .login("katedeshchynska@gmail.com", "12345678"));
+        } catch (AuthenticationException e) {
+            throw new RuntimeException(e);
+        }
         UserService userService = (UserService) injector.getInstance(UserService.class);
-        User user = new User();
-        user.setEmail("katedeshchynska@gmail.com");
-        user.setPassword("12345678");
-        userService.add(user);
+        User user = userService.findByEmail("katedeshchynska@gmail.com").get();
 
         ShoppingCartService shoppingCartService =
                 (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
-        shoppingCartService.registerNewShoppingCart(user);
         shoppingCartService.addSession(yesterdayMovieSession, user);
         shoppingCartService.addSession(tomorrowMovieSession, user);
         System.out.println(shoppingCartService.getByUser(user));
