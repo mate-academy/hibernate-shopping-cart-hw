@@ -65,9 +65,11 @@ public class Main {
 
         try {
             authenticationService.register("user@domain.com", "pass");
-            user = authenticationService.login("user@domain.com","pass");
         } catch (RegistrationException e) {
             throw new RuntimeException("Registration failed: ", e);
+        }
+        try {
+            user = authenticationService.login("user@domain.com","pass");
         } catch (AuthenticationException e) {
             throw new RuntimeException("Login failed: ", e);
         }
