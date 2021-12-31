@@ -2,16 +2,19 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.model.ShoppingCart;
 import mate.academy.model.User;
+import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
 import mate.academy.service.ShoppingCartService;
-import mate.academy.service.UserService;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.academy");
@@ -59,20 +62,27 @@ public class Main {
         System.out.println(movieSessionService.findAvailableSessions(
                 fastAndFurious.getId(), LocalDate.now()));
 
-        User userJohn = new User();
-        userJohn.setEmail("john@gmail.com");
-        userJohn.setPassword("qwerty");
-
-        UserService userService = (UserService) injector.getInstance(UserService.class);
-        userService.add(userJohn);
-
-        System.out.println(userService.findByEmail("john@gmail.com"));
+        AuthenticationService authenticationService = (AuthenticationService)
+                injector.getInstance(AuthenticationService.class);
+        User userJohn;
+        try {
+            authenticationService.register("john@gmail.com", "qwerty");
+            userJohn = authenticationService.login("john@gmail.com", "qwerty");
+        } catch (RegistrationException e) {
+            throw new RuntimeException("Can`t register new user");
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("Can`t login user");
+        }
 
         ShoppingCartService shoppingCartService = (ShoppingCartService)
                 injector.getInstance(ShoppingCartService.class);
-        shoppingCartService.registerNewShoppingCart(userJohn);
         shoppingCartService.addSession(tomorrowMovieSession, userJohn);
+        ShoppingCart johnShoppingCart = shoppingCartService.getByUser(userJohn);
 
-        System.out.println(shoppingCartService.getByUser(userJohn));
+        System.out.println(johnShoppingCart);
+
+        shoppingCartService.clear(johnShoppingCart);
+
+        System.out.println(johnShoppingCart);
     }
 }
