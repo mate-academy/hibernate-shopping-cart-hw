@@ -75,12 +75,11 @@ public class Main {
             throw new RuntimeException(e.getMessage());
         }
         try {
-            authenticationService.login(adam.getEmail(), adam.getPassword());
+            adam = authenticationService.login(adam.getEmail(), adam.getPassword());
         } catch (AuthenticationException e) {
             throw new RuntimeException(e.getMessage());
         }
 
-        shoppingCartService.registerNewShoppingCart(adam);
         shoppingCartService.addSession(tomorrowMovieSession, adam);
         shoppingCartService.getByUser(adam);
         shoppingCartService.clear(shoppingCartService.getByUser(adam));
