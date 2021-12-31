@@ -84,9 +84,9 @@ public class Main {
                 (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
         shoppingCartService.addSession(yesterdayMovieSession, testUserTwo);
         shoppingCartService.addSession(tomorrowMovieSession, testUserOne);
-        //shoppingCartService.clear(shoppingCartService.getByUser(testUserOne));
+        shoppingCartService.clear(shoppingCartService.getByUser(testUserOne));
         System.out.println(shoppingCartService.getByUser(testUserOne));
         System.out.println(shoppingCartService.getByUser(testUserTwo));
-
+        System.out.println(shoppingCartService.getByUser(testUserTwo).getTickets());
     }
 }
