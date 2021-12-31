@@ -15,21 +15,21 @@ import javax.persistence.Table;
 public class ShoppingCart {
     @Id
     private Long id;
+    @OneToOne
+    @MapsId
+    private User user;
     @OneToMany
     @JoinTable(name = "shoping_carts_tickets",
             joinColumns = @JoinColumn(name = "shopping_cart_id"),
             inverseJoinColumns = @JoinColumn(name = "ticket_id"))
     private List<Ticket> tickets;
-    @OneToOne
-    @MapsId
-    private User user;
 
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
-        id = id;
+        this.id = id;
     }
 
     public List<Ticket> getTickets() {
