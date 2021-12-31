@@ -20,7 +20,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void addSession(MovieSession movieSession, User user) {
-        ShoppingCart shoppingCart = getByUser(user);
+        ShoppingCart shoppingCart = shoppingCartDao.getByUser(user).orElseThrow(() ->
+                new RuntimeException("Can't find shopping cart by user " + user));
         Ticket ticket = ticketDao.add(new Ticket(movieSession, user));
         shoppingCart.getTickets().add(ticket);
         shoppingCartDao.update(shoppingCart);
