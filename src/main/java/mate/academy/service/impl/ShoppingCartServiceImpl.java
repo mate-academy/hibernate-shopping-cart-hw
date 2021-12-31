@@ -20,12 +20,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void addSession(MovieSession movieSession, User user) {
-        Ticket ticket = new Ticket();
-        ticket.setMovieSession(movieSession);
-        ticket.setUser(user);
-        ShoppingCart shoppingCart = shoppingCartDao.getByUser(user).orElseThrow(() ->
-                new RuntimeException("Can't add session " + movieSession + "for user " + user));
-        shoppingCart.getTickets().add(ticketDao.add(ticket));
+        Ticket ticket = new Ticket(movieSession, user);
+        ShoppingCart shoppingCart = getByUser(user);
+        shoppingCart.getTickets().add(ticket);
         shoppingCartDao.update(shoppingCart);
     }
 

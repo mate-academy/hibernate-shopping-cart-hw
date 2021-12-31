@@ -23,7 +23,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             session.save(shoppingCart);
             transaction.commit();
             return shoppingCart;
-        } catch (DataProcessingException e) {
+        } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
@@ -61,7 +61,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             transaction = session.beginTransaction();
             session.update(shoppingCart);
             transaction.commit();
-        } catch (DataProcessingException e) {
+        } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
