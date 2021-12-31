@@ -50,7 +50,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             query.setParameter("user", user);
             return query.uniqueResultOptional();
         } catch (HibernateException e) {
-            throw new DataProcessingException("Can't get shopping cart by user" + user, e);
+            throw new DataProcessingException("Can't get shopping cart by user " + user, e);
         }
     }
 
