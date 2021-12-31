@@ -66,7 +66,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new RuntimeException("Can't update shopping cart at DB"
+            throw new RuntimeException("Can't update shopping cart at DB: "
                     + shoppingCart, exception);
         } finally {
             if (session != null) {
