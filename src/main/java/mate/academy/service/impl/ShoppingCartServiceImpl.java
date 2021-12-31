@@ -22,8 +22,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public void addSession(MovieSession movieSession, User user) {
         ShoppingCart cart = shoppingCartDao.getByUser(user).orElseThrow(() ->
-                new RuntimeException("Optional user by id: " + user.getId() +
-                        " is empty"));
+                new RuntimeException("Optional user by id: " + user.getId()
+                        + " is empty"));
         Ticket ticket = ticketDao.add(new Ticket(movieSession, user));
         List<Ticket> tickets = cart.getTickets();
         tickets.add(ticket);
