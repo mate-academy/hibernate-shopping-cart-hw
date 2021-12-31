@@ -84,6 +84,7 @@ public class Main {
                 (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
         ShoppingCart shoppingCartDanya = shoppingCartService.getByUser(danya);
         shoppingCartService.addSession(tomorrowMovieSession, shoppingCartDanya.getUser());
+        shoppingCartService.clear(shoppingCartDanya);
     }
 }
 

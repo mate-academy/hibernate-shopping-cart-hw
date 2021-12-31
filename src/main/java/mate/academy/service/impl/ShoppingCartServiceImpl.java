@@ -31,8 +31,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public ShoppingCart getByUser(User user) {
         return shoppingCartDao.getByUser(user)
-                .orElseThrow(() -> new RuntimeException("Couldn't find user "
-                        + user + " in DB"));
+                .orElseThrow(() -> new RuntimeException("Couldn't find shopping cart in DB "
+                        + "by user " + user));
     }
 
     @Override
