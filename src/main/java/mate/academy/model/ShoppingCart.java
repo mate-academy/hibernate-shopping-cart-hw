@@ -19,7 +19,7 @@ public class ShoppingCart {
     @MapsId
     private User user;
     @OneToMany
-    @JoinTable(name = "shopping_cart_tickets",
+    @JoinTable(name = "shoping_carts_tickets",
             joinColumns = @JoinColumn(name = "shopping_cart_id"),
             inverseJoinColumns = @JoinColumn(name = "ticket_id"))
     private List<Ticket> tickets;
