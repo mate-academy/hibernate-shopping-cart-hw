@@ -43,7 +43,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
             CriteriaQuery<ShoppingCart> criteriaQuery = criteriaBuilder
-                .createQuery(ShoppingCart.class);
+                    .createQuery(ShoppingCart.class);
             Root<ShoppingCart> root = criteriaQuery.from(ShoppingCart.class);
             Predicate userPredicate = criteriaBuilder.equal(root.get("user"), user);
             criteriaQuery.select(root).where(userPredicate);
