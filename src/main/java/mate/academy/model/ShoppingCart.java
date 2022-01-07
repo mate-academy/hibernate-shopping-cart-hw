@@ -1,8 +1,13 @@
 package mate.academy.model;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.MapsId;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "shopping_card")
@@ -16,7 +21,6 @@ public class ShoppingCart {
 
     @OneToMany
     private List<Ticket> tickets = new ArrayList<>();
-
 
     public Long getId() {
         return id;
