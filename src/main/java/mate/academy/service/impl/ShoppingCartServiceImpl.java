@@ -23,10 +23,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Transactional
     public void addSession(MovieSession movieSession, User user) {
         ShoppingCart shoppingCart = getByUser(user);
-        if (shoppingCart == null) {
-            registerNewShoppingCart(user);
-            shoppingCart = getByUser(user);
-        }
         Ticket ticket = new Ticket(user, movieSession);
         ticketDao.add(ticket);
         shoppingCart.getTickets().add(ticket);
