@@ -24,9 +24,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public void addSession(MovieSession movieSession, User user) {
         Ticket newTicket = ticketDao.add(new Ticket(movieSession, user));
-        ShoppingCart usersShoppingCart = shoppingCartDao.getByUser(user).orElseThrow(() ->
-                new RuntimeException("Can't add ticket: " + newTicket
-                        + ". There is no available Shopping cards at user: " + user));
+        ShoppingCart usersShoppingCart = getByUser(user);
         usersShoppingCart.getTickets().add(newTicket);
         shoppingCartDao.update(usersShoppingCart);
     }
@@ -44,9 +42,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void clear(ShoppingCart shoppingCart) {
-        ShoppingCart cart = shoppingCartDao.getByUser(shoppingCart.getUser())
-                .orElseThrow(() -> new RuntimeException(
-                        "There is no available Shopping cards: " + shoppingCart));
+        ShoppingCart cart = getByUser(shoppingCart.getUser());
         cart.setTickets(Collections.emptyList());
         shoppingCartDao.update(cart);
     }
