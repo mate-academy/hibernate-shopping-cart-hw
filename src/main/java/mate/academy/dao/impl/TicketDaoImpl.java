@@ -32,12 +32,4 @@ public class TicketDaoImpl implements TicketDao {
         }
     }
 
-    @Override
-    public Ticket get(Long id) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.get(Ticket.class, id);
-        } catch (Exception e) {
-            throw new DataProcessingException("Can't get a ticket by id: " + id, e);
-        }
-    }
 }
