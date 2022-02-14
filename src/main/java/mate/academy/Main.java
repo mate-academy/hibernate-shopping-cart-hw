@@ -68,10 +68,10 @@ public class Main {
         User user1;
         User user2;
         try {
-            authenticationService.register("user1@gmail.com", "qwerty");
-            authenticationService.register("User2@gmail.com", "12345");
-            user1 = authenticationService.login("user1@gmail.com", "qwerty");
-            user2 = authenticationService.login("user2@gmail.com", "12345");
+            authenticationService.register("user3@gmail.com", "qwerty");
+            authenticationService.register("User4@gmail.com", "12345");
+            user1 = authenticationService.login("user3@gmail.com", "qwerty");
+            user2 = authenticationService.login("user4@gmail.com", "12345");
         } catch (RegistrationException e) {
             throw new RuntimeException("Can't register ", e);
         } catch (AuthenticationException e) {
@@ -80,8 +80,6 @@ public class Main {
 
         ShoppingCartService shoppingCartService =
                 (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
-        shoppingCartService.registerNewShoppingCart(user1);
-        shoppingCartService.registerNewShoppingCart(user2);
         shoppingCartService.addSession(tomorrowMovieSession, user1);
         shoppingCartService.addSession(yesterdayMovieSession,user2);
         ShoppingCart shoppingCartByUser1 = shoppingCartService.getByUser(user1);
