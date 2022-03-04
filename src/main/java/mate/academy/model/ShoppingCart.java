@@ -1,5 +1,6 @@
 package mate.academy.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,7 +19,7 @@ public class ShoppingCart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "shopping_carts_tickets",
             joinColumns = @JoinColumn(name = "shopping_cart_id"),
             inverseJoinColumns = @JoinColumn(name = "ticket_id"))
