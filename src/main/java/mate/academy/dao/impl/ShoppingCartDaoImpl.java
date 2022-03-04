@@ -1,5 +1,6 @@
 package mate.academy.dao.impl;
 
+import java.util.Optional;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Dao;
@@ -9,8 +10,6 @@ import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-
-import java.util.Optional;
 
 @Dao
 public class ShoppingCartDaoImpl implements ShoppingCartDao {
@@ -40,10 +39,11 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
     @Override
     public Optional<ShoppingCart> getByUser(User user) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Query<ShoppingCart> query = session.createQuery("select distinct sc from ShoppingCart sc "
+            Query<ShoppingCart> query = session.createQuery("select sc from ShoppingCart sc "
+                    + "join fetch sc.user "
                     + "join fetch sc.tickets "
-                    + "where sc.user = :user", ShoppingCart.class);
-            query.setParameter("user", user);
+                    + "where sc.user.id = :userId", ShoppingCart.class);
+            query.setParameter("userId", user.getId());
             return query.uniqueResultOptional();
         } catch (Exception e) {
             throw new DataProcessingException("Can't get shopping cart by user: "
