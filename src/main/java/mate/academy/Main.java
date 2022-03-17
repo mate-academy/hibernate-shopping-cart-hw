@@ -94,6 +94,8 @@ public class Main {
         shoppingCartService.addSession(yesterdayMovieSession, alice);
 
         ShoppingCart bobShoppingCart = shoppingCartService.getByUser(bob);
+        System.out.println("-------Bob's shopping cart-------");
+        System.out.println(bobShoppingCart);
 
         shoppingCartService.clear(bobShoppingCart);
 
