@@ -83,6 +83,5 @@ public class Main {
         ShoppingCart shoppingCart = shoppingCartService.getByUser(user2);
         System.out.println(shoppingCart);
         shoppingCartService.clear(shoppingCart);
-
     }
 }
