@@ -71,7 +71,7 @@ public class Main {
             userOne = authenticationService.register("email.com", "password");
             userTwo = authenticationService.register("mail.com", "password");
         } catch (RegistrationException e) {
-            throw new RuntimeException("Ca`nt register new user");
+            throw new RuntimeException("Can`t register new user");
         }
         try {
             userOne = authenticationService.login("email.com", "password");
