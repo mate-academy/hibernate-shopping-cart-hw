@@ -71,13 +71,13 @@ public class Main {
             userOne = authenticationService.register("email.com", "password");
             userTwo = authenticationService.register("mail.com", "password");
         } catch (RegistrationException e) {
-            throw new RuntimeException("Ca`nt register new user");
+            throw new RuntimeException("Can`t register new user");
         }
         try {
             userOne = authenticationService.login("email.com", "password");
             userTwo = authenticationService.login("email.com", "password");
         } catch (AuthenticationException e) {
-            throw new RuntimeException("Ca`nt login");
+            throw new RuntimeException("Can`t login");
         }
         System.out.println(userOne);
         System.out.println(userTwo);
