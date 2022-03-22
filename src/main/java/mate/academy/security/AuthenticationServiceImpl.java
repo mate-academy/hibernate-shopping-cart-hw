@@ -5,7 +5,9 @@ import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
+import mate.academy.model.ShoppingCart;
 import mate.academy.model.User;
+import mate.academy.service.ShoppingCartService;
 import mate.academy.service.UserService;
 import mate.academy.util.HashUtil;
 
@@ -13,6 +15,8 @@ import mate.academy.util.HashUtil;
 public class AuthenticationServiceImpl implements AuthenticationService {
     @Inject
     private UserService userService;
+    @Inject
+    private ShoppingCartService shoppingCartService;
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
@@ -29,7 +33,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             User user = new User();
             user.setEmail(email);
             user.setPassword(password);
-            userService.add(user);
+            shoppingCartService.registerNewShoppingCart(userService.add(user));
             return user;
         }
         throw new RegistrationException("This email is already registered.");
