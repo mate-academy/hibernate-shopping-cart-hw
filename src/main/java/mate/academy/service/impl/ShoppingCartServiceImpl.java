@@ -1,7 +1,6 @@
 package mate.academy.service.impl;
 
 import java.util.Collections;
-import java.util.Optional;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
 import mate.academy.lib.Inject;
@@ -29,18 +28,14 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public ShoppingCart getByUser(User user) {
-        Optional<ShoppingCart> optShoppingCart = shoppingCartDao.getByUser(user);
-        if (optShoppingCart.isEmpty()) {
-            throw new RuntimeException("Couldn't find shopping cart for user: " + user);
-        }
-        return optShoppingCart.get();
+        return shoppingCartDao.getByUser(user).orElseThrow(
+                () -> new RuntimeException("Couldn't find shopping cart for user: " + user));
     }
 
     @Override
     public void registerNewShoppingCart(User user) {
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setUser(user);
-        shoppingCart.setTickets(Collections.emptyList());
         shoppingCartDao.add(shoppingCart);
     }
 
