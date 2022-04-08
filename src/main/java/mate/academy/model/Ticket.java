@@ -1,23 +1,18 @@
 package mate.academy.model;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 
 @Entity
 @Table(name = "tickets")
 public class Ticket {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "moviesession_id")
     MovieSession movieSession;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
     User user;
 
     public Long getId() {
