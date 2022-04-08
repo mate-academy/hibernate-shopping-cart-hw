@@ -47,7 +47,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             return getByUserQuery.uniqueResultOptional();
 
         } catch (Exception e) {
-            throw new DataProcessingException("Can't get shopping cart for user:" + user, e);
+            throw new DataProcessingException("Can't get shopping cart for user: " + user, e);
         }
     }
 
@@ -64,7 +64,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Can't update shopping cart" + shoppingCart, e);
+            throw new DataProcessingException("Can't update shopping cart " + shoppingCart, e);
 
         } finally {
             if (session != null) {
