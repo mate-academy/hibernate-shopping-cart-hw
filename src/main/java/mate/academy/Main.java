@@ -65,11 +65,10 @@ public class Main {
 
         AuthenticationService authenticationService
                 = (AuthenticationService) injector.getInstance(AuthenticationService.class);
-                UserService userService = (UserService) injector.getInstance(UserService.class);
+        UserService userService = (UserService) injector.getInstance(UserService.class);
         User user = authenticationService.register("first@mail.com",
                 "firstpa$$word");
         System.out.println(userService.findByEmail("first@mail.com").get());
-
 
         ShoppingCartService shoppingCartService
                 = (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
