@@ -6,6 +6,7 @@ import java.security.SecureRandom;
 
 public class HashUtil {
     private static final String HASH_ALGORITHM = "SHA-512";
+    private static final int SALT_LENGTH = 16;
 
     private HashUtil() {
     }
@@ -15,9 +16,9 @@ public class HashUtil {
         try {
             MessageDigest messageDigest = MessageDigest.getInstance(HASH_ALGORITHM);
             messageDigest.update(salt);
-            byte[] symbols = messageDigest.digest(password.getBytes());
-            for (byte symbol : symbols) {
-                hashedPassword.append(String.format("%02x", symbol));
+            byte[] digest = messageDigest.digest(password.getBytes());
+            for (byte bytes : digest) {
+                hashedPassword.append(String.format("%02x", bytes));
             }
             return hashedPassword.toString();
         } catch (NoSuchAlgorithmException e) {
@@ -26,9 +27,7 @@ public class HashUtil {
     }
 
     public static byte[] getSalt() {
-        SecureRandom random = new SecureRandom();
-        byte[] salt = new byte[16];
-        random.nextBytes(salt);
-        return salt;
+        SecureRandom secureRandom = new SecureRandom();
+        return secureRandom.generateSeed(SALT_LENGTH);
     }
 }
