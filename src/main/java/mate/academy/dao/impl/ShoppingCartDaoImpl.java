@@ -2,6 +2,7 @@ package mate.academy.dao.impl;
 
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.exception.DataProcessingException;
+import mate.academy.lib.Dao;
 import mate.academy.model.ShoppingCart;
 import mate.academy.model.User;
 import mate.academy.util.HibernateUtil;
@@ -11,6 +12,7 @@ import org.hibernate.query.Query;
 
 import java.util.Optional;
 
+@Dao
 public class ShoppingCartDaoImpl implements ShoppingCartDao {
     @Override
     public ShoppingCart add(ShoppingCart shoppingCart) {
