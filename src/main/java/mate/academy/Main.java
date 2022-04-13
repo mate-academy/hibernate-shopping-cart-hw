@@ -64,16 +64,18 @@ public class Main {
 
         AuthenticationService authenticationService =
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
-        User bob = authenticationService.register("bob@i.ua", "1111");
-        User alice = authenticationService.register("alice@mail.ua", "0808");
 
         ShoppingCartService shoppingCartService =
                 (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
+
+        User bob = authenticationService.register("bob@i.ua", "1111");
 
         ShoppingCart bobShopingCart = shoppingCartService.getByUser(bob);
         shoppingCartService.addSession(tomorrowMovieSession, bob);
         System.out.println(bobShopingCart);
         System.out.println(shoppingCartService.getByUser(bob));
+
+        User alice = authenticationService.register("alice@mail.ua", "0808");
 
         ShoppingCart aliceShopingCart = shoppingCartService.getByUser(alice);
         shoppingCartService.addSession(yesterdayMovieSession, alice);
