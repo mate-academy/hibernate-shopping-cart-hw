@@ -2,22 +2,18 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
-import mate.academy.dao.ShoppingCartDao;
-import mate.academy.dao.TicketDao;
-import mate.academy.dao.impl.ShoppingCartDaoImpl;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
 import mate.academy.model.ShoppingCart;
-import mate.academy.model.Ticket;
 import mate.academy.model.User;
 import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
+import mate.academy.service.ShoppingCartService;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.academy");
@@ -71,24 +67,18 @@ public class Main {
         User bob = authenticationService.register("bob@i.ua", "1111");
         User alice = authenticationService.register("alice@mail.ua", "0808");
 
-        Ticket tomorrowMovieSessionTicket = new Ticket();
-        tomorrowMovieSessionTicket.setMovieSession(tomorrowMovieSession);
-        tomorrowMovieSessionTicket.setUser(bob);
+        ShoppingCartService shoppingCartService =
+                (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
 
-        Ticket yesterdayMovieSessionTicket = new Ticket();
-        tomorrowMovieSessionTicket.setMovieSession(yesterdayMovieSession);
-        tomorrowMovieSessionTicket.setUser(alice);
+        ShoppingCart bobShopingCart = shoppingCartService.getByUser(bob);
+        shoppingCartService.addSession(tomorrowMovieSession, bob);
+        System.out.println(bobShopingCart);
+        System.out.println(shoppingCartService.getByUser(bob));
 
-        TicketDao ticketDao = (TicketDao) injector.getInstance(TicketDao.class);
-        ticketDao.add(tomorrowMovieSessionTicket);
-
-        ShoppingCart shoppingCart = new ShoppingCart();
-        shoppingCart.setUser(bob);
-        shoppingCart.setTickets(List.of(tomorrowMovieSessionTicket));
-
-        ShoppingCartDao shoppingCartDao = (ShoppingCartDao) injector.getInstance(ShoppingCartDao.class);
-        ShoppingCart add = shoppingCartDao.add(shoppingCart);
-        System.out.println(shoppingCartDao.getByUser(bob).get());
+        ShoppingCart aliceShopingCart = shoppingCartService.getByUser(alice);
+        shoppingCartService.addSession(yesterdayMovieSession, alice);
+        System.out.println(aliceShopingCart);
+        System.out.println(shoppingCartService.getByUser(alice));
 
     }
 }

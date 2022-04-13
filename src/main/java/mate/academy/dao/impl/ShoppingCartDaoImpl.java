@@ -38,8 +38,10 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
     public Optional<ShoppingCart> getByUser(User user) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             return session.createQuery("from ShoppingCart sc "
-                            + "join fetch sc.user "
-                            + "join fetch sc.tickets "
+                            + "left join fetch sc.tickets t "
+                            + "left join fetch t.movieSession ms "
+                            + "left join fetch ms.cinemaHall "
+                            + "left join fetch ms.movie "
                             + "where sc.user.id = :userId", ShoppingCart.class)
                     .setParameter("userId", user.getId())
                     .uniqueResultOptional();
