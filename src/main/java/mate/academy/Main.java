@@ -82,5 +82,8 @@ public class Main {
         System.out.println(aliceShopingCart);
         System.out.println(shoppingCartService.getByUser(alice));
 
+        shoppingCartService.clear(aliceShopingCart);
+        System.out.println(aliceShopingCart);
+
     }
 }
