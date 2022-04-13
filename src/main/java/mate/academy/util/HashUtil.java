@@ -6,6 +6,7 @@ import java.security.SecureRandom;
 
 public class HashUtil {
     private static final String HASH_ALGORITHM = "SHA-512";
+    private static final int BYTE_ARRAY_COUNT_CAPACITY = 16;
 
     private HashUtil() {
     }
@@ -27,7 +28,7 @@ public class HashUtil {
 
     public static byte[] getSalt() {
         SecureRandom random = new SecureRandom();
-        byte[] salt = new byte[16];
+        byte[] salt = new byte[BYTE_ARRAY_COUNT_CAPACITY];
         random.nextBytes(salt);
         return salt;
     }
