@@ -1,8 +1,6 @@
 package mate.academy.service.impl;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
 import mate.academy.lib.Inject;
