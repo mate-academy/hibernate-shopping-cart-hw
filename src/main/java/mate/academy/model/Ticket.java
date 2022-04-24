@@ -6,16 +6,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "ticket")
+@Table(name = "tickets")
 public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    @OneToOne(fetch = FetchType.LAZY)
+    private Long id;
+    @ManyToOne(fetch = FetchType.LAZY)
     private MovieSession movieSession;
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;

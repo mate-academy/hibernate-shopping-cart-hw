@@ -12,19 +12,16 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "shopping_cart")
+@Table(name = "shopping_carts")
 public class ShoppingCart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    @OneToMany(cascade = CascadeType.ALL)
+    private Long id;
+    @OneToMany
     private List<Ticket> tickets;
     @OneToOne
     @MapsId
     private User user;
-
-    public ShoppingCart() {
-    }
 
     public long getId() {
         return id;
