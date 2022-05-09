@@ -23,11 +23,6 @@ public class ShoppingCart {
     @MapsId
     private User user;
 
-    public ShoppingCart(List<Ticket> tickets, User user) {
-        this.tickets = tickets;
-        this.user = user;
-    }
-
     public ShoppingCart() {
     }
 
