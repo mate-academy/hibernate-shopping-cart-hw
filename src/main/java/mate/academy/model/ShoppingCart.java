@@ -23,9 +23,6 @@ public class ShoppingCart {
     @MapsId
     private User user;
 
-    public ShoppingCart() {
-    }
-
     public Long getId() {
         return id;
     }
