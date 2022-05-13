@@ -70,6 +70,7 @@ public class Main {
                 = (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
 
         User ivanov = authenticationService.register("ivanov@gmail.com", "qwerty");
+        System.out.println(shoppingCartService.getByUser(ivanov));
         shoppingCartService.addSession(tomorrowMovieSession,ivanov);
         System.out.println(shoppingCartService.getByUser(ivanov));
         shoppingCartService.clear(shoppingCartService.getByUser(ivanov));

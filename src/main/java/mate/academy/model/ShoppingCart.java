@@ -28,11 +28,6 @@ public class ShoppingCart {
         this.user = user;
     }
 
-    public ShoppingCart(List<Ticket> tickets, User user) {
-        this.tickets = tickets;
-        this.user = user;
-    }
-
     public Long getId() {
         return id;
     }
