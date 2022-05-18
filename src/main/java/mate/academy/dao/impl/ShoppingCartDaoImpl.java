@@ -11,7 +11,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 @Dao
-public class ShoppingCartImpl implements ShoppingCartDao {
+public class ShoppingCartDaoImpl implements ShoppingCartDao {
     @Override
     public ShoppingCart add(ShoppingCart shoppingCart) {
         Session session = null;
@@ -37,7 +37,7 @@ public class ShoppingCartImpl implements ShoppingCartDao {
     @Override
     public Optional<ShoppingCart> getByUser(User user) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("FROM ShoppingCart sc "
+            return session.createQuery("SELECT DISTINCT sc FROM ShoppingCart sc "
                     + "LEFT JOIN FETCH sc.tickets t "
                     + "LEFT JOIN FETCH t.movieSession ms "
                     + "LEFT JOIN FETCH ms.movie "
