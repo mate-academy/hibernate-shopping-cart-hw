@@ -16,7 +16,6 @@ import mate.academy.service.ShoppingCartService;
 
 public class Main {
     private static final String TEST_EMAIL = "email@ukr.ua";
-    private static final String SECOND_EMAIL = "email@gmail.com";
     private static final String TEST_PASSWORD = "password";
 
     public static void main(String[] args) {
