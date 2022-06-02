@@ -97,6 +97,12 @@ public class Main {
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setUser(userService.findByEmail("sofia@gmail.com").orElseThrow());
         shoppingCart.setTickets(tickets);
+        shoppingCartService.addSession(tomorrowMovieSession,userService
+                .findByEmail("sofia@gmail.com").orElseThrow());
+        System.out.println(shoppingCartService
+                .getByUser(userService.findByEmail("sofia@gmail.com").orElseThrow()));
+        shoppingCartService.clear(shoppingCartService
+                .getByUser(userService.findByEmail("sofia@gmail.com").orElseThrow()));
         System.out.println(shoppingCartService
                 .getByUser(userService.findByEmail("sofia@gmail.com").orElseThrow()));
 
