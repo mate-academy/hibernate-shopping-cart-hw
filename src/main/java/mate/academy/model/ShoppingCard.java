@@ -6,8 +6,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
+import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -19,8 +20,9 @@ public class ShoppingCard {
     @OneToMany
     @JoinColumn(name = "ticket_id")
     private List<Ticket> tickets;
-    @ManyToMany
-    @JoinColumn(name = "user_id")
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "id")
     private User user;
 
     public Long getId() {
