@@ -66,11 +66,11 @@ public class Main {
         } catch (RegistrationException e) {
             throw new RuntimeException("Please check your details", e);
         }
-        ShoppingCart shoppingCartTanya = shoppingCartService.getByUser(bob);
-        shoppingCartService.addSession(tomorrowMovieSession, shoppingCartTanya.getUser());
+        ShoppingCart shoppingCart = shoppingCartService.getByUser(bob);
+        shoppingCartService.addSession(tomorrowMovieSession, shoppingCart.getUser());
         System.out.println(shoppingCartService.getByUser(bob));
-        shoppingCartService.clear(shoppingCartTanya);
-        shoppingCartService.addSession(yesterdayMovieSession, shoppingCartTanya.getUser());
+        shoppingCartService.clear(shoppingCart);
+        shoppingCartService.addSession(yesterdayMovieSession, shoppingCart.getUser());
         System.out.println(shoppingCartService.getByUser(bob));
     }
 }
