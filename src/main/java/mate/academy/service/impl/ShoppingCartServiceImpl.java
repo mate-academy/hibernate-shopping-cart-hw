@@ -23,9 +23,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public void addSession(MovieSession movieSession, User user) {
         Ticket ticket = new Ticket(movieSession, user);
         Ticket ticketFromDB = ticketDao.add(ticket);
-        ShoppingCart userShoppingCart = shoppingCartDao.getByUser(user)
-                .orElseThrow(() ->
-                        new RuntimeException("Couldn't get the shopping cart by user " + user));
+        ShoppingCart userShoppingCart = shoppingCartDao.getByUser(user).get();
         List<Ticket> userTickets = userShoppingCart.getTickets();
         userTickets.add(ticketFromDB);
         userShoppingCart.setTickets(userTickets);
@@ -34,16 +32,13 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public ShoppingCart getByUser(User user) {
-        return shoppingCartDao.getByUser(user)
-                .orElseThrow(() ->
-                new RuntimeException("Couldn't get the shopping cart by user " + user));
+        return shoppingCartDao.getByUser(user).get();
     }
 
     @Override
     public void registerNewShoppingCart(User user) {
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setUser(user);
-        shoppingCart.setTickets(new ArrayList<>());
         shoppingCartDao.add(shoppingCart);
     }
 
