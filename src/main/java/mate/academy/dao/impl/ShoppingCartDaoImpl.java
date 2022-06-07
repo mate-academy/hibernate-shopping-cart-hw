@@ -9,11 +9,10 @@ import mate.academy.model.User;
 import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.query.NativeQuery;
+import org.hibernate.query.Query;
 
 @Dao
 public class ShoppingCartDaoImpl implements ShoppingCartDao {
-
     @Override
     public ShoppingCart add(ShoppingCart shoppingCart) {
         Session session = null;
@@ -40,13 +39,13 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
     @Override
     public Optional<ShoppingCart> getByUser(User user) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            NativeQuery<ShoppingCart> query = session.createNativeQuery(
-                            "FROM ShoppingCart sc "
-                           + "LEFT JOIN FETCH sc.tickets t "
-                           + "LEFT JOIN FETCH t.movieSession ms "
-                           + "LEFT JOIN FETCH ms.movie "
-                           + "LEFT JOIN FETCH ms.cinemaHall "
-                           + "WHERE sc.user = :user", ShoppingCart.class);
+            Query<ShoppingCart> query = session.createQuery("SELECT sc FROM ShoppingCart sc "
+                    + "LEFT JOIN FETCH sc.user "
+                    + "LEFT JOIN FETCH sc.tickets t "
+                    + "LEFT JOIN FETCH t.movieSession m "
+                    + "LEFT JOIN FETCH m.movie "
+                    + "LEFT JOIN FETCH m.cinemaHall "
+                    + "WHERE sc.user = :user", ShoppingCart.class);
             return query.setParameter("user", user)
                           .uniqueResultOptional();
         } catch (Exception ex) {
