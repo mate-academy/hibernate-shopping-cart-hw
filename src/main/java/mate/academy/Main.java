@@ -81,6 +81,7 @@ public class Main {
         ShoppingCart nickolaiShoppingCart = shoppingCartService.getByUser(nickolai);
         System.out.println(nickolaiShoppingCart.getTickets());
         shoppingCartService.clear(nickolaiShoppingCart);
+        nickolaiShoppingCart = shoppingCartService.getByUser(nickolai);
         System.out.println(nickolaiShoppingCart.getTickets());
     }
 }
