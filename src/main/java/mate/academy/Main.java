@@ -14,7 +14,6 @@ import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
 import mate.academy.service.ShoppingCartService;
-import mate.academy.service.UserService;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.academy");
@@ -24,8 +23,6 @@ public class Main {
             = (MovieSessionService) injector.getInstance(MovieSessionService.class);
     private static final CinemaHallService cinemaHallService
             = (CinemaHallService) injector.getInstance(CinemaHallService.class);
-    private static final UserService userService
-            = (UserService) injector.getInstance(UserService.class);
     private static final ShoppingCartService shoppingCartService
             = (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
     private static final AuthenticationService authenticationService
