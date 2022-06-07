@@ -2,12 +2,15 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
 import mate.academy.model.ShoppingCart;
 import mate.academy.model.User;
+import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
@@ -26,8 +29,10 @@ public class Main {
             (MovieSessionService) injector.getInstance(MovieSessionService.class);
     private static ShoppingCartService shoppingCartService =
             (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
+    private static AuthenticationService authenticationService =
+            (AuthenticationService) injector.getInstance(AuthenticationService.class);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws RegistrationException {
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
         movieService.add(fastAndFurious);
@@ -65,12 +70,8 @@ public class Main {
         System.out.println(movieSessionService.findAvailableSessions(
                 fastAndFurious.getId(), LocalDate.now()));
 
-        User bob = new User();
-        bob.setPassword("12345");
-        bob.setEmail("bobick");
-        userService.add(bob);
+        User bob = authenticationService.register("bob", "123344");
 
-        shoppingCartService.registerNewShoppingCart(bob);
         shoppingCartService.addSession(yesterdayMovieSession, bob);
         shoppingCartService.addSession(tomorrowMovieSession, bob);
         ShoppingCart bobsShoppingCart = shoppingCartService.getByUser(bob);
