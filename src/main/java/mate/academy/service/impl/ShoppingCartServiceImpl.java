@@ -45,11 +45,4 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         shoppingCart.getTickets().clear();
         shoppingCartDao.update(shoppingCart);
     }
-
-    @Override
-    public String toString() {
-        return "ShoppingCartServiceImpl{"
-                + "shoppingCartDao=" + shoppingCartDao
-                + ", ticketDao=" + ticketDao + '}';
-    }
 }
