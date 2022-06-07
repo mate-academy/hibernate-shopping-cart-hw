@@ -7,14 +7,12 @@ import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
-import mate.academy.model.Ticket;
 import mate.academy.model.User;
 import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
 import mate.academy.service.ShoppingCartService;
-import mate.academy.service.TicketService;
 import mate.academy.service.UserService;
 
 public class Main {
@@ -76,15 +74,10 @@ public class Main {
             throw new RuntimeException("Can't register new user by login: " + user.getEmail(), e);
         }
 
-        TicketService ticketService =
-                (TicketService) injector.getInstance(TicketService.class);
         UserService userService =
                 (UserService) injector.getInstance(UserService.class);
-        Ticket ticket = new Ticket();
+
         User userFromDb = userService.findByEmail(user.getEmail()).get();
-        ticket.setMovieSession(yesterdayMovieSession);
-        ticket.setUser(userFromDb);
-        System.out.println(ticketService.add(ticket));
 
         ShoppingCartService shoppingCartService =
                 (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
