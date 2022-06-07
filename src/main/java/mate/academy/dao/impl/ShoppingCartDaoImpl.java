@@ -39,7 +39,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
     @Override
     public Optional<ShoppingCart> getByUser(User user) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Query<ShoppingCart> query = session.createQuery("select distinct sc "
+            Query<ShoppingCart> query = session.createQuery("select sc "
                     + "from ShoppingCart sc "
                     + "left join fetch sc.tickets t "
                     + "left join fetch sc.user u "
@@ -48,7 +48,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
                     + "left join fetch m.cinemaHall "
                     + "where sc.user = :user", ShoppingCart.class);
             query.setParameter("user", user);
-            return Optional.ofNullable(query.getSingleResult());
+            return query.uniqueResultOptional();
         } catch (Exception e) {
             throw new DataProcessingException("Can't get shopping cart by " + user, e);
         }
