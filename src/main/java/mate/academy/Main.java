@@ -12,6 +12,7 @@ import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
 import mate.academy.model.ShoppingCart;
 import mate.academy.model.Ticket;
+import mate.academy.model.User;
 import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
@@ -21,22 +22,21 @@ import mate.academy.service.UserService;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.academy");
+    private static final MovieService movieService
+            = (MovieService) injector.getInstance(MovieService.class);
+    private static final CinemaHallService cinemaHallService
+            = (CinemaHallService) injector.getInstance(CinemaHallService.class);
+    private static final MovieSessionService movieSessionService
+            = (MovieSessionService) injector.getInstance(MovieSessionService.class);
+    private static final AuthenticationService authenticationService
+            = (AuthenticationService) injector.getInstance(AuthenticationService.class);
+    private static final ShoppingCartService shoppingCartService
+            = (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
+    private static final UserService userService
+            = (UserService) injector.getInstance(UserService.class);
+    private static final TicketDao ticketDao = (TicketDao) injector.getInstance(TicketDao.class);
 
     public static void main(String[] args) {
-        final MovieService movieService =
-                (MovieService) injector.getInstance(MovieService.class);
-        final CinemaHallService cinemaHallService =
-                (CinemaHallService) injector.getInstance(CinemaHallService.class);
-        final MovieSessionService movieSessionService =
-                (MovieSessionService) injector.getInstance(MovieSessionService.class);
-        final ShoppingCartService shoppingCartService =
-                (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
-        final AuthenticationService authenticationService =
-                (AuthenticationService) injector.getInstance(AuthenticationService.class);
-        final UserService userService =
-                (UserService) injector.getInstance(UserService.class);
-        final TicketDao ticketDao = (TicketDao) injector.getInstance(TicketDao.class);
-
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
         movieService.add(fastAndFurious);
@@ -70,37 +70,20 @@ public class Main {
         System.out.println(movieSessionService.findAvailableSessions(
                 fastAndFurious.getId(), LocalDate.now()));
 
+        User user = new User();
+        user.setEmail("QQQqqqqq@gmail.com");
+        user.setPassword("qwerty");
+
         try {
-            authenticationService.register("QQQ@gmail.com", "qwerty");
+            authenticationService.register(user.getEmail(), user.getPassword());
         } catch (RegistrationException e) {
-            throw new RuntimeException("Can't register");
+            throw new RuntimeException("Can't register new user by login: " + user.getEmail(), e);
         }
 
-        Ticket ticket = new Ticket();
-        ticket.setMovieSession(tomorrowMovieSession);
-        ticket.setUser(userService.findByEmail("QQQ@gmail.com").orElseThrow());
-        ticketDao.add(ticket);
+        User userFromDb = userService.findByEmail(user.getEmail()).get();
 
-        Ticket ticket2 = new Ticket();
-        ticket2.setMovieSession(yesterdayMovieSession);
-        ticket2.setUser(userService.findByEmail("QQQ@gmail.com").orElseThrow());
-        ticketDao.add(ticket2);
-
-        List<Ticket> tickets = new ArrayList<>();
-        tickets.add(ticket);
-        tickets.add(ticket2);
-
-        ShoppingCart shoppingCart = new ShoppingCart();
-        shoppingCart.setUser(userService.findByEmail("QQQ@gmail.com").orElseThrow());
-        shoppingCart.setTickets(tickets);
-        shoppingCartService.addSession(tomorrowMovieSession,userService
-                .findByEmail("QQQ@gmail.com").orElseThrow());
-        System.out.println(shoppingCartService
-                .getByUser(userService.findByEmail("QQQ@gmail.com").orElseThrow()));
-        shoppingCartService.clear(shoppingCartService
-                .getByUser(userService.findByEmail("QQQ@gmail.com").orElseThrow()));
-        System.out.println(shoppingCartService
-                .getByUser(userService.findByEmail("QQQ@gmail.com").orElseThrow()));
-
+        System.out.println(shoppingCartService.getByUser(userFromDb));
+        shoppingCartService.addSession(yesterdayMovieSession, userFromDb);
+        shoppingCartService.clear(shoppingCartService.getByUser(userFromDb));
     }
 }
