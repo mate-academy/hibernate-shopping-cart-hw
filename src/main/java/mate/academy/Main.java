@@ -30,7 +30,6 @@ public class Main {
             = (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
     private static final UserService userService
             = (UserService) injector.getInstance(UserService.class);
-    private static final TicketDao ticketDao = (TicketDao) injector.getInstance(TicketDao.class);
 
     public static void main(String[] args) {
         Movie fastAndFurious = new Movie("Fast and Furious");
