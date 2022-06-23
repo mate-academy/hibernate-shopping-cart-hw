@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -16,7 +17,7 @@ public class Ticket {
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
     private MovieSession movieSession;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     private User user;
 
     public Ticket() {
@@ -49,5 +50,14 @@ public class Ticket {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "Ticket{"
+                + "id=" + id
+                + ", movieSession=" + movieSession
+                + ", user=" + user
+                + '}';
     }
 }

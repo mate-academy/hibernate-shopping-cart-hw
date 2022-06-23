@@ -3,11 +3,13 @@ package mate.academy;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
 import mate.academy.model.User;
+import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
@@ -61,15 +63,24 @@ public class Main {
         System.out.println(movieSessionService.findAvailableSessions(
                 fastAndFurious.getId(), LocalDate.now()));
 
-        ShoppingCartService shoppingCartService
-                = (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
+        AuthenticationService authenticationService =
+                (AuthenticationService) injector.getInstance(AuthenticationService.class);
+        User user = null;
+        try {
+            user = authenticationService.register("Denys@com", "password");
+        } catch (RegistrationException e) {
+            throw new RuntimeException("Can`t registration " + user, e);
+        }
+
+        ShoppingCartService shoppingCartService =
+                (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
+        shoppingCartService.registerNewShoppingCart(user);
+        shoppingCartService.addSession(yesterdayMovieSession, user);
+
         UserService userService = (UserService) injector.getInstance(UserService.class);
+        Optional<User> userDenys = userService.findByEmail("Denys@com");
 
-        Optional<User> user = userService.findByEmail("Denys@com");
-
-        System.out.println("shoppingCartService.getByUser(user.get()) = "
-                + shoppingCartService.getByUser(user.get()));
-        shoppingCartService.addSession(yesterdayMovieSession, user.get());
-        shoppingCartService.registerNewShoppingCart(user.get());
+        System.out.println("shoppingCartService.getByUser = "
+                + shoppingCartService.getByUser(userDenys.get()));
     }
 }
