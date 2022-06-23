@@ -18,7 +18,7 @@ We will continue working on our Cinema project.
     - TicketDao. Hint: use this dao in the ShoppingCartService, method addSession
         ```java
         public interface TicketDao {
-            Ticket add(Ticket ticket);
+            Ticket add(Ticket tickets);
         }
         ```   
 - Create service
@@ -28,8 +28,8 @@ We will continue working on our Cinema project.
         public interface ShoppingCartService {
             /**
              * This method is responsible for adding a Ticket to the ShoppingCart
-             * @param movieSession contains the information required for the ticket
-             * @param user - the User who wants to buy the ticket for a specific movieSession
+             * @param movieSession contains the information required for the tickets
+             * @param user - the User who wants to buy the tickets for a specific movieSession
              */
             void addSession(MovieSession movieSession, User user);
         
