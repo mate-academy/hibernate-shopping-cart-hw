@@ -45,8 +45,8 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
                     + "LEFT JOIN FETCH tk.movieSession ms "
                     + "LEFT JOIN FETCH ms.movie "
                     + "LEFT JOIN FETCH ms.cinemaHall "
-                    + "WHERE sc.user = :userValue ", ShoppingCart.class);
-            shoppingCartQuery.setParameter("userValue", user);
+                    + "WHERE sc.user = :user ", ShoppingCart.class);
+            shoppingCartQuery.setParameter("user", user);
             return shoppingCartQuery.uniqueResultOptional();
         } catch (Exception e) {
             throw new DataProcessingException("Can`t get shoppingCart by user " + user, e);
