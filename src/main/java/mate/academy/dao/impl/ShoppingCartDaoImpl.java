@@ -16,7 +16,6 @@ import mate.academy.model.User;
 import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 
 @Dao
 public class ShoppingCartDaoImpl implements ShoppingCartDao {
@@ -44,14 +43,6 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
 
     @Override
     public Optional<ShoppingCart> getByUser(User user) {
-        String hql = "SELECT DISTINCT sc "
-                + "FROM ShoppingCart sc "
-                + "LEFT JOIN FETCH sc.tickets t "
-                + "LEFT JOIN FETCH t.movieSession ms "
-                + "LEFT JOIN FETCH ms.cinemaHall ch "
-                + "LEFT JOIN FETCH ms.movie "
-                + "LEFT JOIN FETCH sc.user "
-                + "WHERE sc.user = :user";
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
             CriteriaQuery<ShoppingCart> query = criteriaBuilder.createQuery(ShoppingCart.class);
@@ -63,9 +54,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             movieSessionFetch.fetch("movie", JoinType.LEFT);
             root.fetch("user", JoinType.LEFT);
             query.select(root).distinct(true).where(criteriaBuilder.equal(root.get("user"), user));
-            Query<ShoppingCart> hqlQuery = session.createQuery(hql, ShoppingCart.class);
-            hqlQuery.setParameter("user", user);
-            return Optional.ofNullable(hqlQuery.getSingleResult());
+            return session.createQuery(query).uniqueResultOptional();
         } catch (Exception e) {
             throw new DataProcessingException("Cannot get shopping cart by user: " + user, e);
         }
