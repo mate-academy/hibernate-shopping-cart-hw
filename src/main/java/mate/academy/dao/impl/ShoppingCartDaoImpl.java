@@ -1,10 +1,17 @@
 package mate.academy.dao.impl;
 
 import java.util.Optional;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Fetch;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Root;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Dao;
+import mate.academy.model.MovieSession;
 import mate.academy.model.ShoppingCart;
+import mate.academy.model.Ticket;
 import mate.academy.model.User;
 import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
@@ -46,20 +53,16 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
                 + "LEFT JOIN FETCH sc.user "
                 + "WHERE sc.user = :user";
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            /* // I tried to convert hql variant to a criteria query,
-            // but I didn't manage to do this. Please, tell me if you know how.
             CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
             CriteriaQuery<ShoppingCart> query = criteriaBuilder.createQuery(ShoppingCart.class);
             Root<ShoppingCart> root = query.from(ShoppingCart.class);
-            root.fetch("tickets", JoinType.LEFT);
-            Root<Ticket> ticketRoot = query.from(Ticket.class);
-            ticketRoot.fetch("movieSession", JoinType.LEFT);
-            Root<MovieSession> movieSessionRoot = query.from(MovieSession.class);
-            movieSessionRoot.fetch("cinemaHall", JoinType.LEFT);
-            movieSessionRoot.fetch("movie", JoinType.LEFT);
+            Fetch<ShoppingCart, Ticket> ticketFetch = root.fetch("tickets", JoinType.LEFT);
+            Fetch<Ticket, MovieSession> movieSessionFetch = ticketFetch
+                    .fetch("movieSession", JoinType.LEFT);
+            movieSessionFetch.fetch("cinemaHall", JoinType.LEFT);
+            movieSessionFetch.fetch("movie", JoinType.LEFT);
             root.fetch("user", JoinType.LEFT);
             query.select(root).distinct(true).where(criteriaBuilder.equal(root.get("user"), user));
-             */
             Query<ShoppingCart> hqlQuery = session.createQuery(hql, ShoppingCart.class);
             hqlQuery.setParameter("user", user);
             return Optional.ofNullable(hqlQuery.getSingleResult());
