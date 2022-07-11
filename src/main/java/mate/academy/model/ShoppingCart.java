@@ -1,6 +1,7 @@
 package mate.academy.model;
 
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -16,7 +17,7 @@ import javax.persistence.Table;
 public class ShoppingCart {
     @Id
     private Long id;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "carts_tickets",
             joinColumns = @JoinColumn(name = "cart_id"),
             inverseJoinColumns = @JoinColumn(name = "ticket_id"))
