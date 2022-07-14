@@ -63,7 +63,6 @@ public class Main {
 
         AuthenticationService authenticationService
                 = (AuthenticationService) injector.getInstance(AuthenticationService.class);
-
         User bob = authenticationService.register("bobgoodboy@gmail.com", "123456789");
 
         ShoppingCartService shoppingCartService
