@@ -48,7 +48,8 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
                     .setParameter("user", user)
                     .uniqueResultOptional();
         } catch (Exception e) {
-            throw new RuntimeException("Couldn't get shopping cart by user " + user.getId(), e);
+            throw new DataProcessingException("Can't find shopping cart by user " + user.getId(),
+                    e);
         }
     }
 
