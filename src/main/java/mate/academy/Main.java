@@ -76,10 +76,10 @@ public class Main {
         shoppingCartService.addSession(yesterdayMovieSession, alice);
 
         ShoppingCart aliceShoppingCart = shoppingCartService.getByUser(alice);
-        System.out.println(System.lineSeparator());
+        System.out.println();
         System.out.println(aliceShoppingCart);
         shoppingCartService.clear(aliceShoppingCart);
-        System.out.println(System.lineSeparator());
+        System.out.println();
         System.out.println(aliceShoppingCart);
     }
 }
