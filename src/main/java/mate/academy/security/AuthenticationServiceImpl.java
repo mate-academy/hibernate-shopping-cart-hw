@@ -27,8 +27,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public User register(String email, String password)
-            throws RegistrationException, AuthenticationException {
+    public User register(String email, String password) throws RegistrationException {
         if (userService.findByEmail(email).isEmpty()) {
             User user = new User();
             user.setEmail(email);

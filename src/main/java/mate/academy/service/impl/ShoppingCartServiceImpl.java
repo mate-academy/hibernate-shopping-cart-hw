@@ -5,8 +5,8 @@ import java.util.Optional;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
 import mate.academy.dao.UserDao;
-import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.DataProcessingException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.MovieSession;
@@ -42,14 +42,14 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public void registerNewShoppingCart(User user) throws AuthenticationException {
+    public void registerNewShoppingCart(User user) throws RegistrationException {
         Optional<User> userFromDB = userDao.findByEmail(user.getEmail());
         if (userFromDB.isPresent()) {
             ShoppingCart shoppingCart = new ShoppingCart();
             shoppingCart.setUser(user);
             shoppingCartDao.add(shoppingCart);
         } else {
-            throw new AuthenticationException("Cannot register shopping cart because user="
+            throw new RegistrationException("Cannot register shopping cart because user="
                     + user + " isn't exist in DB");
         }
     }

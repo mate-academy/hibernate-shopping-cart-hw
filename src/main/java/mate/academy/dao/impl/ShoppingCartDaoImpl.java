@@ -50,8 +50,8 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             query.setParameter("user_id", user.getId());
             return query.uniqueResultOptional();
         } catch (Exception e) {
-            throw new DataProcessingException("Cannot get Shopping cart entity from DB by ID="
-                    + user.getId(), e);
+            throw new DataProcessingException("Cannot get Shopping cart entity from DB by user="
+                    + user, e);
         }
     }
 
