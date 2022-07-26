@@ -20,7 +20,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
-            session.merge(shoppingCart);
+            session.save(shoppingCart);
             transaction.commit();
             return shoppingCart;
         } catch (Exception e) {
@@ -50,7 +50,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             query.setParameter("id", user.getId());
             return query.uniqueResultOptional();
         } catch (Exception e) {
-            throw new DataProcessingException("Cant get shopping cart by user's id " + user, e);
+            throw new DataProcessingException("Cant get shopping cart by user" + user, e);
         }
     }
 
