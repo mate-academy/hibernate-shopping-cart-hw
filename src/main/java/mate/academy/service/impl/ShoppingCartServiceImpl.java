@@ -28,7 +28,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         ticket.setMovieSession(movieSession);
         shoppingCart.getTickets().add(ticket);
         shoppingCartDao.update(shoppingCart);
-
     }
 
     @Override
