@@ -15,7 +15,7 @@ public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     private MovieSession movieSession;
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
