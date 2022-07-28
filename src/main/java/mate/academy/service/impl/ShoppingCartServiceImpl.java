@@ -1,7 +1,6 @@
 package mate.academy.service.impl;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
@@ -22,11 +21,10 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void addSession(MovieSession movieSession, User user) {
-        Ticket ticket = new Ticket(movieSession,user);
-        Ticket ticketAddedToDb = ticketDao.add(ticket);
+        Ticket ticket = new Ticket(movieSession, user);
+        ticketDao.add(ticket);
         ShoppingCart shoppingCart = shoppingCartDao.getByUser(user).get();
-        List<Ticket> ticketsFromShoppingCart = shoppingCart.getTickets();
-        ticketsFromShoppingCart.add(ticketAddedToDb);
+        shoppingCart.getTickets().add(ticket);
         shoppingCartDao.update(shoppingCart);
     }
 
@@ -39,14 +37,13 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void registerNewShoppingCart(User user) {
-        ShoppingCart shoppingCart = new ShoppingCart();
-        shoppingCart.setUser(user);
+        ShoppingCart shoppingCart = new ShoppingCart(new ArrayList<>(), user);
         shoppingCartDao.add(shoppingCart);
     }
 
     @Override
     public void clear(ShoppingCart shoppingCart) {
-        shoppingCart.setTickets(Collections.emptyList());
+        shoppingCart.getTickets().clear();
         shoppingCartDao.update(shoppingCart);
     }
 }
