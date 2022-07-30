@@ -66,15 +66,15 @@ public class Main {
                 injector.getInstance(AuthenticationService.class);
         System.out.println("Register a user: "
                 + authenticationService.register("bob@admin.com", "qwerty"));
-        User bob = authenticationService.login("bob@admin.com", "qwerty");
+        User user = authenticationService.login("bob@admin.com", "qwerty");
 
         ShoppingCartService shoppingCartService = (ShoppingCartService)
                 injector.getInstance(ShoppingCartService.class);
-        shoppingCartService.addSession(yesterdayMovieSession, bob);
-        ShoppingCart cartOfAdmin = shoppingCartService.getByUser(bob);
-        System.out.println("Cart of " + bob.getEmail() + " -> " + cartOfAdmin);
-        shoppingCartService.clear(cartOfAdmin);
-        System.out.println("Cart of " + bob.getEmail() + " after 'clear' method -> "
-                + shoppingCartService.getByUser(bob));
+        shoppingCartService.addSession(yesterdayMovieSession, user);
+        ShoppingCart userCart = shoppingCartService.getByUser(user);
+        System.out.println("Cart of " + user.getEmail() + " -> " + userCart);
+        shoppingCartService.clear(userCart);
+        System.out.println("Cart of " + user.getEmail() + " after 'clear' method -> "
+                + shoppingCartService.getByUser(user));
     }
 }
