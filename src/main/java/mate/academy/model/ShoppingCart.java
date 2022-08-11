@@ -6,11 +6,11 @@ import java.util.List;
 @Entity
 public class ShoppingCart {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @OneToMany
     private List<Ticket> tickets;
     @OneToOne
+    @MapsId
     private User user;
 
     public ShoppingCart() {

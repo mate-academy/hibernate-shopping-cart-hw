@@ -1,51 +1,55 @@
 package mate.academy.service.impl;
 
+import mate.academy.dao.ShoppingCartDao;
+import mate.academy.dao.TicketDao;
 import mate.academy.exception.DataProcessingException;
+import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.MovieSession;
 import mate.academy.model.ShoppingCart;
+import mate.academy.model.Ticket;
 import mate.academy.model.User;
 import mate.academy.service.ShoppingCartService;
 import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import java.util.ArrayList;
+
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
+    @Inject
+    private TicketDao ticketDao;
+    @Inject
+    private ShoppingCartDao shoppingCartDao;
+
     @Override
     public void addSession(MovieSession movieSession, User user) {
-        Transaction transaction = null;
-        Session session = null;
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            transaction = session.beginTransaction();
-            session.update(movieSession);
-            transaction.commit();
-            return movieSession;
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            throw new DataProcessingException("Can't insert movie session" + movieSession, e);
-        } finally {
-            if (session != null) {
-                session.close();
-            }
-        }
+        Ticket ticket = new Ticket();
+        ticket.setMovieSession(movieSession);
+        ticket.setUser(user);
+        ticketDao.add(ticket);
+        ShoppingCart shoppingCart = shoppingCartDao.getByUser(user).get();
+        shoppingCart.getTickets().add(ticket);
+        shoppingCartDao.update(shoppingCart);
     }
 
     @Override
     public ShoppingCart getByUser(User user) {
-        return null;
+        return shoppingCartDao.getByUser(user).get();
     }
 
     @Override
     public void registerNewShoppingCart(User user) {
-
+        ShoppingCart shoppingCart = new ShoppingCart();
+        shoppingCart.setUser(user);
+        shoppingCart.setTickets(new ArrayList<>());
+        shoppingCartDao.add(shoppingCart);
     }
 
     @Override
     public void clear(ShoppingCart shoppingCart) {
-
+        shoppingCart.setTickets(new ArrayList<>());
+        shoppingCartDao.update(shoppingCart);
     }
 }
