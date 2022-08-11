@@ -27,6 +27,10 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
                 transaction.rollback();
             }
             throw new DataProcessingException("Can't insert shopping cart" + shoppingCart, e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
         }
         return shoppingCart;
     }
@@ -37,6 +41,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             Query<ShoppingCart> getShoppingCartByUserQuery = session.createQuery(
                     "FROM ShoppingCart sc "
                         + "left join fetch sc.tickets t "
+                        + "left join fetch sc.user u "
                         + "WHERE sc.user = :user");
             getShoppingCartByUserQuery.setParameter("user", user);
             return getShoppingCartByUserQuery.uniqueResultOptional();
