@@ -10,6 +10,8 @@ import mate.academy.model.Ticket;
 import mate.academy.model.User;
 import mate.academy.service.ShoppingCartService;
 
+import java.util.NoSuchElementException;
+
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Inject
@@ -30,7 +32,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public ShoppingCart getByUser(User user) {
-        return shoppingCartDao.getByUser(user).get();
+        return shoppingCartDao.getByUser(user)
+                .orElseThrow(() -> new RuntimeException("Shopping cart for user "
+                        + user + " not found"));
     }
 
     @Override
