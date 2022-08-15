@@ -1,29 +1,28 @@
 package mate.academy.model;
 
-
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
-@Table(name = "tickets")
-public class Ticket {
+@Table(name = "shopping_carts")
+public class ShoppingCart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "movie_session_id")
-    private MovieSession movieSession;
+    @OneToMany
+    private List<Ticket> ticketList;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Ticket() {
+    public ShoppingCart() {
     }
 
-    public Ticket(Long id, MovieSession movieSession, User user) {
+    public ShoppingCart(Long id, List<Ticket> ticketList, User user) {
         this.id = id;
-        this.movieSession = movieSession;
+        this.ticketList = ticketList;
         this.user = user;
     }
 
@@ -35,12 +34,12 @@ public class Ticket {
         this.id = id;
     }
 
-    public MovieSession getMovieSession() {
-        return movieSession;
+    public List<Ticket> getTicketList() {
+        return ticketList;
     }
 
-    public void setMovieSession(MovieSession movieSession) {
-        this.movieSession = movieSession;
+    public void setTicketList(List<Ticket> ticketList) {
+        this.ticketList = ticketList;
     }
 
     public User getUser() {
@@ -53,9 +52,9 @@ public class Ticket {
 
     @Override
     public String toString() {
-        return "Ticket{" +
+        return "ShoppingCart{" +
                 "id=" + id +
-                ", movieSession=" + movieSession +
+                ", ticketList=" + ticketList +
                 ", user=" + user +
                 '}';
     }
