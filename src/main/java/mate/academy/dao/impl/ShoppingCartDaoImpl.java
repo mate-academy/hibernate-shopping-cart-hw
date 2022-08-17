@@ -1,5 +1,6 @@
 package mate.academy.dao.impl;
 
+import java.util.Optional;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Dao;
@@ -9,9 +10,6 @@ import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-
-import javax.persistence.criteria.*;
-import java.util.Optional;
 
 @Dao
 public class ShoppingCartDaoImpl implements ShoppingCartDao {
@@ -42,20 +40,25 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
     public Optional<ShoppingCart> getByUser(User user) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query<ShoppingCart> query = session.createQuery("from ShoppingCart sc"
-                    + " left join fetch sc.ticketList"
+                    + " left join fetch sc.ticketList t"
+                    + " left join fetch t.movieSession ms "
+                    + " left join fetch ms.movie"
+                    + " left join fetch ms.cinemaHall"
                     + " left join fetch sc.user u"
                     + " where sc.user = :user");
             query.setParameter("user", user);
             return query.uniqueResultOptional();
 
-//            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-//            CriteriaQuery<ShoppingCart> query = criteriaBuilder.createQuery(ShoppingCart.class);
-//            Root<ShoppingCart> root = query.from(ShoppingCart.class);
-//            Predicate userPredicate = criteriaBuilder.equal(root.get("user"), user.getId());
-//            query.select(root).where(userPredicate);
-//            root.fetch("ticketList");
-//            root.fetch("user");
-//            return session.createQuery(query).uniqueResultOptional();
+        //            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        //            CriteriaQuery<ShoppingCart> query
+        //            = criteriaBuilder.createQuery(ShoppingCart.class);
+        //            Root<ShoppingCart> root = query.from(ShoppingCart.class);
+        //            Predicate userPredicate =
+        //           criteriaBuilder.equal(root.get("user").get("id"), user.getId());
+        //            query.select(root).where(userPredicate);
+        //            root.fetch("ticketList");
+        //            root.fetch("user");
+        //            return session.createQuery(query).uniqueResultOptional();
         } catch (Exception e) {
             throw new DataProcessingException("can't retrieve shopping cart by user: " + user, e);
         }
