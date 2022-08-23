@@ -6,6 +6,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -17,10 +19,17 @@ public class ShoppingCart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @OneToMany
+    @JoinTable(name = "shopping_cart_tickets",
+            joinColumns = @JoinColumn(
+                    name = "shopping_cart_id",
+                    referencedColumnName = "user_id"),
+            inverseJoinColumns = @JoinColumn(
+                name = "ticket_id",
+                referencedColumnName = "id"
+            )
+    )
     private List<Ticket> ticketList;
-
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     private User user;

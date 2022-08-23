@@ -19,9 +19,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Inject
     private TicketDao ticketDao;
 
-    public ShoppingCartServiceImpl() {
-    }
-
     /**
      * This method is responsible for adding a Ticket to the ShoppingCart
      *

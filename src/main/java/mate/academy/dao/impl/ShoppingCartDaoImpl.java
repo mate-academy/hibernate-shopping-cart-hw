@@ -28,7 +28,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new RuntimeException("can't save shopping cart" + shoppingCart, e);
+            throw new RuntimeException("Can't save shopping cart" + shoppingCart, e);
         } finally {
             if (session != null) {
                 session.close();
@@ -45,11 +45,11 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
                     + " left join fetch ms.movie"
                     + " left join fetch ms.cinemaHall"
                     + " left join fetch sc.user u"
-                    + " where sc.user = :user");
-            query.setParameter("user", user);
+                    + " where sc.user.id = :userId");
+            query.setParameter("userId", user.getId());
             return query.uniqueResultOptional();
         } catch (Exception e) {
-            throw new DataProcessingException("can't retrieve shopping cart by user: " + user, e);
+            throw new DataProcessingException("Can't retrieve shopping cart by user: " + user, e);
         }
     }
 
@@ -66,7 +66,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("unable to update shopping cart: " + shoppingCart, e);
+            throw new DataProcessingException("Unable to update shopping cart: " + shoppingCart, e);
         } finally {
             if (session != null) {
                 session.close();
