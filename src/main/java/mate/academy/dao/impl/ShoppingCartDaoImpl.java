@@ -48,17 +48,6 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
                     + " where sc.user = :user");
             query.setParameter("user", user);
             return query.uniqueResultOptional();
-
-        //            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-        //            CriteriaQuery<ShoppingCart> query
-        //            = criteriaBuilder.createQuery(ShoppingCart.class);
-        //            Root<ShoppingCart> root = query.from(ShoppingCart.class);
-        //            Predicate userPredicate =
-        //           criteriaBuilder.equal(root.get("user").get("id"), user.getId());
-        //            query.select(root).where(userPredicate);
-        //            root.fetch("ticketList");
-        //            root.fetch("user");
-        //            return session.createQuery(query).uniqueResultOptional();
         } catch (Exception e) {
             throw new DataProcessingException("can't retrieve shopping cart by user: " + user, e);
         }
