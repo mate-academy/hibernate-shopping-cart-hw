@@ -1,6 +1,5 @@
 package mate.academy;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
@@ -25,7 +24,7 @@ public class Main {
             (CinemaHallService) injector.getInstance(CinemaHallService.class);
     private static MovieSessionService movieSessionService =
             (MovieSessionService) injector.getInstance(MovieSessionService.class);
-    private static  AuthenticationService authenticationService =
+    private static AuthenticationService authenticationService =
             (AuthenticationService) injector.getInstance(AuthenticationService.class);
     private static UserService userService = (UserService) injector.getInstance(UserService.class);
     private static ShoppingCartService shoppingCartService =
