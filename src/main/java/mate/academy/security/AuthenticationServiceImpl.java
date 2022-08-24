@@ -36,8 +36,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             User added = userService.add(user);
             shoppingCartService.registerNewShoppingCart(added);
             return added;
+        } else {
+            throw new RegistrationException("This email is already registered.");
         }
-        throw new RegistrationException("This email is already registered.");
     }
 
     private boolean matchPasswords(String rawPassword, User userFromDb) {

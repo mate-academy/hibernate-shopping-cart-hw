@@ -19,17 +19,39 @@ import mate.academy.service.UserService;
 
 public class Main {
     public static final Injector injector = Injector.getInstance("mate.academy");
+    private static MovieService movieService =
+            (MovieService) injector.getInstance(MovieService.class);
+    private static CinemaHallService cinemaHallService =
+            (CinemaHallService) injector.getInstance(CinemaHallService.class);
+    private static MovieSessionService movieSessionService =
+            (MovieSessionService) injector.getInstance(MovieSessionService.class);
+    private static  AuthenticationService authenticationService =
+            (AuthenticationService) injector.getInstance(AuthenticationService.class);
+    private static UserService userService = (UserService) injector.getInstance(UserService.class);
+    private static ShoppingCartService shoppingCartService =
+            (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
 
     public static void main(String[] args) throws AuthenticationException, RegistrationException {
-        MovieService movieService =
-                (MovieService) injector.getInstance(MovieService.class);
+        injectMovie();
+        injectCinemaHalls();
+        injectMovieSessions();
+        authenticationService.register("alexgash8@gmail.com", "123456");
+        User user = authenticationService.login("alexgash8@gmail.com", "123456");
+        MovieSession movieSession = movieSessionService.get(1L);
+        shoppingCartService.addSession(movieSession, user);
+        ShoppingCart usersShoppingCart = shoppingCartService.getByUser(user);
+        System.out.println("users shopping cart for tomorrow session:" + usersShoppingCart);
+        shoppingCartService.clear(usersShoppingCart);
+        System.out.println("users shopping cart after clear: " + usersShoppingCart);
+    }
 
+    public static void injectMovie() {
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
         movieService.add(fastAndFurious);
-        System.out.println(movieService.get(fastAndFurious.getId()));
-        movieService.getAll().forEach(System.out::println);
+    }
 
+    public static void injectCinemaHalls() {
         CinemaHall firstCinemaHall = new CinemaHall();
         firstCinemaHall.setCapacity(100);
         firstCinemaHall.setDescription("first hall with capacity 100");
@@ -38,55 +60,22 @@ public class Main {
         secondCinemaHall.setCapacity(200);
         secondCinemaHall.setDescription("second hall with capacity 200");
 
-        CinemaHallService cinemaHallService =
-                (CinemaHallService) injector.getInstance(CinemaHallService.class);
         cinemaHallService.add(firstCinemaHall);
         cinemaHallService.add(secondCinemaHall);
-
-        System.out.println(cinemaHallService.getAll());
-        System.out.println(cinemaHallService.get(firstCinemaHall.getId()));
-
-        MovieSession tomorrowMovieSession = new MovieSession();
-        tomorrowMovieSession.setCinemaHall(firstCinemaHall);
-        tomorrowMovieSession.setMovie(fastAndFurious);
-        tomorrowMovieSession.setShowTime(LocalDateTime.now().plusDays(1L));
-
-        MovieSession yesterdayMovieSession = new MovieSession();
-        yesterdayMovieSession.setCinemaHall(firstCinemaHall);
-        yesterdayMovieSession.setMovie(fastAndFurious);
-        yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(1L));
-
-        MovieSessionService movieSessionService =
-                (MovieSessionService) injector.getInstance(MovieSessionService.class);
-        movieSessionService.add(tomorrowMovieSession);
-        movieSessionService.add(yesterdayMovieSession);
-
-        System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
-        System.out.println(movieSessionService.findAvailableSessions(
-                fastAndFurious.getId(), LocalDate.now()));
-
-        AuthenticationService authenticationService =
-                (AuthenticationService) injector.getInstance(AuthenticationService.class);
-
-        authenticationService.register("alexgash8@gmail.com", "123456");
-
-        UserService userService = (UserService) injector.getInstance(UserService.class);
-
-        //        User user = userService.findByEmail("alexgash8@gmail.com").get();
-        //        System.out.println("users email" + user.getEmail()
-        //                + ", and password: " + user.getPassword());
-
-        User user = authenticationService.login("alexgash8@gmail.com", "123456");
-
-        ShoppingCartService shoppingCartService =
-                (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
-
-        //        MovieSession tomorrowMovieSession = movieSessionService.get(2L);
-        shoppingCartService.addSession(tomorrowMovieSession, user);
-        ShoppingCart usersShoppingCart = shoppingCartService.getByUser(user);
-
-        System.out.println("users shopping cart for tomorrow session:" + usersShoppingCart);
-        shoppingCartService.clear(usersShoppingCart);
-        System.out.println("users shopping cart after clear: " + usersShoppingCart);
     }
+
+    public static void injectMovieSessions() {
+        Movie firstMovie = movieService.get(1L);
+        CinemaHall cinemaHallFromDB = cinemaHallService.get(1L);
+
+        MovieSession terminatorMorning =
+                new MovieSession(firstMovie, cinemaHallFromDB, LocalDateTime.now());
+        MovieSession terminatorDay =
+                new MovieSession(firstMovie, cinemaHallFromDB, LocalDateTime.now()
+                        .plusHours(3));
+
+        movieSessionService.add(terminatorMorning);
+        movieSessionService.add(terminatorDay);
+    }
+
 }
