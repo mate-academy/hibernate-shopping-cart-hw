@@ -1,18 +1,14 @@
 package mate.academy.model;
 
-import java.util.List;
-
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import java.util.List;
 
 @Entity
 @Table(name = "shopping_carts")
@@ -20,12 +16,15 @@ public class ShoppingCart {
     @Id
     private Long id;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "shopping_carts_tickets", joinColumns = @JoinColumn(name = "shopping_cart_id"))
+    @OneToMany
+    @JoinTable(name = "shopping_carts_tickets",
+            joinColumns = @JoinColumn(name = "shopping_cart_id"),
+            inverseJoinColumns = @JoinColumn(name = "ticket_id"))
     private List<Ticket> tickets;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @MapsId
+    @JoinColumn(name = "id")
     private User user;
 
     public Long getId() {
@@ -44,10 +43,20 @@ public class ShoppingCart {
         this.user = user;
     }
 
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
+    }
+
     @Override
     public String toString() {
         return "ShoppingCart{"
                 + "id=" + id
+                + ", tickets=" + tickets
+                + ", user=" + user
                 + '}';
     }
 }

@@ -1,13 +1,13 @@
 package mate.academy.dao.impl;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.List;
-import java.util.Optional;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.List;
+import java.util.Optional;
 import mate.academy.dao.MovieSessionDao;
 import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Dao;
@@ -19,6 +19,7 @@ import org.hibernate.query.Query;
 
 @Dao
 public class MovieSessionDaoImpl implements MovieSessionDao {
+
     private static final LocalTime END_OF_DAY = LocalTime.of(23, 59, 59);
 
     @Override
