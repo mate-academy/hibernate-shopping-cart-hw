@@ -1,10 +1,12 @@
 package mate.academy.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -17,6 +19,8 @@ public class User {
     private String email;
     private String password;
     private byte[] salt;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    ShoppingCart shoppingCart;
 
     public Long getId() {
         return id;
@@ -50,11 +54,20 @@ public class User {
         this.salt = salt;
     }
 
+    public ShoppingCart getShoppingCart() {
+        return shoppingCart;
+    }
+
+    public void setShoppingCart(ShoppingCart shoppingCart) {
+        this.shoppingCart = shoppingCart;
+    }
+
     @Override
     public String toString() {
         return "User{"
                 + "id=" + id
                 + ", email='" + email + '\''
+                + ", shoppingCart='" + shoppingCart + '\''
                 + '}';
     }
 }
