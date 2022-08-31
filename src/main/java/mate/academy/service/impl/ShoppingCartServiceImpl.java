@@ -29,7 +29,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public ShoppingCart getByUser(User user) {
-        if(shoppingCartDao.getByUser(user).isPresent()) {
+        if (shoppingCartDao.getByUser(user).isPresent()) {
             return shoppingCartDao.getByUser(user).get();
         }
         throw new RuntimeException("Can't get shopping cart for user " + user);
