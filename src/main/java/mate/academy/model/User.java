@@ -20,7 +20,7 @@ public class User {
     private String password;
     private byte[] salt;
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    ShoppingCart shoppingCart;
+    private ShoppingCart shoppingCart;
 
     public Long getId() {
         return id;
