@@ -82,7 +82,7 @@ public class Main {
         shoppingCartService.addSession(yesterdayMovieSession, petrov);
 
         ShoppingCart shoppingCartIvanov = shoppingCartService.getByUser(ivanov);
-        System.out.println(shoppingCartService.getByUser(petrov));
+
         shoppingCartService.clear(shoppingCartIvanov);
     }
 }
