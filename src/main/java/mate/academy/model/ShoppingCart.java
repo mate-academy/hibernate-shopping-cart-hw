@@ -1,13 +1,7 @@
 package mate.academy.model;
 
 import java.util.List;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.MapsId;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "shopping_carts")
@@ -18,6 +12,9 @@ public class ShoppingCart {
     @MapsId
     private User user;
     @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "shopping_carts_tickets",
+            joinColumns = @JoinColumn( name = "shopping_cart_id"),
+            inverseJoinColumns = @JoinColumn(name = "ticket_id"))
     private List<Ticket> tickets;
 
     public Long getId() {
