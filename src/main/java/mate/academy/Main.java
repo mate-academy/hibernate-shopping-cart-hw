@@ -2,12 +2,12 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.model.ShoppingCart;
 import mate.academy.model.User;
 import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
@@ -35,7 +35,8 @@ public class Main {
         secondCinemaHall.setCapacity(200);
         secondCinemaHall.setDescription("second hall with capacity 200");
 
-        CinemaHallService cinemaHallService = (CinemaHallService) injector.getInstance(CinemaHallService.class);
+        CinemaHallService cinemaHallService =
+                (CinemaHallService) injector.getInstance(CinemaHallService.class);
         cinemaHallService.add(firstCinemaHall);
         cinemaHallService.add(secondCinemaHall);
 
@@ -52,7 +53,8 @@ public class Main {
         yesterdayMovieSession.setMovie(fastAndFurious);
         yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(1L));
 
-        MovieSessionService movieSessionService = (MovieSessionService) injector.getInstance(MovieSessionService.class);
+        MovieSessionService movieSessionService =
+                (MovieSessionService) injector.getInstance(MovieSessionService.class);
         movieSessionService.add(tomorrowMovieSession);
         movieSessionService.add(yesterdayMovieSession);
 
@@ -60,7 +62,8 @@ public class Main {
         System.out.println(movieSessionService.findAvailableSessions(
                 fastAndFurious.getId(), LocalDate.now()));
 
-        AuthenticationService authenticationService = (AuthenticationService) injector.getInstance(AuthenticationService.class);
+        AuthenticationService authenticationService =
+                (AuthenticationService) injector.getInstance(AuthenticationService.class);
         User vitalii = new User();
         try {
             vitalii = authenticationService.register("vitalii@gmail.com", "123456");
@@ -68,8 +71,16 @@ public class Main {
             System.out.println("Can't register vitalii");
         }
 
-        ShoppingCartService shoppingCartService = (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
+        ShoppingCartService shoppingCartService =
+                (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
         shoppingCartService.addSession(tomorrowMovieSession, vitalii);
         shoppingCartService.addSession(yesterdayMovieSession, vitalii);
+        ShoppingCart shoppingCartVitalii = shoppingCartService.getByUser(vitalii);
+        System.out.println("Before clear: " + shoppingCartService.getByUser(vitalii));
+        shoppingCartService.clear(shoppingCartVitalii);
+        System.out.println("After clear: " + shoppingCartService.getByUser(vitalii));
+        UserService userService = (UserService) injector.getInstance(UserService.class);
+        User vitaliiFromDb = userService.findByEmail("vitalii@gmail.com").get();
+        System.out.println(vitaliiFromDb);
     }
 }
