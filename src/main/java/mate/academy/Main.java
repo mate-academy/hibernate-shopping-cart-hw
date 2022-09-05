@@ -75,9 +75,10 @@ public class Main {
                 (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
         shoppingCartService.addSession(tomorrowMovieSession, vitalii);
         shoppingCartService.addSession(yesterdayMovieSession, vitalii);
-        ShoppingCart shoppingCartVitalii = shoppingCartService.getByUser(vitalii);
+        ShoppingCart shoppingCart = shoppingCartService.getByUser(vitalii);
+        System.out.println(shoppingCart);
         System.out.println("Before clear: " + shoppingCartService.getByUser(vitalii));
-        shoppingCartService.clear(shoppingCartVitalii);
+        shoppingCartService.clear(shoppingCart);
         System.out.println("After clear: " + shoppingCartService.getByUser(vitalii));
         UserService userService = (UserService) injector.getInstance(UserService.class);
         User vitaliiFromDb = userService.findByEmail("vitalii@gmail.com").get();

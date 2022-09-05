@@ -26,9 +26,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         ticket.setUser(user);
         ticketDao.add(ticket);
         ShoppingCart shoppingCart = shoppingCartDao.getByUser(user).get();
-        List<Ticket> tickets = shoppingCart.getTickets();
-        tickets.add(ticket);
-        shoppingCart.setTickets(tickets);
+        shoppingCart.getTickets().add(ticket);
         shoppingCartDao.update(shoppingCart);
     }
 

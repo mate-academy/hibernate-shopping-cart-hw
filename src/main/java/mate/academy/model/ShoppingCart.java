@@ -48,6 +48,7 @@ public class ShoppingCart {
         return "ShoppingCart{"
                 + "id=" + id
                 + ", tickets=" + tickets
+                + ", user=" + user
                 + '}';
     }
 }
