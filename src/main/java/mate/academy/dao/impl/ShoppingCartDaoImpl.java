@@ -7,6 +7,7 @@ import mate.academy.lib.Dao;
 import mate.academy.model.ShoppingCart;
 import mate.academy.model.User;
 import mate.academy.util.HibernateUtil;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -42,7 +43,9 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             Query<ShoppingCart> getShoppingCartByUser = session
                     .createQuery(query, ShoppingCart.class);
             getShoppingCartByUser.setParameter("user", user);
-            return Optional.ofNullable(getShoppingCartByUser.getSingleResult());
+            ShoppingCart shoppingCartByUser = getShoppingCartByUser.getSingleResult();
+            Hibernate.initialize(shoppingCartByUser.getTickets());
+            return Optional.ofNullable(shoppingCartByUser);
         } catch (Exception e) {
             throw new DataProcessingException("Can't get ShoppingCart by User " + user, e);
         }
