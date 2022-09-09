@@ -14,9 +14,9 @@ import javax.persistence.Table;
 public class ShoppingCart {
     @Id
     private Long id;
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany
     private List<Ticket> tickets;
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne
     @MapsId
     private User user;
 
