@@ -7,7 +7,6 @@ import mate.academy.lib.Dao;
 import mate.academy.model.ShoppingCart;
 import mate.academy.model.User;
 import mate.academy.util.HibernateUtil;
-import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -45,21 +44,17 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
 
     @Override
     public Optional<ShoppingCart> getByUser(User user) {
-        String query = "SELECT DISTINCT s "
-                + "FROM ShoppingCart s "
-                + "LEFT JOIN FETCH s.tickets t "
-                + "LEFT JOIN FETCH t.user "
-                + "LEFT JOIN FETCH t.movieSession ms "
-                + "LEFT JOIN FETCH ms.movie "
-                + "LEFT JOIN FETCH ms.cinemaHall "
-                + "WHERE s.user = :user";
         try (Session session = factory.openSession()) {
-            Query<ShoppingCart> getShoppingCartByUser = session
-                    .createQuery(query, ShoppingCart.class);
-            getShoppingCartByUser.setParameter("user", user);
-            ShoppingCart shoppingCartByUser = getShoppingCartByUser.uniqueResult();
-            Hibernate.initialize(shoppingCartByUser.getTickets());
-            return Optional.ofNullable(shoppingCartByUser);
+            Query<ShoppingCart> query = session.createQuery(
+                    "FROM ShoppingCart sc "
+                            + "LEFT JOIN FETCH sc.tickets t "
+                            + "LEFT JOIN FETCH t.movieSession ms "
+                            + "LEFT JOIN FETCH t.user "
+                            + "LEFT JOIN FETCH ms.movie "
+                            + "LEFT JOIN FETCH ms.cinemaHall "
+                            + "WHERE sc.user.id = :userId", ShoppingCart.class);
+            query.setParameter("userId", user.getId());
+            return query.uniqueResultOptional();
         } catch (Exception e) {
             throw new DataProcessingException("Can`t get shopping cart by user " + user, e);
         }
