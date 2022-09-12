@@ -57,10 +57,10 @@ public class ShoppingCart {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        ShoppingCart that = (ShoppingCart) o;
-        return Objects.equals(id, that.id)
-                && Objects.equals(tickets, that.tickets)
-                && Objects.equals(user, that.user);
+        ShoppingCart shoppingCart = (ShoppingCart) o;
+        return Objects.equals(id, shoppingCart.id)
+                && Objects.equals(tickets, shoppingCart.tickets)
+                && Objects.equals(user, shoppingCart.user);
     }
 
     @Override
