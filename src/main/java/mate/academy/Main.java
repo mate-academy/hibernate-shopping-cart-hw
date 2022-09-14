@@ -15,19 +15,19 @@ import mate.academy.service.UserService;
 import mate.academy.util.HashUtil;
 
 public class Main {
-    private static final Injector injector = Injector.getInstance("mate.academy");
-    private static final MovieService movieService =
-            (MovieService) injector.getInstance(MovieService.class);
-    public static final CinemaHallService cinemaHallService =
-            (CinemaHallService) injector.getInstance(CinemaHallService.class);
-    public static final MovieSessionService movieSessionService =
-            (MovieSessionService) injector.getInstance(MovieSessionService.class);
-    public static final UserService userService =
-            (UserService) injector.getInstance(UserService.class);
-    public static final ShoppingCartService shoppingCartService =
-            (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
-
     public static void main(String[] args) {
+        final Injector injector = Injector.getInstance("mate.academy");
+        final MovieService movieService =
+                (MovieService) injector.getInstance(MovieService.class);
+        final CinemaHallService cinemaHallService =
+                (CinemaHallService) injector.getInstance(CinemaHallService.class);
+        final MovieSessionService movieSessionService =
+                (MovieSessionService) injector.getInstance(MovieSessionService.class);
+        final UserService userService =
+                (UserService) injector.getInstance(UserService.class);
+        final ShoppingCartService shoppingCartService =
+                (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
+
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
         movieService.add(fastAndFurious);
