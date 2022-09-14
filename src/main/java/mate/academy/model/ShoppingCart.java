@@ -24,7 +24,7 @@ public class ShoppingCart {
             joinColumns = @JoinColumn(name = "shopping_cart_id"),
             inverseJoinColumns = @JoinColumn(name = "ticket_id"))
     private List<Ticket> tickets;
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @MapsId
     private User user;
 
