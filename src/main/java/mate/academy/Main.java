@@ -15,8 +15,9 @@ import mate.academy.service.UserService;
 import mate.academy.util.HashUtil;
 
 public class Main {
+    private static final Injector injector = Injector.getInstance("mate.academy");
+
     public static void main(String[] args) {
-        final Injector injector = Injector.getInstance("mate.academy");
         final MovieService movieService =
                 (MovieService) injector.getInstance(MovieService.class);
         final CinemaHallService cinemaHallService =
