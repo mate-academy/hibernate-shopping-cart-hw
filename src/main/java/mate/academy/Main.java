@@ -2,12 +2,12 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.model.ShoppingCart;
 import mate.academy.model.User;
 import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
@@ -18,7 +18,7 @@ import mate.academy.service.ShoppingCartService;
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.academy");
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws RegistrationException {
         MovieService movieService = (MovieService) injector.getInstance(MovieService.class);
 
         Movie fastAndFurious = new Movie("Fast and Furious");
@@ -64,21 +64,13 @@ public class Main {
 
         AuthenticationService authenticationService =
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
-        User alice;
-        try {
-            alice = authenticationService.register("alice@gmail.com", "1234");
-        } catch (RegistrationException e) {
-            throw new RuntimeException("Can't registration user.", e);
-        }
-        try {
-            authenticationService.login(alice.getEmail(), "1234");
-        } catch (AuthenticationException e) {
-            throw new RuntimeException("Can't authentication user.", e);
-        }
+        User alice = authenticationService.register("alice@gmail.com", "1234");
 
         ShoppingCartService shoppingCartService =
                 (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
         shoppingCartService.addSession(yesterdayMovieSession, alice);
         shoppingCartService.addSession(tomorrowMovieSession, alice);
+        ShoppingCart aliceShoppingCart = shoppingCartService.getByUser(alice);
+        System.out.println(aliceShoppingCart);
     }
 }
