@@ -6,9 +6,9 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -21,7 +21,7 @@ public class ShoppingCart {
             joinColumns = @JoinColumn(name = "shopping_carts_id"),
             inverseJoinColumns = @JoinColumn(name = "tickets_id"))
     private List<Ticket> tickets;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     private User user;
 
