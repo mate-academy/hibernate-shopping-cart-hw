@@ -27,7 +27,8 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Can't save a shopping cart to DB: " + shoppingCart, e);
+            throw new DataProcessingException("Can't save a shopping cart to DB: "
+                    + shoppingCart, e);
         } finally {
             if (session != null) {
                 session.close();
