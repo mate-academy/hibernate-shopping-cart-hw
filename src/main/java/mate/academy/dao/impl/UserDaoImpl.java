@@ -12,6 +12,7 @@ import org.hibernate.query.Query;
 
 @Dao
 public class UserDaoImpl implements UserDao {
+
     @Override
     public User add(User user) {
         Session session = null;
