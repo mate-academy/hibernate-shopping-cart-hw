@@ -13,7 +13,6 @@ import org.hibernate.query.Query;
 
 @Dao
 public class ShoppingCartDaoImpl implements ShoppingCartDao {
-
     @Override
     public void add(ShoppingCart shoppingCart) {
         Session session = null;
