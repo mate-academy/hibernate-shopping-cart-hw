@@ -3,17 +3,18 @@ package mate.academy;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import mate.academy.dao.TicketDao;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
 import mate.academy.model.Ticket;
 import mate.academy.model.User;
+import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
 import mate.academy.service.ShoppingCartService;
-import mate.academy.service.UserService;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.academy");
@@ -64,11 +65,15 @@ public class Main {
 
         System.out.println("-----------------------------------------------");
 
-        User user = new User();
-        user.setEmail("just email");
-        user.setPassword("blabla");
-        UserService userService = (UserService) injector.getInstance(UserService.class);
-        userService.add(user);
+        User user = null;
+        AuthenticationService authenticationService = (AuthenticationService)
+                injector.getInstance(AuthenticationService.class);
+
+        try {
+            user = authenticationService.register("just email", "blabla");
+        } catch (RegistrationException e) {
+            throw new RuntimeException(e);
+        }
         TicketDao ticketDao = (TicketDao) injector.getInstance(TicketDao.class);
         Ticket ticket1 = new Ticket();
         ticket1.setUser(user);
@@ -78,7 +83,6 @@ public class Main {
         ShoppingCartService shoppingCartService = (ShoppingCartService)
                 injector.getInstance(ShoppingCartService.class);
 
-        shoppingCartService.registerNewShoppingCart(user);
         shoppingCartService.addSession(yesterdayMovieSession, user);
         shoppingCartService.addSession(tomorrowMovieSession, user);
         System.out.println("------------------------------");

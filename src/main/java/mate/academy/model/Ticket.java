@@ -47,7 +47,7 @@ public class Ticket {
     public String toString() {
         return "Ticket{"
                 + "id=" + id
-                + ", movieSession=" + movieSession.getId()
+                + ", movieSession=" + movieSession
                 + ", user=" + user
                 + '}';
     }
