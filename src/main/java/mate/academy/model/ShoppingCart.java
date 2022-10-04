@@ -1,6 +1,5 @@
 package mate.academy.model;
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -15,7 +14,7 @@ public class ShoppingCart {
     @Id
     private Long id;
     @OneToMany
-    private List<Ticket> tickets = new ArrayList<>();
+    private List<Ticket> tickets;
     @OneToOne
     @MapsId
     private User user;

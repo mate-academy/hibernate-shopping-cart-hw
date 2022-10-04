@@ -18,7 +18,8 @@ import mate.academy.service.MovieSessionService;
 import mate.academy.service.ShoppingCartService;
 
 public class Main {
-    private static final Injector injector = Injector.getInstance("mate.academy");
+    private static final String PACKAGE = "mate.academy";
+    private static final Injector injector = Injector.getInstance(PACKAGE);
 
     public static void main(String[] args) {
         MovieService movieService = (MovieService)
