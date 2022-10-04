@@ -1,5 +1,6 @@
 package mate.academy.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
@@ -32,8 +33,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public ShoppingCart getByUser(User user) {
-        return shoppingCartDao.getByUser(user)
-                .orElseThrow(() -> new RuntimeException(
+        return shoppingCartDao.getByUser(user).orElseThrow(() -> new RuntimeException(
                         "Can't get shopping cart of user: " + user + " from DB"));
     }
 
@@ -46,8 +46,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void clear(ShoppingCart shoppingCart) {
-        shoppingCart.setUser(null);
-        shoppingCart.setTickets(null);
+        shoppingCart.setTickets(new ArrayList<>());
         shoppingCartDao.update(shoppingCart);
     }
 }
