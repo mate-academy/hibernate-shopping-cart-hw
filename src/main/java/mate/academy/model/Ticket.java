@@ -1,6 +1,7 @@
 package mate.academy.model;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -11,10 +12,10 @@ import javax.persistence.Table;
 public class Ticket {
     @Id
     @GeneratedValue
-    private long id;
-    @ManyToOne
+    private Long id;
+    @ManyToOne(fetch = FetchType.LAZY)
     private MovieSession movieSession;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
     public Ticket() {

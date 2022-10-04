@@ -15,7 +15,7 @@ import javax.persistence.Table;
 public class ShoppingCart {
     @Id
     @GeneratedValue
-    private long id;
+    private Long id;
     @OneToMany
     private List<Ticket> tickets;
 
