@@ -3,6 +3,7 @@ package mate.academy.model;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -11,7 +12,7 @@ import javax.persistence.Table;
 @Table(name = "tickets")
 public class Ticket {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
     private MovieSession movieSession;
@@ -19,12 +20,6 @@ public class Ticket {
     private User user;
 
     public Ticket() {
-    }
-
-    public Ticket(long id, MovieSession movieSession, User user) {
-        this.id = id;
-        this.movieSession = movieSession;
-        this.user = user;
     }
 
     public long getId() {
