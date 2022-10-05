@@ -2,17 +2,18 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
 import mate.academy.model.ShoppingCart;
 import mate.academy.model.User;
+import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
 import mate.academy.service.ShoppingCartService;
-import mate.academy.service.UserService;
 
 public class Main {
     private static Injector injector = Injector.getInstance("mate.academy");
@@ -60,27 +61,23 @@ public class Main {
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(
                 fastAndFurious.getId(), LocalDate.now()));
-        System.out.println("----------------------- Add Bob ---------------------------"
-                + System.lineSeparator());
-        UserService userService = (UserService) injector.getInstance(UserService.class);
-        User bob = new User();
-        bob.setPassword("123");
-        bob.setEmail("bob@bob");
-        userService.add(bob);
-        System.out.println("------------------ Register shopping cart ------------------"
-                + System.lineSeparator());
+        System.out.println("----------------------- Add Bob ---------------------------");
+        AuthenticationService authenticationService =
+                (AuthenticationService) injector.getInstance(AuthenticationService.class);
+        User bob = null;
+        try {
+            bob = authenticationService.register("bob@bob", "123");
+        } catch (RegistrationException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println("------------------ Add ticket to cart -----------------------");
         ShoppingCartService shoppingCartService =
                 (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
-        shoppingCartService.registerNewShoppingCart(bob);
-        System.out.println("------------------ Add ticket to cart -----------------------"
-                + System.lineSeparator());
         shoppingCartService.addSession(tomorrowMovieSession, bob);
-        System.out.println("------------------ Get shopping cart by user ----------------"
-                + System.lineSeparator());
+        System.out.println("------------------ Get shopping cart by user ----------------");
         ShoppingCart bobsShoppingCart = shoppingCartService.getByUser(bob);
         System.out.println(bobsShoppingCart);
-        System.out.println("------------------ Clear shopping cart ----------------------"
-                + System.lineSeparator());
+        System.out.println("------------------ Clear shopping cart ----------------------");
         shoppingCartService.clear(bobsShoppingCart);
         System.out.println(shoppingCartService.getByUser(bob));
     }
