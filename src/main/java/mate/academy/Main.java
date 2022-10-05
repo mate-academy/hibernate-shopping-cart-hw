@@ -66,22 +66,27 @@ public class Main {
 
         AuthenticationService authenticationService =
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
-        User user = null;
+        User user1 = null;
+        User user2 = null;
         try {
-            user = authenticationService.login("user1", "12345");
-            System.out.println(user + " logged in successfully");
+            user1 = authenticationService.login("user1", "12345");
+            System.out.println(user1 + " logged in successfully");
         } catch (AuthenticationException e) {
             System.out.println("Wrong email or password");
         }
         try {
-            user = authenticationService.register("user1", "12345");
-            System.out.println(user + " registered successfully");
+            user1 = authenticationService.register("user1", "12345");
+            System.out.println(user1 + " registered successfully");
+            user2 = authenticationService.register("user2", "12345");
+            System.out.println(user2 + " registered successfully");
         } catch (RegistrationException e) {
             System.out.println("Can't register user");
         }
 
         ShoppingCartService shoppingCartService =
                 (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
-        shoppingCartService.addSession(tomorrowMovieSession, user);
+        shoppingCartService.addSession(tomorrowMovieSession, user1);
+        shoppingCartService.addSession(tomorrowMovieSession, user2);
+        shoppingCartService.clear(shoppingCartService.getByUser(user1));
     }
 }
