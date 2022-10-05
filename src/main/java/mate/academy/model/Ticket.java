@@ -1,6 +1,11 @@
 package mate.academy.model;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "tickets")
@@ -9,9 +14,9 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    MovieSession movieSession;
+    private MovieSession movieSession;
     @ManyToOne
-    User user;
+    private User user;
 
     public Long getId() {
         return id;
