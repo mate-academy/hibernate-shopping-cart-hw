@@ -2,6 +2,7 @@ package mate.academy.model;
 
 import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,10 +17,10 @@ public class ShoppingCart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToMany
-    //    @JoinColumn(name = "ticket_id")
+    @OneToMany(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "ticket_id")
     private List<Ticket> tickets;
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     private User user;
 
@@ -31,11 +32,11 @@ public class ShoppingCart {
         this.id = id;
     }
 
-    public List<Ticket> getTicket() {
+    public List<Ticket> getTickets() {
         return tickets;
     }
 
-    public void setTicket(List<Ticket> tickets) {
+    public void setTickets(List<Ticket> tickets) {
         this.tickets = tickets;
     }
 
@@ -49,8 +50,6 @@ public class ShoppingCart {
 
     @Override
     public String toString() {
-        return "ShoppingCart{id=" + id
-                + ", tickets=" + tickets
-                + ", user=" + user + '}';
+        return "ShoppingCart{id=" + id + ", tickets=" + tickets + ", user=" + user + '}';
     }
 }
