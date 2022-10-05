@@ -74,12 +74,11 @@ public class Main {
         } catch (RegistrationException e) {
             throw new RuntimeException("User is present in db" + e);
         }
-
+        ShoppingCartService shoppingCartService =
+                (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
         try {
             User testUser =
                     authenticationService.login("Test@email.org", "password");
-            ShoppingCartService shoppingCartService =
-                    (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
             shoppingCartService.addSession(tomorrowMovieSession, testUser);
             System.out.println(shoppingCartService.getByUser(testUser));
         } catch (AuthenticationException e) {

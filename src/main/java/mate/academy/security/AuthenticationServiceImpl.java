@@ -21,7 +21,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userFromDb = userService.findByEmail(email);
         if (userFromDb.isPresent() && matchPasswords(password, userFromDb.get())) {
-            shoppingCartService.registerNewShoppingCart(userFromDb.get());
             return userFromDb.get();
         }
         throw new AuthenticationException("Incorrect email or password!");
@@ -34,6 +33,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             user.setEmail(email);
             user.setPassword(password);
             userService.add(user);
+            shoppingCartService.registerNewShoppingCart(user);
             return user;
         }
         throw new RegistrationException("This email is already registered.");
