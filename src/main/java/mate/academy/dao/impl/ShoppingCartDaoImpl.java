@@ -64,7 +64,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Couldn't create a shopping cart: "
+            throw new DataProcessingException("Couldn't update a shopping cart: "
                     + shoppingCart, e);
         } finally {
             if (session != null) {
