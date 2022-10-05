@@ -75,17 +75,12 @@ public class Main {
         } catch (AuthenticationException e) {
             throw new RuntimeException("Can't login user with email: " + email, e);
         }
-        System.out.println("--------------------------------------------------------------------");
         System.out.println(user);
+
         ShoppingCartService shoppingCartService =
                 (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
-        System.out.println("--------------------------------------------------------------------");
-        System.out.println(shoppingCartService.getByUser(user));
-
         shoppingCartService.addSession(yesterdayMovieSession, user);
         shoppingCartService.addSession(tomorrowMovieSession, user);
-        System.out.println("--------------------------------------------------------------------");
         System.out.println(shoppingCartService.getByUser(user));
-
     }
 }
