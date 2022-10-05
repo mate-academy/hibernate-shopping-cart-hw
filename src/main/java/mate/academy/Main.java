@@ -2,7 +2,6 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import mate.academy.dao.TicketDao;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
@@ -87,7 +86,6 @@ public class Main {
         shoppingCartService.addSession(tomorrowMovieSession, user);
         System.out.println("--------------------------------------------------------------------");
         System.out.println(shoppingCartService.getByUser(user));
-//        System.out.println(user);
 
     }
 }
