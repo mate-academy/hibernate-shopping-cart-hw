@@ -77,7 +77,7 @@ public class Main {
         }
         System.out.println(user);
 
-        ShoppingCartService shoppingCartService =
+        final ShoppingCartService shoppingCartService =
                 (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
         shoppingCartService.addSession(yesterdayMovieSession, user);
         shoppingCartService.addSession(tomorrowMovieSession, user);
