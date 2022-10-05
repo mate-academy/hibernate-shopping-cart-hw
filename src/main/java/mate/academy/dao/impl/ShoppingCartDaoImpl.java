@@ -1,6 +1,8 @@
-package mate.academy.dao;
+package mate.academy.dao.impl;
 
 import java.util.Optional;
+
+import mate.academy.dao.ShoppingCartDao;
 import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Dao;
 import mate.academy.model.ShoppingCart;
