@@ -10,21 +10,17 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import java.util.Optional;
+import org.hibernate.query.Query;
 
 @Dao
 public class ShoppingCartDaoImpl implements ShoppingCartDao {
-    private SessionFactory sessionFactory;
-
-    public ShoppingCartDaoImpl() {
-        sessionFactory = HibernateUtil.getSessionFactory();
-    }
 
     @Override
     public ShoppingCart add(ShoppingCart shoppingCart) {
         Session session = null;
         Transaction transaction = null;
         try {
-            session = sessionFactory.openSession();
+            session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
             session.save(shoppingCart);
             transaction.commit();
@@ -43,17 +39,18 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
 
     @Override
     public Optional<ShoppingCart> getByUser(User user) {
-        try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("from ShoppingCart sc "
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Query<ShoppingCart> query = session.createQuery("from ShoppingCart sc "
                     + "left join fetch sc.tickets t "
                     + "left join fetch t.movieSession ms "
-                    + "left join fetch ms.cimemaHall "
+                    + "left join fetch ms.cinemaHall "
                     + "left join fetch ms.movie "
-                    + "where sc.user = :user", ShoppingCart.class)
-                    .setParameter("user", user)
+                    + "where sc.user = :user", ShoppingCart.class);
+            return query.setParameter("user", user)
                     .uniqueResultOptional();
+
         } catch (Exception e) {
-            throw new DataProcessingException("Can't find shopping cary by user: " + user, e);
+            throw new DataProcessingException("Can't find shopping cart by user: " + user, e);
         }
     }
 
@@ -62,7 +59,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
         Session session = null;
         Transaction transaction = null;
         try {
-            session = sessionFactory.openSession();
+            session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
             session.update(shoppingCart);
             transaction.commit();
