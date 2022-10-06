@@ -2,12 +2,15 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
 import mate.academy.model.ShoppingCart;
 import mate.academy.model.User;
+import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
@@ -62,21 +65,21 @@ public class Main {
         System.out.println(movieSessionService.findAvailableSessions(
                 fastAndFurious.getId(), LocalDate.now()));
 
-        User alice = new User();
-        alice.setEmail("alice@gmail.com");
-        alice.setPassword("qwerty");
-
-        UserService userService = (UserService) injector.getInstance(UserService.class);
-        userService.add(alice);
-        System.out.println(userService.findByEmail(alice.getEmail()));
+        AuthenticationService authenticationService = (AuthenticationService) injector
+                .getInstance(AuthenticationService.class);
+        User bob = null;
+        try {
+            bob = authenticationService.register("bob@gmail.com", "sffdfd");
+        } catch (RegistrationException e) {
+            throw new RuntimeException(e);
+        }
 
         ShoppingCartService shoppingCartService = (ShoppingCartService) injector
                 .getInstance(ShoppingCartService.class);
-        shoppingCartService.registerNewShoppingCart(alice);
-        shoppingCartService.addSession(tomorrowMovieSession, alice);
-        System.out.println(shoppingCartService.getByUser(alice));
+        shoppingCartService.addSession(tomorrowMovieSession,bob );
+        System.out.println(shoppingCartService.getByUser(bob));
 
-        ShoppingCart shoppingCart = shoppingCartService.getByUser(alice);
+        ShoppingCart shoppingCart = shoppingCartService.getByUser(bob);
         shoppingCartService.clear(shoppingCart);
     }
 }
