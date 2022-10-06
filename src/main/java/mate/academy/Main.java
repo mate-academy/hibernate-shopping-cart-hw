@@ -73,7 +73,7 @@ public class Main {
         try {
             alice = authenticationService.register("alice1234@gmail.com", "aliceBetterBob1");
         } catch (RegistrationException e) {
-            System.out.println(e.getMessage());;
+            throw new RuntimeException("Can't register user " + alice, e);
         }
 
         TicketDao ticketDao = (TicketDao) injector.getInstance(TicketDao.class);
