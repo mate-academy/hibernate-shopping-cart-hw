@@ -17,7 +17,7 @@ public class ShoppingCart {
     private Long id;
     @OneToMany
     private List<Ticket> tickets;
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @MapsId
     private User user;
 
