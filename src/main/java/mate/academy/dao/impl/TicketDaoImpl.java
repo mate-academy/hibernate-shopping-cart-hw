@@ -11,14 +11,12 @@ import org.hibernate.Transaction;
 
 @Dao
 public class TicketDaoImpl implements TicketDao {
-    private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-
     @Override
     public Ticket add(Ticket ticket) {
         Session session = null;
         Transaction transaction = null;
         try {
-            session = sessionFactory.openSession();
+            session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
             session.save(ticket);
             transaction.commit();

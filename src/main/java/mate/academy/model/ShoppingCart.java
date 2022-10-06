@@ -9,7 +9,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "shoppind_carts")
+@Table(name = "shopping_carts")
 public class ShoppingCart {
     @Id
     private Long id;
@@ -20,7 +20,6 @@ public class ShoppingCart {
     private User user;
 
     public Long getId() {
-
         return id;
     }
 
