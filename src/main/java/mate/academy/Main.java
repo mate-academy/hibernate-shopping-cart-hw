@@ -60,12 +60,12 @@ public class Main {
                 fastAndFurious.getId(), LocalDate.now()));
 
         AuthenticationService authenticationService
-                = (AuthenticationService) injector
-                .getInstance(AuthenticationService.class);
-        User bob = authenticationService.register("123@gmail.com", "1234");
+                = (AuthenticationService) injector.getInstance(AuthenticationService.class);
+        User bob = authenticationService.register("test@gmail.com", "qwerty");
 
         ShoppingCartService shoppingCartService = (ShoppingCartService) injector
                 .getInstance(ShoppingCartService.class);
+        shoppingCartService.registerNewShoppingCart(bob);
         shoppingCartService.addSession(tomorrowMovieSession, bob);
 
         ShoppingCart bobShoppingCart = shoppingCartService.getByUser(bob);
