@@ -18,7 +18,7 @@ import mate.academy.service.ShoppingCartService;
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.academy");
 
-    public static void main(String[] args) throws RegistrationException {
+    public static void main(String[] args) {
         MovieService movieService =
                 (MovieService) injector.getInstance(MovieService.class);
 
@@ -70,8 +70,12 @@ public class Main {
         ShoppingCartService shoppingCartService
                 = (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
 
-        User user = authenticationService.register("test@email.com", "11111111");
-        shoppingCartService.registerNewShoppingCart(user);
+        User user = null;
+        try {
+            user = authenticationService.register("test@email.com", "11111111");
+        } catch (RegistrationException e) {
+            throw new RuntimeException("Can't register new user", e);
+        }
         shoppingCartService.addSession(tomorrowMovieSession, user);
         shoppingCartService.addSession(yesterdayMovieSession, user);
         ShoppingCart shoppingCart = shoppingCartService.getByUser(user);
