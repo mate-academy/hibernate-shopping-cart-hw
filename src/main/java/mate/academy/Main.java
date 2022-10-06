@@ -2,6 +2,7 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.exception.DataProcessingException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
@@ -70,7 +71,8 @@ public class Main {
         try {
             user = authenticationService.register("user@email.com", "user1");
         } catch (RegistrationException e) {
-            e.printStackTrace();
+            throw new DataProcessingException("This email is already registered, please try again",
+                    e);
         }
         shoppingCartService.addSession(tomorrowMovieSession, user);
         System.out.println(shoppingCartService.getByUser(user));
