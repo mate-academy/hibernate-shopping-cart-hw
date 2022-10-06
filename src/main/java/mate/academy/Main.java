@@ -66,7 +66,7 @@ public class Main {
         user.setPassword("qwerty");
 
         UserService userService = (UserService) injector.getInstance(UserService.class);
-        userService.register(user);
+        userService.add(user);
 
         ShoppingCartService shoppingCartService =
                 (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
