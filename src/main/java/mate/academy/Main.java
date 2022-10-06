@@ -64,13 +64,12 @@ public class Main {
         System.out.println(movieSessionService.findAvailableSessions(
                 fastAndFurious.getId(), LocalDate.now()));
 
-        AuthenticationService authenticationService
-                = (AuthenticationService) injector.getInstance(AuthenticationService.class);
+        AuthenticationService authenticationService =
+                (AuthenticationService) injector.getInstance(AuthenticationService.class);
         User bob = authenticationService.register("test@gmail.com", "qwerty");
 
         ShoppingCartService shoppingCartService = (ShoppingCartService) injector
                 .getInstance(ShoppingCartService.class);
-        shoppingCartService.registerNewShoppingCart(bob);
         shoppingCartService.addSession(tomorrowMovieSession, bob);
 
         ShoppingCart bobShoppingCart = shoppingCartService.getByUser(bob);
