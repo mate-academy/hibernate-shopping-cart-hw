@@ -1,7 +1,12 @@
 package mate.academy.model;
 
 import java.util.List;
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.MapsId;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 @Table(name = "shopping_cart")
 @Entity
@@ -40,10 +45,7 @@ public class ShoppingCart {
 
     @Override
     public String toString() {
-        return "ShoppingCart{" +
-                "id=" + id +
-                ", tickets=" + tickets +
-                ", user=" + user +
-                '}';
+        return "ShoppingCart{" + "id=" + id + ", tickets="
+                + tickets + ", user=" + user + '}';
     }
 }
