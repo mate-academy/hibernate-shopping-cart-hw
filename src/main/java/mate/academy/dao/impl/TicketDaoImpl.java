@@ -17,7 +17,7 @@ public class TicketDaoImpl implements TicketDao {
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
-            session.save(ticket);
+            session.persist(ticket);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
