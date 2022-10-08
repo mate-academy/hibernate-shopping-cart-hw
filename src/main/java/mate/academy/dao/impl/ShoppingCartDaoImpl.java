@@ -42,14 +42,14 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
                     session.createQuery("FROM ShoppingCart shc "
                             + "left join fetch shc.tickets t "
                             + "left join fetch t.movieSession ms "
-                            + "left join fetch  t.user "
+                            + "left join fetch t.user "
                             + "left join fetch ms.movie "
                             + "left join fetch ms.cinemaHall "
                             + "WHERE shc.user.id = :userId", ShoppingCart.class);
             query.setParameter("userId", user.getId());
             return query.uniqueResultOptional();
         } catch (Exception e) {
-            throw new DataProcessingException("Can't shopping cart by user: " + user, e);
+            throw new DataProcessingException("Can't get shopping cart by user: " + user, e);
         }
     }
 
