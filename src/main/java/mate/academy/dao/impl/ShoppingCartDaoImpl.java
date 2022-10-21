@@ -21,6 +21,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
             session.save(shoppingCart);
+            transaction.commit();
             return shoppingCart;
         } catch (Exception e) {
             if (transaction != null) {
@@ -40,7 +41,8 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query<ShoppingCart> query =
                     session.createQuery(
-                            "from ShoppingCart where user.id = :id", ShoppingCart.class);
+                            "from ShoppingCart where user.id = :id",
+                            ShoppingCart.class);
             query.setParameter("id", user.getId());
             return query.uniqueResultOptional();
         }
@@ -54,6 +56,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
             session.update(shoppingCart);
+            transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();

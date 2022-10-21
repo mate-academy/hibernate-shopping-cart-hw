@@ -4,6 +4,7 @@ import static org.hibernate.annotations.CascadeType.SAVE_UPDATE;
 
 import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,11 +17,10 @@ public class ShoppingCart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @Cascade(SAVE_UPDATE)
     private List<Ticket> tickets;
     @OneToOne
-    @Cascade(SAVE_UPDATE)
     private User user;
 
     public Long getId() {
@@ -45,5 +45,14 @@ public class ShoppingCart {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "ShoppingCart{"
+                + "id=" + id
+                + ", tickets=" + tickets
+                + ", user=" + user
+                + '}';
     }
 }
