@@ -4,7 +4,6 @@ import static org.hibernate.annotations.CascadeType.SAVE_UPDATE;
 
 import java.util.List;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
@@ -15,7 +14,7 @@ import org.hibernate.annotations.Cascade;
 public class ShoppingCart {
     @Id
     private Long id;
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany
     @Cascade(SAVE_UPDATE)
     private List<Ticket> tickets;
     @OneToOne

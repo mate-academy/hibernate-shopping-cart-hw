@@ -13,14 +13,11 @@ import mate.academy.service.ShoppingCartService;
 public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Inject
     private ShoppingCartDao shoppingCartDao;
-    //@Inject
-    //TicketDao ticketDao;
 
     @Override
     public void addSession(MovieSession movieSession, User user) {
         ShoppingCart shoppingCart = getByUser(user);
         Ticket ticket = new Ticket(movieSession, user);
-        //ticketDao.add(ticket);
         shoppingCart.getTickets().add(ticket);
         shoppingCartDao.update(shoppingCart);
     }
