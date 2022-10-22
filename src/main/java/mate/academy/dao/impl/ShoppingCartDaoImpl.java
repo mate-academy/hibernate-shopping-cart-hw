@@ -22,6 +22,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             transaction = session.beginTransaction();
             session.save(shoppingCart);
             transaction.commit();
+            return shoppingCart;
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
@@ -32,15 +33,19 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
                 session.close();
             }
         }
-        return shoppingCart;
     }
 
     @Override
     public Optional<ShoppingCart> getByUser(User user) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Query<ShoppingCart> query = session.createQuery("FROM ShoppingCart sc "
-                    + "left join fetch sc.tickets WHERE sc.user.id = :id", ShoppingCart.class);
-            query.setParameter("id", user.getId());
+            Query<ShoppingCart> query = session.createQuery(
+                    "from ShoppingCart sc "
+                            + "left join fetch sc.tickets t "
+                            + "left join fetch t.movieSession ms "
+                            + "left join fetch ms.cinemaHall "
+                            + "left join fetch ms.movie "
+                            + "where sc.user = :user", ShoppingCart.class);
+            query.setParameter("user", user);
             return query.uniqueResultOptional();
         } catch (Exception e) {
             throw new DataProcessingException("Can`t get by user from DB " + user, e);

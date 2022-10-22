@@ -84,5 +84,16 @@ public class Main {
         shoppingCartService.addSession(tomorrowMovieSession, alice);
         shoppingCartService.addSession(tomorrowMovieSession, bob);
         shoppingCartService.clear(shoppingCartService.getByUser(john));
+
+        User sasha = null;
+        User pasha = null;
+        try {
+            sasha = authenticationService.register("sasha@gmail.com", "1234");
+            pasha = authenticationService.register("pasha@gmail.com", "9874");
+        } catch (RegistrationException e) {
+            throw new RuntimeException("This email is already registered.", e);
+        }
+
+        System.out.println(shoppingCartService.getByUser(alice));
     }
 }
