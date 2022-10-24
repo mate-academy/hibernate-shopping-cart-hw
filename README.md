@@ -40,6 +40,7 @@ We will continue working on our Cinema project.
             void clear(ShoppingCart shoppingCart);
         }
         ```
+- In the `mate/academy/Main.main()` method create instance of ShoppingCartService using injector and test all methods from it.
 
 __You can check yourself using this__ [checklist](https://mate-academy.github.io/jv-program-common-mistakes/hibernate/add-shopping-cart/add-shopping-cart-hw)
 
