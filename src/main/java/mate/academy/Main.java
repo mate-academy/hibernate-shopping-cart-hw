@@ -66,17 +66,17 @@ public class Main {
         System.out.println(movieSessionService.findAvailableSessions(
                 fastAndFurious.getId(), LocalDate.now()));
 
-        User user1 = null;
+        User firstUser = null;
         try {
-            user1 = authenticationService.register("user1@gmail.com", "12345678");
-            System.out.println(user1);
+            firstUser = authenticationService.register("user1@gmail.com", "12345678");
+            System.out.println(firstUser);
         } catch (RegistrationException e) {
             throw new RuntimeException(e);
         }
-        shoppingCartService.addSession(tomorrowMovieSession, user1);
-        ShoppingCart user1ShoppingCart = shoppingCartService.getByUser(user1);
+        shoppingCartService.addSession(tomorrowMovieSession, firstUser);
+        ShoppingCart user1ShoppingCart = shoppingCartService.getByUser(firstUser);
         System.out.println(user1ShoppingCart);
         shoppingCartService.clear(user1ShoppingCart);
-        System.out.println(shoppingCartService.getByUser(user1));
+        System.out.println(shoppingCartService.getByUser(firstUser));
     }
 }
