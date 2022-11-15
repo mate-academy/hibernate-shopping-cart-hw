@@ -1,11 +1,6 @@
 package mate.academy.dao.impl;
 
 import java.util.Optional;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Dao;
@@ -14,6 +9,7 @@ import mate.academy.model.User;
 import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 @Dao
 public class ShoppingCartDaoImpl implements ShoppingCartDao {
@@ -42,14 +38,10 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
     @Override
     public Optional<ShoppingCart> getByUser(User user) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            CriteriaBuilder cb = session.getCriteriaBuilder();
-            CriteriaQuery<ShoppingCart> query = cb.createQuery(ShoppingCart.class);
-            Root<ShoppingCart> root = query.from(ShoppingCart.class);
-            Predicate predicate = cb.equal(root.get("user"), user);
-            query.select(root).where(predicate);
-            root.fetch("tickets", JoinType.LEFT);
-            root.fetch("user");
-            return session.createQuery(query).uniqueResultOptional();
+            Query<ShoppingCart> query = session.createQuery("from ShoppingCart s left join "
+                    + "fetch s.tickets, s.user where s.user = :user", ShoppingCart.class);
+            query.setParameter("user", user);
+            return query.uniqueResultOptional();
         } catch (Exception e) {
             throw new DataProcessingException("Can't get shopping cart by " + user, e);
         }
