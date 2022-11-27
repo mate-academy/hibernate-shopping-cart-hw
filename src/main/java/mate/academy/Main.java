@@ -2,7 +2,6 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
@@ -15,7 +14,6 @@ import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
 import mate.academy.service.ShoppingCartService;
-import mate.academy.service.UserService;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.academy");
@@ -37,7 +35,8 @@ public class Main {
         secondCinemaHall.setCapacity(200);
         secondCinemaHall.setDescription("second hall with capacity 200");
 
-        CinemaHallService cinemaHallService = (CinemaHallService) injector.getInstance(CinemaHallService.class);
+        CinemaHallService cinemaHallService = (CinemaHallService)
+                injector.getInstance(CinemaHallService.class);
         cinemaHallService.add(firstCinemaHall);
         cinemaHallService.add(secondCinemaHall);
 
@@ -54,7 +53,8 @@ public class Main {
         yesterdayMovieSession.setMovie(fastAndFurious);
         yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(1L));
 
-        MovieSessionService movieSessionService = (MovieSessionService) injector.getInstance(MovieSessionService.class);
+        MovieSessionService movieSessionService = (MovieSessionService)
+                injector.getInstance(MovieSessionService.class);
         movieSessionService.add(tomorrowMovieSession);
         movieSessionService.add(yesterdayMovieSession);
 
@@ -89,8 +89,5 @@ public class Main {
         ShoppingCart shoppingCartOfUser = shoppingCartService.getByUser(user);
         System.out.println("Cleaning of shopping cart");
         shoppingCartService.clear(shoppingCartOfUser);
-
-
-
     }
 }

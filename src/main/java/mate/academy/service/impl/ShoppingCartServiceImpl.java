@@ -11,9 +11,6 @@ import mate.academy.model.User;
 import mate.academy.service.ShoppingCartService;
 import mate.academy.service.UserService;
 
-import java.util.Collection;
-import java.util.Collections;
-
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Inject
