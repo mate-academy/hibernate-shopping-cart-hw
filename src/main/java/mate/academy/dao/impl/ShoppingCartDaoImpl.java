@@ -51,9 +51,12 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             Root<ShoppingCart> root = query.from(ShoppingCart.class);
             Fetch<ShoppingCart, User> userFetch = root.fetch("user");
             Fetch<ShoppingCart, Ticket> ticketsFetch = root.fetch("tickets", JoinType.LEFT);
-            Fetch<Ticket, MovieSession> movieSessionFetch = ticketsFetch.fetch("movieSession", JoinType.LEFT);
-            Fetch<MovieSession, Movie> movieFetch = movieSessionFetch.fetch("movie", JoinType.LEFT);
-            Fetch<MovieSession, CinemaHall> cinemaHallFetch = movieSessionFetch.fetch("cinemaHall", JoinType.LEFT);
+            Fetch<Ticket, MovieSession> movieSessionFetch
+                    = ticketsFetch.fetch("movieSession", JoinType.LEFT);
+            Fetch<MovieSession, Movie> movieFetch
+                    = movieSessionFetch.fetch("movie", JoinType.LEFT);
+            Fetch<MovieSession, CinemaHall> cinemaHallFetch
+                    = movieSessionFetch.fetch("cinemaHall", JoinType.LEFT);
             query.where(cb.equal(root.get("user"), user));
             return session.createQuery(query).uniqueResultOptional();
         } catch (Exception e) {
