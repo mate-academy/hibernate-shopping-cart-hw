@@ -72,8 +72,10 @@ public class Main {
         ShoppingCart shoppingCart = shoppingCartService.getByUser(someUser);
         System.out.println(shoppingCart);
         shoppingCartService.addSession(tomorrowMovieSession, someUser);
+        shoppingCart = shoppingCartService.getByUser(someUser);
         System.out.println(shoppingCart);
         shoppingCartService.clear(shoppingCart);
+        shoppingCart = shoppingCartService.getByUser(someUser);
         System.out.println(shoppingCart);
     }
 }
