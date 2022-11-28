@@ -29,7 +29,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public ShoppingCart getByUser(User user) {
         Optional<ShoppingCart> cart = shoppingCartDao.getByUser(user);
-        if(cart.isEmpty()){
+        if (cart.isEmpty()) {
             throw new RuntimeException("No cart associated with user: " + user);
         }
         return cart.get();
