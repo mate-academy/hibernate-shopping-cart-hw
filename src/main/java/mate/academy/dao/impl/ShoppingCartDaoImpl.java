@@ -46,8 +46,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             Root<ShoppingCart> root = query.from(ShoppingCart.class);
             root.fetch("tickets",JoinType.LEFT);
             query.where(cb.equal(root.get("user"), user));
-            Optional<ShoppingCart> shoppingCartOptional = session.createQuery(query).uniqueResultOptional();
-            return shoppingCartOptional;
+            return session.createQuery(query).uniqueResultOptional();
         } catch (Exception e) {
             throw new DataProcessingException("Can't get user from db.User: " + user, e);
         }
