@@ -21,7 +21,7 @@ public class ShoppingCart {
     @JoinTable(joinColumns = @JoinColumn(name = "shopping_cart_id"),
             inverseJoinColumns = @JoinColumn(name = "ticket_id"))
     private List<Ticket> tickets;
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @OneToOne(cascade = CascadeType.MERGE)
     @MapsId
     @JoinColumn(name = "shopping_cart_id")
     private User user;
