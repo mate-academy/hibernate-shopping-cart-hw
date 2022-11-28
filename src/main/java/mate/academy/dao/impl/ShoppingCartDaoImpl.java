@@ -3,6 +3,7 @@ package mate.academy.dao.impl;
 import java.util.Optional;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.exception.DataProcessingException;
@@ -43,8 +44,10 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             CriteriaBuilder cb = session.getCriteriaBuilder();
             CriteriaQuery<ShoppingCart> query = cb.createQuery(ShoppingCart.class);
             Root<ShoppingCart> root = query.from(ShoppingCart.class);
+            root.fetch("tickets",JoinType.LEFT);
             query.where(cb.equal(root.get("user"), user));
-            return session.createQuery(query).uniqueResultOptional();
+            Optional<ShoppingCart> shoppingCartOptional = session.createQuery(query).uniqueResultOptional();
+            return shoppingCartOptional;
         } catch (Exception e) {
             throw new DataProcessingException("Can't get user from db.User: " + user, e);
         }
