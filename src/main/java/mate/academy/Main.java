@@ -71,9 +71,15 @@ public class Main {
         User bob = null;
         try {
             authenticationService.register("rome@ukr.net", "1234");
+        } catch (RegistrationException e) {
+            throw new RuntimeException("Didn't manage to register the user", e);
+        }
+
+        try {
             bob = authenticationService.login("rome@ukr.net", "1234");
-        } catch (RegistrationException | AuthenticationException e) {
-            System.out.println("Error");
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("Didn't manage to authenticate the user "
+                    + "with the email of - " + bob.getEmail());
         }
 
         shoppingCartService.addSession(yesterdayMovieSession, bob);

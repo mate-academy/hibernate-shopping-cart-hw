@@ -22,6 +22,11 @@ public class Ticket {
     @JoinColumn(name = "user_id")
     private User user;
 
+    public Ticket(MovieSession movieSession, User user) {
+        this.movieSession = movieSession;
+        this.user = user;
+    }
+
     public Long getId() {
         return id;
     }
