@@ -1,6 +1,7 @@
 package mate.academy.service.impl;
 
 import java.util.Optional;
+import javax.persistence.EntityNotFoundException;
 import mate.academy.dao.UserDao;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
@@ -18,6 +19,12 @@ public class UserServiceImpl implements UserService {
         user.setSalt(HashUtil.getSalt());
         user.setPassword(HashUtil.hashPassword(user.getPassword(), user.getSalt()));
         return userDao.add(user);
+    }
+
+    @Override
+    public User get(Long id) {
+        return userDao.get(id).orElseThrow(() ->
+                new EntityNotFoundException("Can't get by id:" + id));
     }
 
     @Override
