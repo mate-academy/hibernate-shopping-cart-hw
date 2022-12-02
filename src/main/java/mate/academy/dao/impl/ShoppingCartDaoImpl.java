@@ -17,8 +17,12 @@ public class ShoppingCartDaoImpl extends AbstractDaoImpl<ShoppingCart> implement
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query<ShoppingCart> query = session.createQuery(
                     "SELECT DISTINCT sc FROM ShoppingCart sc "
+                            + "LEFT JOIN FETCH sc.tickets t "
+                            + "LEFT JOIN FETCH t.user "
                             + "LEFT JOIN FETCH sc.user "
-                            + "LEFT JOIN FETCH sc.tickets "
+                            + "LEFT JOIN FETCH t.movieSession ms "
+                            + "LEFT JOIN FETCH ms.movie "
+                            + "LEFT JOIN FETCH ms.cinemaHall "
                             + "WHERE sc.id = :id", ShoppingCart.class);
             query.setParameter("id", id);
             return query.uniqueResultOptional();
@@ -32,8 +36,12 @@ public class ShoppingCartDaoImpl extends AbstractDaoImpl<ShoppingCart> implement
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query<ShoppingCart> query = session.createQuery(
                     "SELECT DISTINCT sc FROM ShoppingCart sc "
-                            + "LEFT JOIN FETCH sc.tickets "
+                            + "LEFT JOIN FETCH sc.tickets t "
+                            + "LEFT JOIN FETCH t.user "
                             + "LEFT JOIN FETCH sc.user "
+                            + "LEFT JOIN FETCH t.movieSession ms "
+                            + "LEFT JOIN FETCH ms.movie "
+                            + "LEFT JOIN FETCH ms.cinemaHall "
                             + "WHERE sc.user = :user", ShoppingCart.class);
             query.setParameter("user", user);
             return query.uniqueResultOptional();
