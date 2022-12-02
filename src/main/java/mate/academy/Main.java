@@ -14,7 +14,6 @@ import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
 import mate.academy.service.ShoppingCartService;
-import mate.academy.service.UserService;
 
 public class Main {
     public static void main(String[] args) {
@@ -68,7 +67,6 @@ public class Main {
             User user = authenticationService.register("email@gmail.com", "1111111");
             ShoppingCartService cartService =
                     (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
-            cartService.registerNewShoppingCart(user);
             cartService.addSession(tomorrowMovieSession, user);
             ShoppingCart shoppingCart = cartService.getByUser(user);
             System.out.println(shoppingCart);
