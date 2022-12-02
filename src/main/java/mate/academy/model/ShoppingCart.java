@@ -14,16 +14,18 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "shoppingCarts")
+@Table(name = "shopping_carts")
 public class ShoppingCart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "shoppingCarts_tickets", joinColumns = @JoinColumn(name = "shoppingCart_id"),
+    @JoinTable(name = "shopping_carts_tickets",
+            joinColumns = @JoinColumn(name = "shopping_carts_id"),
             inverseJoinColumns = @JoinColumn(name = "ticket_id"))
     private List<Ticket> tickets;
     @OneToOne (fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     @MapsId
     private User user;
 
