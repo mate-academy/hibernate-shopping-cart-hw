@@ -7,10 +7,10 @@ import javax.persistence.*;
 @Table(name = "shopping_carts")
 public class ShoppingCart {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @MapsId
     private User user;
     @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "shopping_carts_tickets",
