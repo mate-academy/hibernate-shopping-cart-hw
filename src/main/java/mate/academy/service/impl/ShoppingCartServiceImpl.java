@@ -23,15 +23,14 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public void addSession(MovieSession movieSession, User user) {
         Ticket ticket = new Ticket(movieSession, user);
         ShoppingCart cart = getByUser(user);
-        ticketDao.add(ticket);
-        cart.getTickets().add(ticket);
+        cart.getTickets().add(ticketDao.add(ticket));
         shoppingCartDao.update(cart);
     }
 
     @Override
     public ShoppingCart getByUser(User user) {
         return shoppingCartDao.getByUser(user).orElseThrow(
-                () -> new EntityNotFoundException(user.toString())
+                () -> new EntityNotFoundException("ShoppingCart by user " + user)
         );
     }
 
