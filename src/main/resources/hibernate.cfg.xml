@@ -2,7 +2,7 @@
     <session-factory>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</property>
         <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
-        <property name="connection.url">jdbc:mysql://localhost:3306/ticket_app</property>
+        <property name="connection.url">jdbc:mysql://localhost:3306/inheritance_test</property>
         <property name="connection.username">root</property>
         <property name="connection.password">A3394124</property>
         <property name="show_sql">true</property>
