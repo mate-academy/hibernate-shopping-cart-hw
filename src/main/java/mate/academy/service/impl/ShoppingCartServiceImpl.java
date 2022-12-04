@@ -1,11 +1,9 @@
 package mate.academy.service.impl;
 
 import java.util.ArrayList;
-import java.util.Optional;
 import javax.persistence.EntityNotFoundException;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
-import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.MovieSession;
@@ -24,18 +22,12 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void addSession(MovieSession movieSession, User user) {
-        Optional<ShoppingCart> shoppingCart = shoppingCartDao.getByUser(user);
-        if (shoppingCart.isPresent()) {
-            Ticket ticket = new Ticket();
-            ticket.setMovieSession(movieSession);
-            ticket.setUser(user);
-            ticketDao.add(ticket);
-            shoppingCart.get().getTickets().add(ticket);
-            shoppingCartDao.update(shoppingCart.get());
-        } else {
-            throw new DataProcessingException("Can't add movie session, shopping cart don't exist");
-        }
-
+        Ticket ticket = new Ticket();
+        ShoppingCart shoppingCart = getByUser(user);
+        ticket.setMovieSession(movieSession);
+        ticket.setUser(user);
+        shoppingCart.getTickets().add(ticketDao.add(ticket));
+        shoppingCartDao.update(shoppingCart);
     }
 
     @Override
