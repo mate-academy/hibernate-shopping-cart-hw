@@ -1,9 +1,9 @@
 package mate.academy.service.impl;
 
 import java.util.ArrayList;
+import javax.persistence.EntityNotFoundException;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
-import mate.academy.exception.EntityNotFoundException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.MovieSession;
@@ -30,7 +30,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public ShoppingCart getByUser(User user) {
         return shoppingCartDao.getByUser(user).orElseThrow(
-                () -> new EntityNotFoundException("ShoppingCart by user " + user)
+                () -> new EntityNotFoundException("Can't get shopping cart by user "
+                        + user)
         );
     }
 
