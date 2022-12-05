@@ -1,5 +1,6 @@
 package mate.academy.service.impl;
 
+import javax.persistence.EntityNotFoundException;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
 import mate.academy.lib.Inject;
@@ -10,8 +11,6 @@ import mate.academy.model.Ticket;
 import mate.academy.model.User;
 import mate.academy.service.ShoppingCartService;
 import mate.academy.service.UserService;
-
-import javax.persistence.EntityNotFoundException;
 
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
