@@ -11,6 +11,8 @@ import mate.academy.model.User;
 import mate.academy.service.ShoppingCartService;
 import mate.academy.service.UserService;
 
+import javax.persistence.EntityNotFoundException;
+
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Inject
@@ -34,7 +36,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public ShoppingCart getByUser(User user) {
         return shoppingCartDao.getByUser(user).orElseThrow(() ->
-                new RuntimeException("No shopping cart in DB for user " + user));
+                new EntityNotFoundException("No shopping cart in DB for user " + user));
     }
 
     @Override
