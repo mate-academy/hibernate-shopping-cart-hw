@@ -81,5 +81,6 @@ public class Main {
         shoppingCartService.addSession(yesterdayMovieSession, loginUser);
         ShoppingCart byUser = shoppingCartService.getByUser(loginUser);
         System.out.println(byUser);
+        shoppingCartService.clear(byUser);
     }
 }
