@@ -67,7 +67,14 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             session.update(shoppingCart);
             transaction.commit();
         } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
             throw new DataProcessingException("Can't merge shopping cart=" + shoppingCart, e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
         }
     }
 }

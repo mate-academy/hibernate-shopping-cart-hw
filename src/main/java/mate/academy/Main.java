@@ -1,24 +1,26 @@
 package mate.academy;
 
 import java.time.LocalDateTime;
+import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
 import mate.academy.model.User;
+import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
 import mate.academy.service.ShoppingCartService;
-import mate.academy.service.UserService;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.academy");
     private static MovieService movieService;
     private static CinemaHallService cinemaHallService;
     private static MovieSessionService movieSessionService;
-    private static UserService userService;
     private static ShoppingCartService shoppingCartService;
+    private static AuthenticationService authenticationService;
 
     static {
         serviceInitializer();
@@ -41,17 +43,24 @@ public class Main {
         tomorrowMovieSession.setShowTime(LocalDateTime.now().plusDays(1L));
         movieSessionService.add(tomorrowMovieSession);
 
-        User user = new User();
-        user.setEmail("Hello@gmail.com");
-        user.setPassword("123445");
-        userService.add(user);
+        User maxine = null;
+        try {
+            authenticationService.register("maxine@gmail.com", "123445");
+        } catch (RegistrationException e) {
+            throw new RuntimeException("Can't register new user", e);
+        }
 
-        shoppingCartService.registerNewShoppingCart(user);
-        shoppingCartService.addSession(tomorrowMovieSession, user);
+        try {
+            maxine = authenticationService.login("maxine@gmail.com", "123445");
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("Can't login by email=maxine@gmail.com", e);
+        }
 
-        System.out.println(shoppingCartService.getByUser(user));
+        shoppingCartService.addSession(tomorrowMovieSession, maxine);
 
-        shoppingCartService.clear(shoppingCartService.getByUser(user));
+        System.out.println(shoppingCartService.getByUser(maxine));
+
+        shoppingCartService.clear(shoppingCartService.getByUser(maxine));
     }
 
     private static void serviceInitializer() {
@@ -60,8 +69,9 @@ public class Main {
                 = (CinemaHallService) injector.getInstance(CinemaHallService.class);
         movieSessionService
                 = (MovieSessionService) injector.getInstance(MovieSessionService.class);
-        userService = (UserService) injector.getInstance(UserService.class);
         shoppingCartService
                 = (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
+        authenticationService
+                = (AuthenticationService) injector.getInstance(AuthenticationService.class);
     }
 }
