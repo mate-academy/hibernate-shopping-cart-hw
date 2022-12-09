@@ -4,6 +4,8 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -15,7 +17,10 @@ public class ShoppingCart {
     @Id
     private Long id;
     @OneToMany
-    private List<Ticket> ticketList;
+    @JoinTable(name = "shopping_carts_tickets",
+            joinColumns = @JoinColumn(name = "shopping_cart_id"),
+            inverseJoinColumns = @JoinColumn(name = "ticket_id"))
+    private List<Ticket> tickets;
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     private User user;
@@ -28,12 +33,12 @@ public class ShoppingCart {
         this.id = id;
     }
 
-    public List<Ticket> getTicketList() {
-        return ticketList;
+    public List<Ticket> getTickets() {
+        return tickets;
     }
 
-    public void setTicketList(List<Ticket> ticketList) {
-        this.ticketList = ticketList;
+    public void setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
     }
 
     public User getUser() {
@@ -48,7 +53,7 @@ public class ShoppingCart {
     public String toString() {
         return "ShoppingCart{"
                 + "id=" + id
-                + ", ticketList=" + ticketList
+                + ", tickets=" + tickets
                 + ", user=" + user
                 + '}';
     }
