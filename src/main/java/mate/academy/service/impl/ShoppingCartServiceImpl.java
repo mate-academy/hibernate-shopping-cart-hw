@@ -32,7 +32,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public ShoppingCart getByUser(User user) {
         return shoppingCartDao.getByUser(user).orElseThrow(
-                () -> new EntityNotFoundException("Can not find ShoppingCart with user: " + user)
+                () -> new EntityNotFoundException("Can not find ShoppingCart  with user: " + user)
         );
     }
 
