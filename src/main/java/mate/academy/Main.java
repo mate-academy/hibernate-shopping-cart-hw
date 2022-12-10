@@ -82,5 +82,6 @@ public class Main {
         ShoppingCart byUser = shoppingCartService.getByUser(loginUser);
         System.out.println(byUser);
         shoppingCartService.clear(byUser);
+        System.out.println(byUser);
     }
 }

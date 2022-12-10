@@ -1,11 +1,8 @@
 package mate.academy.dao.impl;
 
 import java.util.Optional;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
+
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Dao;
@@ -44,10 +41,14 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             CriteriaBuilder cb = session.getCriteriaBuilder();
             CriteriaQuery<ShoppingCart> query = cb.createQuery(ShoppingCart.class);
-            Root<ShoppingCart> root = query.from(ShoppingCart.class);
-            root.fetch("tickets", JoinType.LEFT);
-            root.fetch("user", JoinType.INNER);
-            Predicate predicate = cb.equal(root.get("user"), user);
+            Root<ShoppingCart> shoppingCartRoot = query.from(ShoppingCart.class);
+            Fetch<Object, Object> ticketsFetch = shoppingCartRoot.fetch("ticketsFetch", JoinType.LEFT);
+            Fetch<Object, Object> movieSessionFetch = ticketsFetch.fetch("movieSession", JoinType.LEFT);
+            shoppingCartRoot.fetch("user", JoinType.INNER);
+            ticketsFetch.fetch("user", JoinType.LEFT);
+            movieSessionFetch.fetch("movie", JoinType.LEFT);
+            movieSessionFetch.fetch("cinemaHall", JoinType.LEFT);
+            Predicate predicate = cb.equal(shoppingCartRoot.get("user"), user);
             return session.createQuery(query.where(predicate)).uniqueResultOptional();
         } catch (Exception e) {
             throw new DataProcessingException("Can't get shopping cart for user " + user, e);
