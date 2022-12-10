@@ -1,8 +1,12 @@
 package mate.academy.dao.impl;
 
 import java.util.Optional;
-import javax.persistence.criteria.*;
-
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Fetch;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Dao;
@@ -42,8 +46,10 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             CriteriaBuilder cb = session.getCriteriaBuilder();
             CriteriaQuery<ShoppingCart> query = cb.createQuery(ShoppingCart.class);
             Root<ShoppingCart> shoppingCartRoot = query.from(ShoppingCart.class);
-            Fetch<Object, Object> ticketsFetch = shoppingCartRoot.fetch("ticketsFetch", JoinType.LEFT);
-            Fetch<Object, Object> movieSessionFetch = ticketsFetch.fetch("movieSession", JoinType.LEFT);
+            Fetch<Object, Object> ticketsFetch = shoppingCartRoot
+                    .fetch("ticketsFetch", JoinType.LEFT);
+            Fetch<Object, Object> movieSessionFetch = ticketsFetch
+                    .fetch("movieSession", JoinType.LEFT);
             shoppingCartRoot.fetch("user", JoinType.INNER);
             ticketsFetch.fetch("user", JoinType.LEFT);
             movieSessionFetch.fetch("movie", JoinType.LEFT);
