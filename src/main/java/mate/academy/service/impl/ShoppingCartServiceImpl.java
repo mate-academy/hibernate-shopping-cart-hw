@@ -1,7 +1,5 @@
 package mate.academy.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.persistence.EntityNotFoundException;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
@@ -37,8 +35,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void registerNewShoppingCart(User user) {
-        List<Ticket> tickets = new ArrayList<>();
-        shoppingCartDao.add(new ShoppingCart(tickets, user));
+        shoppingCartDao.add(new ShoppingCart(user));
     }
 
     @Override
