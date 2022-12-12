@@ -10,7 +10,6 @@ import mate.academy.model.ShoppingCart;
 import mate.academy.model.Ticket;
 import mate.academy.model.User;
 import mate.academy.service.ShoppingCartService;
-
 import javax.persistence.EntityNotFoundException;
 
 @Service
@@ -31,7 +30,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         ShoppingCart userShoppingCart = getByUser(user);
         userShoppingCart.getTickets().add(ticket);
         shoppingCartDao.update(userShoppingCart);
-
     }
 
     @Override
