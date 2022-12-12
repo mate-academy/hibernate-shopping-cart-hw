@@ -10,7 +10,6 @@ import mate.academy.model.ShoppingCart;
 import mate.academy.model.Ticket;
 import mate.academy.model.User;
 import mate.academy.service.ShoppingCartService;
-import mate.academy.service.UserService;
 
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
@@ -18,8 +17,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private ShoppingCartDao shoppingCartDao;
     @Inject
     private TicketDao ticketDao;
-    @Inject
-    private UserService userService;
 
     @Override
     public void addSession(MovieSession movieSession, User user) {
