@@ -23,8 +23,10 @@ public class Main {
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
         movieService.add(fastAndFurious);
-        System.out.println(movieService.get(fastAndFurious.getId()));
-        movieService.getAll().forEach(System.out::println);
+
+        Movie interstellar = new Movie("Interstellar");
+        fastAndFurious.setDescription("scy-fi");
+        movieService.add(interstellar);
 
         CinemaHall firstCinemaHall = new CinemaHall();
         firstCinemaHall.setCapacity(100);
@@ -39,26 +41,23 @@ public class Main {
         cinemaHallService.add(firstCinemaHall);
         cinemaHallService.add(secondCinemaHall);
 
-        System.out.println(cinemaHallService.getAll());
-        System.out.println(cinemaHallService.get(firstCinemaHall.getId()));
+        MovieSession todaySession = new MovieSession();
+        todaySession.setCinemaHall(firstCinemaHall);
+        todaySession.setMovie(fastAndFurious);
+        todaySession.setShowTime(LocalDateTime.now());
 
-        MovieSession tomorrowMovieSession = new MovieSession();
-        tomorrowMovieSession.setCinemaHall(firstCinemaHall);
-        tomorrowMovieSession.setMovie(fastAndFurious);
-        tomorrowMovieSession.setShowTime(LocalDateTime.now().plusDays(1L));
-
-        MovieSession yesterdayMovieSession = new MovieSession();
-        yesterdayMovieSession.setCinemaHall(firstCinemaHall);
-        yesterdayMovieSession.setMovie(fastAndFurious);
-        yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(1L));
+        MovieSession afterTomorrowSession = new MovieSession();
+        afterTomorrowSession.setCinemaHall(firstCinemaHall);
+        afterTomorrowSession.setMovie(fastAndFurious);
+        afterTomorrowSession.setShowTime(LocalDateTime.now().plusDays(2L));
 
         MovieSessionService movieSessionService
                 = (MovieSessionService) injector.getInstance(MovieSessionService.class);
-        movieSessionService.add(tomorrowMovieSession);
-        movieSessionService.add(yesterdayMovieSession);
+        movieSessionService.add(todaySession);
+        movieSessionService.add(afterTomorrowSession);
 
-        System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
-        System.out.println(movieSessionService.findAvailableSessions(
+        System.out.println("\n=== " + movieSessionService.get(afterTomorrowSession.getId()));
+        System.out.println("\n=== " + movieSessionService.findAvailableSessions(
                 fastAndFurious.getId(), LocalDate.now()));
 
         AuthenticationService authenticationService
@@ -66,6 +65,7 @@ public class Main {
 
         User stepan;
         User olena;
+
         try {
             stepan = authenticationService.register("stepan@gmail.com", "1234");
             olena = authenticationService.register("olena@ukr.net", "4321");
@@ -76,9 +76,14 @@ public class Main {
         ShoppingCartService shoppingCartService
                 = (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
 
-        shoppingCartService.addSession(yesterdayMovieSession, stepan);
-        shoppingCartService.addSession(yesterdayMovieSession, olena);
+        shoppingCartService.addSession(afterTomorrowSession, stepan);
+        shoppingCartService.addSession(afterTomorrowSession, olena);
 
-        System.out.println(shoppingCartService.getByUser(olena).getTickets());
+        System.out.println("\n=== " + shoppingCartService.getByUser(olena).getTickets());
+
+        shoppingCartService.clear(shoppingCartService.getByUser(olena));
+
+        System.out.println("\nafter clearing of the cart === " + shoppingCartService.getByUser(olena).getTickets());
+
     }
 }
