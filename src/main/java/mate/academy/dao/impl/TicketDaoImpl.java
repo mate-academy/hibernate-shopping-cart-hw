@@ -20,7 +20,7 @@ public class TicketDaoImpl implements TicketDao {
             session.save(ticket);
             transaction.commit();
             return ticket;
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
