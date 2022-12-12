@@ -83,7 +83,8 @@ public class Main {
 
         shoppingCartService.clear(shoppingCartService.getByUser(olena));
 
-        System.out.println("\nafter clearing of the cart === " + shoppingCartService.getByUser(olena).getTickets());
+        System.out.println("\nafter clearing of the cart === "
+                + shoppingCartService.getByUser(olena).getTickets());
 
     }
 }
