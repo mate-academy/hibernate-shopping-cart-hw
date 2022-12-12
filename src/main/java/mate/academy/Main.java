@@ -61,6 +61,8 @@ public class Main {
         System.out.println(shoppingCartService.getByUser(maxine));
 
         shoppingCartService.clear(shoppingCartService.getByUser(maxine));
+
+        System.out.println(shoppingCartService.getByUser(maxine));
     }
 
     private static void serviceInitializer() {
