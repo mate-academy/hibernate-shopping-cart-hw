@@ -1,8 +1,10 @@
 package mate.academy.service.impl;
 
+import java.util.ArrayList;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
-import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.MovieSession;
@@ -11,36 +13,39 @@ import mate.academy.model.Ticket;
 import mate.academy.model.User;
 import mate.academy.service.ShoppingCartService;
 
-import java.sql.Array;
-import java.util.ArrayList;
-
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Inject
-    ShoppingCartDao shoppingCartDao;
+    private ShoppingCartDao shoppingCartDao;
     @Inject
-    TicketDao ticketDao;
+    private TicketDao ticketDao;
 
     @Override
     public void addSession(MovieSession movieSession, User user) {
         Ticket ticket = new Ticket();
-        ticket.setMovieSession(movieSession);
         ticket.setUser(user);
-        ShoppingCart shoppingCart = getByUser(user);
+        ticket.setMovieSession(movieSession);
+        ticketDao.add(ticket);
+        Optional<ShoppingCart> cartFromDB = shoppingCartDao.getByUser(user);
+        if (cartFromDB.isEmpty()) {
+            throw new RuntimeException("ShoppingCart with user not found " + user);
+        }
+        ShoppingCart shoppingCart = cartFromDB.get();
         shoppingCart.getTickets().add(ticket);
         shoppingCartDao.update(shoppingCart);
     }
 
     @Override
     public ShoppingCart getByUser(User user) {
-        return shoppingCartDao.getByUser(user).orElseThrow( () -> new DataProcessingException("Cant get user with id " + user.getId()));
+        return shoppingCartDao.getByUser(user)
+                .orElseThrow(() -> new NoSuchElementException("Not find user " + user));
     }
 
     @Override
     public void registerNewShoppingCart(User user) {
         ShoppingCart shoppingCart = new ShoppingCart();
-        shoppingCart.setTickets(new ArrayList<>());
         shoppingCart.setUser(user);
+        shoppingCart.setTickets(new ArrayList<>());
         shoppingCartDao.add(shoppingCart);
     }
 

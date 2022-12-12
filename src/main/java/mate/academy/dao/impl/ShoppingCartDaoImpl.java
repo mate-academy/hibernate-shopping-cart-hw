@@ -1,5 +1,6 @@
 package mate.academy.dao.impl;
 
+import java.util.Optional;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Dao;
@@ -10,14 +11,12 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
-import java.util.Optional;
-
 @Dao
 public class ShoppingCartDaoImpl implements ShoppingCartDao {
     @Override
     public ShoppingCart add(ShoppingCart shoppingCart) {
-        Transaction transaction = null;
         Session session = null;
+        Transaction transaction = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
@@ -28,7 +27,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Can't insert shopping cart " + shoppingCart, e);
+            throw new DataProcessingException("Can't add shopping cart" + shoppingCart, e);
         } finally {
             if (session != null) {
                 session.close();
@@ -38,25 +37,26 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
 
     @Override
     public Optional<ShoppingCart> getByUser(User user) {
-        try(Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Query<ShoppingCart> query = session.createQuery("SELECT s FROM ShoppingCart s LEFT JOIN FETCH s.tickets  t " +
-                                                                "LEFT JOIN FETCH  t.movieSession m " +
-                                                                "LEFT JOIN FETCH m.movie " +
-                                                                "LEFT JOIN FETCH m.cinemaHall " +
-                                                                "LEFT JOIN FETCH t.user " +
-                                                                "LEFT JOIN FETCH s.user " +
-                                                                "WHERE s.user = :user", ShoppingCart.class);
-            query.setParameter("user", user);
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Query<ShoppingCart> query = session.createQuery("FROM ShoppingCart s "
+                                                            + "LEFT JOIN FETCH s.user "
+                                                            + "LEFT JOIN FETCH s.tickets t "
+                                                            + "LEFT JOIN FETCH t.movieSession m "
+                                                            + "LEFT JOIN FETCH m.movie "
+                                                            + "LEFT JOIN FETCH m.cinemaHall "
+                                                            + "WHERE s.user.id=:id",
+                                                                ShoppingCart.class);
+            query.setParameter("id", user.getId());
             return query.uniqueResultOptional();
         } catch (Exception e) {
-            throw new DataProcessingException("Cant get shopping cart by user " + user.getId(), e);
+            throw new DataProcessingException("Can't get ShoppingCart by user" + user, e);
         }
     }
 
     @Override
     public void update(ShoppingCart shoppingCart) {
-        Transaction transaction = null;
         Session session = null;
+        Transaction transaction = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
@@ -66,7 +66,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Can't update shopping cart " + shoppingCart, e);
+            throw new DataProcessingException("Can't update ShoppingCart" + shoppingCart, e);
         } finally {
             if (session != null) {
                 session.close();

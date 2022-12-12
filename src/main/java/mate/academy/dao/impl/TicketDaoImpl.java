@@ -12,8 +12,8 @@ import org.hibernate.Transaction;
 public class TicketDaoImpl implements TicketDao {
     @Override
     public Ticket add(Ticket ticket) {
-        Transaction transaction = null;
         Session session = null;
+        Transaction transaction = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
@@ -24,7 +24,7 @@ public class TicketDaoImpl implements TicketDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Can't insert shopping cart " + ticket, e);
+            throw new DataProcessingException("Can't add ticket" + ticket, e);
         } finally {
             if (session != null) {
                 session.close();
