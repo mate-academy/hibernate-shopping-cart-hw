@@ -1,6 +1,5 @@
 package mate.academy.model;
 
-import java.util.Collections;
 import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -59,10 +58,6 @@ public class ShoppingCart {
 
     public void addTicket(Ticket ticket) {
         tickets.add(ticket);
-    }
-
-    public void clear() {
-        tickets = Collections.emptySet();
     }
 
     @Override
