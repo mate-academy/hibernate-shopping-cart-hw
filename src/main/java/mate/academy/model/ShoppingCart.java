@@ -28,7 +28,6 @@ public class ShoppingCart {
     private User user;
 
     public ShoppingCart() {
-
     }
 
     public ShoppingCart(User user) {

@@ -24,7 +24,6 @@ public class Ticket {
     private User user;
 
     public Ticket() {
-
     }
 
     public Ticket(MovieSession movieSession, User user) {
