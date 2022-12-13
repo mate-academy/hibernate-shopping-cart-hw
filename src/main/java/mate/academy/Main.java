@@ -68,7 +68,7 @@ public class Main {
                 (ShoppingCartService) INJECTOR.getInstance(ShoppingCartService.class);
         ShoppingCart byUser = shoppingCartService.getByUser(user);
         shoppingCartService.addSession(tomorrowMovieSession, user);
-        ShoppingCart updatedByUser= shoppingCartService.getByUser(user);
+        ShoppingCart updatedByUser = shoppingCartService.getByUser(user);
         System.out.println(updatedByUser);
         shoppingCartService.clear(byUser);
         System.out.println(byUser);
