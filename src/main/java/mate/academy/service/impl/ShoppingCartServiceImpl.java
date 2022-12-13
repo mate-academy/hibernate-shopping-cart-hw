@@ -1,5 +1,6 @@
 package mate.academy.service.impl;
 
+import java.util.Collections;
 import javax.persistence.EntityNotFoundException;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
@@ -44,7 +45,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void clear(ShoppingCart shoppingCart) {
-        shoppingCart.getTickets().clear();
+        shoppingCart.setTickets(Collections.<Ticket>emptyList());
         shoppingCartDao.update(shoppingCart);
     }
 }
