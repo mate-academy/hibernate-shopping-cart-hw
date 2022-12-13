@@ -1,5 +1,6 @@
 package mate.academy.service.impl;
 
+import javax.persistence.EntityNotFoundException;
 import mate.academy.dao.MovieSessionDao;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.UserDao;
@@ -10,7 +11,6 @@ import mate.academy.model.ShoppingCart;
 import mate.academy.model.Ticket;
 import mate.academy.model.User;
 import mate.academy.service.ShoppingCartService;
-import javax.persistence.EntityNotFoundException;
 
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
@@ -20,7 +20,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private UserDao userDao;
     @Inject
     private ShoppingCartDao shoppingCartDao;
-
 
     @Override
     public void addSession(MovieSession movieSession, User user) {
