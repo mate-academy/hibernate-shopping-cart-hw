@@ -22,11 +22,11 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             transaction = session.beginTransaction();
             session.save(shoppingCart);
             transaction.commit();
-        } catch (DataProcessingException e) {
+        } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new RuntimeException("Couldn't add shopping cart " + shoppingCart, e);
+            throw new DataProcessingException("Couldn't add shopping cart " + shoppingCart, e);
         } finally {
             if (session != null) {
                 session.close();
@@ -47,8 +47,8 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
                             + "where sc.user.id = :userId", ShoppingCart.class)
                     .setParameter("userId", user.getId())
                     .uniqueResultOptional();
-        } catch (DataProcessingException e) {
-            throw new RuntimeException("Couldn't find shopping cart by user " + user, e);
+        } catch (Exception e) {
+            throw new DataProcessingException("Couldn't find shopping cart by user " + user, e);
         }
     }
 
@@ -61,11 +61,11 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             transaction = session.beginTransaction();
             session.update(shoppingCart);
             transaction.commit();
-        } catch (DataProcessingException e) {
+        } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new RuntimeException("Couldn't update shopping cart", e);
+            throw new DataProcessingException("Couldn't update shopping cart", e);
         } finally {
             if (session != null) {
                 session.close();
