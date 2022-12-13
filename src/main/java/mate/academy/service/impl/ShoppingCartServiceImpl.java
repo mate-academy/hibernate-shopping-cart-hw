@@ -26,7 +26,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         ticket.setUser(user);
         ticket.setMovieSession(movieSession);
         ticketDao.add(ticket);
-        Optional<ShoppingCart> cartFromDB = shoppingCartDao.getByUser(user);
+        Optional<ShoppingCart> cartFromDB = Optional.ofNullable(getByUser(user));
         if (cartFromDB.isEmpty()) {
             throw new RuntimeException("ShoppingCart with user not found " + user);
         }
@@ -51,7 +51,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void clear(ShoppingCart shoppingCart) {
-        shoppingCart.getTickets().clear();
+        shoppingCart.setTickets(new ArrayList<>());
         shoppingCartDao.update(shoppingCart);
     }
 }
