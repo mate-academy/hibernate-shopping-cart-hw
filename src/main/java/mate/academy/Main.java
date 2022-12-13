@@ -18,7 +18,7 @@ import mate.academy.service.ShoppingCartService;
 public class Main {
     private static final Injector INJECTOR = Injector.getInstance("mate.academy");
 
-    public static void main(String[] args) throws RegistrationException {
+    public static void main(String[] args) {
         MovieService movieService = (MovieService) INJECTOR.getInstance(MovieService.class);
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
@@ -63,14 +63,21 @@ public class Main {
 
         AuthenticationService authenticationService =
                 (AuthenticationService) INJECTOR.getInstance(AuthenticationService.class);
-        User user = authenticationService.register("user@gmail.com", "qwerty12345");
+        User user;
+        try {
+            user = authenticationService.register("user@gmail.com", "qwerty12345");
+        } catch (RegistrationException e) {
+            throw new RuntimeException(e);
+        }
         ShoppingCartService shoppingCartService =
                 (ShoppingCartService) INJECTOR.getInstance(ShoppingCartService.class);
-        ShoppingCart byUser = shoppingCartService.getByUser(user);
+        ShoppingCart userCard = shoppingCartService.getByUser(user);
+        System.out.println("\n" + userCard + "\n");
         shoppingCartService.addSession(tomorrowMovieSession, user);
-        ShoppingCart updatedByUser = shoppingCartService.getByUser(user);
-        System.out.println(updatedByUser);
-        shoppingCartService.clear(byUser);
-        System.out.println(byUser);
+        userCard = shoppingCartService.getByUser(user);
+        System.out.println("\n" + userCard + "\n");
+        shoppingCartService.clear(userCard);
+        System.out.println("\n" + userCard + "\n");
+
     }
 }
