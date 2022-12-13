@@ -69,10 +69,10 @@ public class Main {
 
         ShoppingCartService shoppingCartService =
                 (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
-        shoppingCartService.registerNewShoppingCart(bob);
+        ShoppingCart byBob = shoppingCartService.getByUser(bob);
         shoppingCartService.addSession(tomorrowMovieSession, bob);
-        ShoppingCart bobShoppingCart = shoppingCartService.getByUser(bob);
-        System.out.println(bobShoppingCart.getTickets());
-        System.out.println(bobShoppingCart);
+        ShoppingCart updatedByBob = shoppingCartService.getByUser(bob);
+        System.out.println(updatedByBob);
+        shoppingCartService.clear(byBob);
     }
 }
