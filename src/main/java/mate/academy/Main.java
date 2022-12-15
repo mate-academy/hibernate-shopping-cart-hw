@@ -2,6 +2,8 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
@@ -9,6 +11,7 @@ import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
 import mate.academy.model.ShoppingCart;
+import mate.academy.model.Ticket;
 import mate.academy.model.User;
 import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
@@ -77,7 +80,14 @@ public class Main {
                 = (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
         shoppingCartService.addSession(tomorrowMovieSession, userFromDb);
         ShoppingCart shopCart = shoppingCartService.getByUser(userFromDb);
+        Ticket ticket = new Ticket();
+        List<Ticket> tickets = new ArrayList<>();
+        tickets.add(ticket);
+        shopCart.setTickets(tickets);
         System.out.println(shopCart.getId());
         System.out.println(shopCart);
+        shoppingCartService.clear(shopCart);
+        ShoppingCart byUser = shoppingCartService.getByUser(userFromDb);
+        System.out.println(byUser);
     }
 }
