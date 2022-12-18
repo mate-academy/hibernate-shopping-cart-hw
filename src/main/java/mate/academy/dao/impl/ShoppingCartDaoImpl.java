@@ -2,7 +2,6 @@ package mate.academy.dao.impl;
 
 import java.util.Optional;
 import mate.academy.dao.ShoppingCartDao;
-import mate.academy.dao.TicketDao;
 import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Dao;
 import mate.academy.model.ShoppingCart;
@@ -28,8 +27,8 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException
-                    ("Can't add shopping cart (" + shoppingCart + ") to DB ", e);
+            throw new DataProcessingException("Can't add shopping cart ("
+                    + shoppingCart + ") to DB ", e);
         } finally {
             if (session != null) {
                 session.close();

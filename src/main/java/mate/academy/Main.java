@@ -2,11 +2,14 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
-import mate.academy.model.*;
+import mate.academy.model.CinemaHall;
+import mate.academy.model.Movie;
+import mate.academy.model.MovieSession;
+import mate.academy.model.ShoppingCart;
+import mate.academy.model.User;
 import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
@@ -74,11 +77,11 @@ public class Main {
             throw new RuntimeException("Can't authenticate this user: " + user.getEmail());
         }
 
-            ShoppingCartService cartService =
-                    (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
-            cartService.addSession(yesterdayMovieSession, user);
-            cartService.addSession(tomorrowMovieSession, user);
-            ShoppingCart shoppingCart = cartService.getByUser(user);
-            cartService.clear(shoppingCart);
+        ShoppingCartService cartService =
+                        (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
+        cartService.addSession(yesterdayMovieSession, user);
+        cartService.addSession(tomorrowMovieSession, user);
+        ShoppingCart shoppingCart = cartService.getByUser(user);
+        cartService.clear(shoppingCart);
     }
 }
