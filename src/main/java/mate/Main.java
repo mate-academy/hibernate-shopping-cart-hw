@@ -77,36 +77,33 @@ public class Main {
         System.out.println(ticketDao.add(ticket));
         System.out.println("__________________________________");
 
-        // register new user
         AuthenticationService authenticationService = (AuthenticationService)injector
                 .getInstance(AuthenticationService.class);
+        ShoppingCartService shoppingCartService = (ShoppingCartService)injector
+                .getInstance(ShoppingCartService.class);
         User bob = null;
         try {
+            // register new user and his shopping cart
             bob = authenticationService.register("bob@gmail.com", "12345678");
             System.out.println(bob);
+            System.out.println("__________________________________");
+
+            // check getByUser() method
+            ShoppingCart shoppingCart = shoppingCartService.getByUser(bob);
+            System.out.println(shoppingCart);
+            System.out.println("__________________________________");
+
+            // check addSession method
+            shoppingCartService.addSession(yesterdayMovieSession,bob);
+            ShoppingCart shoppingCartByBob = shoppingCartService.getByUser(bob);
+            System.out.println(shoppingCartByBob);
+            System.out.println("__________________________________");
+
+            // check clear method
+            shoppingCartService.clear(shoppingCartByBob);
+            System.out.println(shoppingCartByBob);
         } catch (RegistrationException e) {
             throw new RuntimeException(e);
         }
-
-        System.out.println("__________________________________");
-
-        // check register() and getByUser() methods
-        ShoppingCartService shoppingCartService = (ShoppingCartService)injector
-                .getInstance(ShoppingCartService.class);
-
-        shoppingCartService.registerNewShoppingCart(bob);
-        ShoppingCart shoppingCart = shoppingCartService.getByUser(bob);
-        System.out.println(shoppingCart);
-
-        System.out.println("__________________________________");
-
-        // check addSession method
-        shoppingCartService.addSession(yesterdayMovieSession,bob);
-        ShoppingCart shoppingCartByBob = shoppingCartService.getByUser(bob);
-        System.out.println(shoppingCartByBob);
-
-        // check clear method
-        shoppingCartService.clear(shoppingCartByBob);
-        System.out.println(shoppingCartByBob);
     }
 }
