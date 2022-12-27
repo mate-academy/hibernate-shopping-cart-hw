@@ -10,6 +10,8 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 @Entity
 @Table(name = "carts")
@@ -17,6 +19,7 @@ public class ShoppingCart {
     @Id
     private Long id;
     @OneToMany
+    @Cascade(CascadeType.PERSIST)
     @JoinTable(name = "carts_tickets",
             joinColumns = @JoinColumn(name = "cart_id"),
             inverseJoinColumns = @JoinColumn(name = "ticket_id"))
