@@ -1,7 +1,6 @@
 package mate.academy.service.impl;
 
 import java.util.ArrayList;
-import java.util.Optional;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
 import mate.academy.lib.Inject;
@@ -25,11 +24,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         ticket.setUser(user);
         ticket.setMovieSession(movieSession);
         ticketDao.add(ticket);
-        Optional<ShoppingCart> shoppingCartFromDB = Optional.ofNullable(getByUser(user));
-        if (shoppingCartFromDB.isEmpty()) {
-            throw new RuntimeException("Shopping cart of user absent");
-        }
-        ShoppingCart shoppingCart = shoppingCartFromDB.get();
+        ShoppingCart shoppingCart = getByUser(user);
         shoppingCart.getTickets().add(ticket);
         shoppingCartDao.update(shoppingCart);
     }
@@ -43,7 +38,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public void registerNewShoppingCart(User user) {
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setUser(user);
-        shoppingCart.setTickets(new ArrayList<>());
         shoppingCartDao.add(shoppingCart);
     }
 
