@@ -50,6 +50,8 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             return session.createQuery(query, ShoppingCart.class)
                     .setParameter("user", user)
                     .uniqueResultOptional();
+        } catch (Exception e) {
+            throw new DataProcessingException("Can't get a shopping card by user: " + user, e);
         }
     }
 
