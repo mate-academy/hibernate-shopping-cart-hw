@@ -3,12 +3,14 @@ package mate.academy.model;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "tickets")
 public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "movie_session")
     private MovieSession movieSession;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -48,10 +50,8 @@ public class Ticket {
 
     @Override
     public String toString() {
-        return "Ticket{" +
-                "id=" + id +
-                ", movieSession=" + movieSession +
-                ", user=" + user +
-                '}';
+        return "Ticket{" + "id=" + id
+                + ", movieSession=" + movieSession
+                + ", user=" + user + '}';
     }
 }

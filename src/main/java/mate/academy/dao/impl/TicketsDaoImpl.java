@@ -26,7 +26,7 @@ public class TicketsDaoImpl implements TicketsDao {
             }
             throw new DataProcessingException("Can't add ticket: " + ticket, e);
         } finally {
-            if(session != null) {
+            if (session != null) {
                 session.close();
             }
         }

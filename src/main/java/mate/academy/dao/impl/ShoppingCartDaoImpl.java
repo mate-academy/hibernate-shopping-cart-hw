@@ -1,5 +1,6 @@
 package mate.academy.dao.impl;
 
+import java.util.Optional;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Dao;
@@ -8,7 +9,6 @@ import mate.academy.model.User;
 import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import java.util.Optional;
 
 @Dao
 public class ShoppingCartDaoImpl implements ShoppingCartDao {
@@ -28,7 +28,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             }
             throw new DataProcessingException("Can't add ShoppingCart: " + shoppingCart, e);
         } finally {
-            if(session != null) {
+            if (session != null) {
                 session.close();
             }
         }
@@ -36,11 +36,11 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
 
     @Override
     public Optional<ShoppingCart> getByUser(User user) {
-        try(Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("SELECT sc FROM ShoppingCart sc " +
-                    "LEFT JOIN FETCH sc.user " +
-                    "LEFT JOIN FETCH sc.tickets "+
-                    "WHERE sc.user =: user", ShoppingCart.class)
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery("SELECT sc FROM ShoppingCart sc "
+                    + "LEFT JOIN FETCH sc.user "
+                    + "LEFT JOIN FETCH sc.tickets "
+                    + "WHERE sc.user =: user", ShoppingCart.class)
                     .setParameter("user", user)
                     .uniqueResultOptional();
         } catch (Exception e) {
@@ -61,9 +61,9 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Can't update ShoppingCart: " + shoppingCart ,e);
+            throw new DataProcessingException("Can't update ShoppingCart: " + shoppingCart, e);
         } finally {
-            if(session != null) {
+            if (session != null) {
                 session.close();
             }
         }
