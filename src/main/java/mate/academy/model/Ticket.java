@@ -11,8 +11,7 @@ public class Ticket {
     @ManyToOne(fetch = FetchType.LAZY)
     private MovieSession movieSession;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
+    @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
     public Ticket() {
