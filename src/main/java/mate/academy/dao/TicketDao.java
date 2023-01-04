@@ -2,6 +2,6 @@ package mate.academy.dao;
 
 import mate.academy.model.Ticket;
 
-public interface TicketsDao {
+public interface TicketDao {
     Ticket add(Ticket ticket);
 }
