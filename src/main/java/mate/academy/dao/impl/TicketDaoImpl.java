@@ -1,6 +1,6 @@
 package mate.academy.dao.impl;
 
-import mate.academy.dao.TickerDao;
+import mate.academy.dao.TicketDao;
 import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Dao;
 import mate.academy.model.Ticket;
@@ -9,7 +9,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 @Dao
-public class TicketDaoImpl implements TickerDao {
+public class TicketDaoImpl implements TicketDao {
     @Override
     public Ticket add(Ticket ticket) {
         Session session = null;
