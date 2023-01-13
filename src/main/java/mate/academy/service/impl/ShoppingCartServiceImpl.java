@@ -20,8 +20,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public void addSession(MovieSession movieSession, User user) {
         Ticket ticket = new Ticket(movieSession, user);
-        ShoppingCart shoppingCart = getByUser(user);
         ticketDao.add(ticket);
+        ShoppingCart shoppingCart = getByUser(user);        
         shoppingCart.getTickets().add(ticket);
         shoppingCartDao.update(shoppingCart);
     }
