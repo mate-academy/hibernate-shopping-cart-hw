@@ -56,7 +56,7 @@ public class Ticket {
     @Override
     public String toString() {
         return "Ticket{"
-                + "id=" + (id != null ? id : "null")
+                + "id=" + id
                 + ", movieSession=" + movieSession
                 + ", user=" + user + "}";
     }
