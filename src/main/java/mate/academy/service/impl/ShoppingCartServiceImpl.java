@@ -1,9 +1,7 @@
 package mate.academy.service.impl;
 
-import java.util.List;
 import java.util.NoSuchElementException;
 import mate.academy.dao.ShoppingCartDao;
-import mate.academy.dao.TicketDao;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.MovieSession;
@@ -16,19 +14,14 @@ import mate.academy.service.ShoppingCartService;
 public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Inject
     private ShoppingCartDao shoppingCartDao;
-    @Inject
-    private TicketDao ticketDao;
 
     @Override
     public void addSession(MovieSession movieSession, User user) {
         Ticket ticket = new Ticket();
         ticket.setMovieSession(movieSession);
         ticket.setUser(user);
-        ticketDao.add(ticket);
-        ShoppingCart shoppingCart = shoppingCartDao.getByUser(user).orElseThrow(
-                () -> new NoSuchElementException("Can't get shopping cart by " + user));
-        List<Ticket> tickets = shoppingCart.getTickets();
-        tickets.add(ticket);
+        ShoppingCart shoppingCart = getByUser(user);
+        shoppingCart.getTickets().add(ticket);
         shoppingCartDao.update(shoppingCart);
     }
 
@@ -48,12 +41,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void clear(ShoppingCart shoppingCart) {
-        ShoppingCart shoppingCartFromDB = shoppingCartDao
-                .getByUser(shoppingCart.getUser())
-                .orElseThrow(() -> new NoSuchElementException(String.format("Can't "
-                        + "find %s in DB by %s ", shoppingCart, shoppingCart.getUser())));
-        List<Ticket> tickets = shoppingCartFromDB.getTickets();
-        tickets.clear();
-        shoppingCartDao.update(shoppingCartFromDB);
+        shoppingCart.getTickets().clear();
+        shoppingCartDao.update(shoppingCart);
     }
 }

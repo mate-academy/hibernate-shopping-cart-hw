@@ -79,16 +79,16 @@ public class Main {
                 = (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
 
         ShoppingCart bobShoppingCart = shoppingCartService.getByUser(bob);
-        System.out.println("Bob's shopping cart after registration " + bobShoppingCart);
+        System.out.println("Bob's shopping cart after registration: " + bobShoppingCart);
 
         shoppingCartService.addSession(tomorrowMovieSession, bob);
         ShoppingCart bobShoppingCartAfterAddingSession = shoppingCartService.getByUser(bob);
-        System.out.println("Bob's shopping cart after adding session "
+        System.out.println("Bob's shopping cart after adding session: "
                 + bobShoppingCartAfterAddingSession);
 
-        shoppingCartService.clear(bobShoppingCart);
+        shoppingCartService.clear(shoppingCartService.getByUser(bob));
         ShoppingCart bobShoppingCartAfterClear = shoppingCartService.getByUser(bob);
-        System.out.println("Bob's shopping cart after clear " + bobShoppingCartAfterClear);
+        System.out.println("Bob's shopping cart after clear: " + bobShoppingCartAfterClear);
     }
 }
 
