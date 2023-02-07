@@ -73,5 +73,6 @@ public class Main {
         System.out.println(shoppingCartService.getByUser(bob));
         shoppingCartService.clear(shoppingCartService.getByUser(bob));
         System.out.println(shoppingCartService.getByUser(bob));
+        shoppingCartService.addSession(yesterdayMovieSession, bob);
     }
 }
