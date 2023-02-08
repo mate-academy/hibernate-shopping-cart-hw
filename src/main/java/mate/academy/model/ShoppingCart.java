@@ -16,14 +16,14 @@ public class ShoppingCart {
     @Id
     private Long id;
     @OneToMany(fetch = FetchType.LAZY)
-    private List<Ticket> ticketList;
+    private List<Ticket> tickets;
     @OneToOne
     @MapsId
     @JoinColumn(name = "id")
     private User user;
 
-    public ShoppingCart(List<Ticket> ticketList, User user) {
-        this.ticketList = ticketList;
+    public ShoppingCart(List<Ticket> tickets, User user) {
+        this.tickets = tickets;
         this.user = user;
     }
 
@@ -38,12 +38,12 @@ public class ShoppingCart {
         this.id = id;
     }
 
-    public List<Ticket> getTicketList() {
-        return ticketList;
+    public List<Ticket> getTickets() {
+        return tickets;
     }
 
-    public void setTicketList(List<Ticket> ticketList) {
-        this.ticketList = ticketList;
+    public void setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
     }
 
     public User getUser() {
@@ -58,7 +58,7 @@ public class ShoppingCart {
     public String toString() {
         return "ShoppingCart{"
                 + "id=" + id
-                + ", ticketList=" + ticketList
+                + ", ticketList=" + tickets
                 + ", user=" + user
                 + '}';
     }
