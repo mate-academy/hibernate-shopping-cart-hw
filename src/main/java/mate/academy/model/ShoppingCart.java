@@ -2,7 +2,6 @@ package mate.academy.model;
 
 import java.util.List;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -19,7 +18,7 @@ public class ShoppingCart {
     @OneToOne
     @MapsId
     private User user;
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany
     @JoinTable(name = "shopping_carts_tickets",
             joinColumns = @JoinColumn(name = "shopping_carts_tickets"),
             inverseJoinColumns = @JoinColumn(name = "ticket_id"))

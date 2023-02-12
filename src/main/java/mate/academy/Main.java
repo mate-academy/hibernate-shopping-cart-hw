@@ -66,7 +66,6 @@ public class Main {
         authenticationService.login("bob@gmail.com", "BobbyLobby");
         shoppingCartService.addSession(tomorrowMovieSession, user);
         ShoppingCart shoppingCart = shoppingCartService.getByUser(user);
-        System.out.println(shoppingCart.getUser());
         shoppingCartService.clear(shoppingCart);
         System.out.println(shoppingCart);
     }
