@@ -41,9 +41,9 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
     @Override
     public Optional<ShoppingCart> getByUser(User user) {
         try (Session session = factory.openSession()) {
-            return session.createQuery("select distinct sc from ShoppingCart sc "
-                            + "left join fetch sc.tickets "
-                            + "where sc.user = :user", ShoppingCart.class)
+            return session.createQuery("SELECT DISTINCT sc FROM ShoppingCart sc "
+                            + "LEFT JOIN FETCH sc.tickets "
+                            + "WHERE sc.user = :user", ShoppingCart.class)
                     .setParameter("user", user)
                     .uniqueResultOptional();
         } catch (Exception e) {

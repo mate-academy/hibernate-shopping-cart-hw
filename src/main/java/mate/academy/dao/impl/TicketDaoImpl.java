@@ -3,9 +3,7 @@ package mate.academy.dao.impl;
 import mate.academy.dao.TicketDao;
 import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Dao;
-import mate.academy.model.MovieSession;
 import mate.academy.model.Ticket;
-import mate.academy.model.User;
 import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -35,21 +33,5 @@ public class TicketDaoImpl implements TicketDao {
             }
         }
         return ticket;
-    }
-
-    public Ticket get(MovieSession movieSession, User user) {
-        try (Session session = factory.openSession()) {
-            return session.createQuery("select distinct t from Ticket t "
-                            + "left join fetch t.user "
-                            + "left join fetch t.movieSession "
-                            + "where t.user = :user "
-                            + " and t.movieSession = :movieSession", Ticket.class)
-                    .setParameter("user", user)
-                    .setParameter("movieSession", movieSession)
-                    .getSingleResult();
-        } catch (Exception e) {
-            throw new DataProcessingException("Can't get ticket by user "
-                    + user.getEmail() + " and movie session " + movieSession.getMovie(), e);
-        }
     }
 }
