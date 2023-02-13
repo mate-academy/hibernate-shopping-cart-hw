@@ -31,8 +31,7 @@ public class ShoppingCart {
     public ShoppingCart() {
     }
 
-    public ShoppingCart(List<Ticket> tickets, User user) {
-        this.tickets = tickets;
+    public ShoppingCart(User user) {
         this.user = user;
     }
 
