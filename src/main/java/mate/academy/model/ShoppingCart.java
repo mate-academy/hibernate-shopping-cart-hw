@@ -16,7 +16,7 @@ import javax.persistence.Table;
 public class ShoppingCart {
     @Id
     private Long id;
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany
     @JoinTable(name = "shopping_carts_tickets",
             joinColumns = @JoinColumn(name = " shopping_cart_id"),
             inverseJoinColumns = @JoinColumn(name = "ticket_id"))
