@@ -1,4 +1,5 @@
 package mate.academy.dao.impl;
+
 import java.util.Optional;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.exception.DataProcessingException;
@@ -12,6 +13,7 @@ import org.hibernate.query.Query;
 
 @Dao
 public class ShoppingCartDaoImpl implements ShoppingCartDao {
+
     @Override
     public ShoppingCart add(ShoppingCart shoppingCart) {
         Session session = null;
