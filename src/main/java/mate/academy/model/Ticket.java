@@ -17,7 +17,7 @@ public class Ticket {
     @ManyToOne
     @JoinColumn(name = "movie_session_id")
     private MovieSession movieSession;
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
