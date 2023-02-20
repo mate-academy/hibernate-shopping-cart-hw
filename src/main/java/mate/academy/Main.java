@@ -82,6 +82,5 @@ public class Main {
                 + "ticket two added to " + usersOneShoppingCart);
         shoppingCartService.clear(usersOneShoppingCart);
         System.out.println("MovieSession cleared for " + usersOneShoppingCart);
-
     }
 }
