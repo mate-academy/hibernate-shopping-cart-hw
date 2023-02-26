@@ -10,8 +10,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 
 @Entity
 @Table(name = "shoppingCarts")
@@ -23,7 +21,6 @@ public class ShoppingCart {
     @JoinColumn(name = "ticket_id")
     private List<Ticket> tickets;
     @OneToOne(fetch = FetchType.LAZY)
-    @Cascade(value = {CascadeType.PERSIST,CascadeType.REMOVE})
     private User user;
 
     public ShoppingCart() {

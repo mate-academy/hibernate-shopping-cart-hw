@@ -6,9 +6,13 @@ import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.model.ShoppingCart;
+import mate.academy.model.User;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
+import mate.academy.service.ShoppingCartService;
+import mate.academy.service.UserService;
 
 public class Main {
 
@@ -59,5 +63,22 @@ public class Main {
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(
                 fastAndFurious.getId(), LocalDate.now()));
+
+        User bob = new User();
+        bob.setEmail("bob@email");
+        bob.setPassword("12345");
+        bob.setSalt(new byte[20]);
+
+        UserService userService = (UserService)
+                injector.getInstance(UserService.class);
+        userService.add(bob);
+
+        ShoppingCartService shoppingCartService = (ShoppingCartService)
+                injector.getInstance(ShoppingCartService.class);
+        shoppingCartService.registerNewShoppingCart(bob);
+        shoppingCartService.addSession(tomorrowMovieSession,bob);
+
+        ShoppingCart bobShoppingCart = shoppingCartService.getByUser(bob);
+        shoppingCartService.clear(bobShoppingCart);
     }
 }
