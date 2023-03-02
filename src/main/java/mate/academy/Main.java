@@ -66,8 +66,8 @@ public class Main {
                 injector.getInstance(AuthenticationService.class);
         User visitor = authenticationService.register("gmail@gmail.com", "qwerty");
         System.out.println(String.valueOf(visitor));
-        System.out.println(String.valueOf(authenticationService.
-                login("gmail@gmail.com", "qwerty")));
+        System.out.println(String.valueOf(authenticationService
+                .login("gmail@gmail.com", "qwerty")));
 
         ShoppingCartService shoppingCartService = (ShoppingCartService)
                 injector.getInstance(ShoppingCartService.class);
