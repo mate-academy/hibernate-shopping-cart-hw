@@ -62,6 +62,7 @@ public class Main {
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(
                 fastAndFurious.getId(), LocalDate.now()));
+
         AuthenticationService authenticationService = (AuthenticationService)
                 injector.getInstance(AuthenticationService.class);
         User visitor = authenticationService.register("gmail@gmail.com", "qwerty");
@@ -71,10 +72,15 @@ public class Main {
 
         ShoppingCartService shoppingCartService = (ShoppingCartService)
                 injector.getInstance(ShoppingCartService.class);
-        shoppingCartService.addSession(tomorrowMovieSession, visitor);
         ShoppingCart visitorShoppingCart = shoppingCartService.getByUser(visitor);
-        System.out.println(visitorShoppingCart);
+        System.out.println("Client is " + visitorShoppingCart);
+        shoppingCartService.addSession(yesterdayMovieSession, visitor);
+        System.out.println("Yesterday MovieSession is added to " + "ticket "
+                + visitorShoppingCart);
+        shoppingCartService.addSession(tomorrowMovieSession, visitor);
+        System.out.println("Tomorrow MovieSession is added to " + "ticket "
+                + visitorShoppingCart);
         shoppingCartService.clear(visitorShoppingCart);
-        System.out.printf(String.valueOf(shoppingCartService.getByUser(visitor)));
+        System.out.println("MovieSession is cleared for " + visitorShoppingCart);
     }
 }
