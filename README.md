@@ -1,4 +1,4 @@
-# Implement shopping cart
+l# Implement shopping cart
 We will continue working on our Cinema project.
 
 - Create models
