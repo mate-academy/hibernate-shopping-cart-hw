@@ -6,8 +6,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.MapsId;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -17,9 +17,8 @@ public class ShoppingCart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToMany
+    @OneToMany
     private List<Ticket> tickets;
-
     @MapsId
     @OneToOne(fetch = FetchType.LAZY)
     private User user;
@@ -30,6 +29,10 @@ public class ShoppingCart {
     }
 
     public ShoppingCart() {
+    }
+
+    public ShoppingCart(User user) {
+        this.user = user;
     }
 
     public Long getId() {
@@ -54,5 +57,14 @@ public class ShoppingCart {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "ShoppingCart{"
+                + "id=" + id
+                + ", tickets=" + tickets
+                + ", user=" + user
+                + '}';
     }
 }
