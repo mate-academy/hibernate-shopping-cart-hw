@@ -63,7 +63,7 @@ public class Main {
         user.setEmail("email");
         user.setPassword("12345");
         user.setSalt(HashUtil.getSalt());
-        
+
         UserService userService = (UserService) instance.getInstance(UserService.class);
         userService.add(user);
         userService.findByEmail("email");
