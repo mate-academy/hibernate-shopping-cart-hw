@@ -1,6 +1,7 @@
 package mate.academy.dao.impl;
 
 import java.util.List;
+import java.util.Optional;
 import mate.academy.dao.TicketDao;
 import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Dao;
@@ -36,9 +37,27 @@ public class TicketDaoImpl implements TicketDao {
     }
 
     @Override
+    public Optional<Ticket> get(Long id) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Query<Ticket> getMovieSessionByIdQuery =
+                    session.createQuery("SELECT  t FROM Ticket AS t "
+                            + " LEFT JOIN FETCH t.user"
+                            + " LEFT JOIN FETCH t.movieSession "
+                            + "WHERE t.id = :id ", Ticket.class);
+            getMovieSessionByIdQuery.setParameter("id", id);
+            return getMovieSessionByIdQuery.uniqueResultOptional();
+        } catch (Exception e) {
+            throw new DataProcessingException("Can't get a movie session by id: " + id, e);
+        }
+    }
+
+    @Override
     public List<Ticket> getAll() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Query getAllTicketQuery = session.createQuery("SELECT t from Ticket t ",Ticket.class);
+            Query getAllTicketQuery = session.createQuery("SELECT t from Ticket t "
+                    + "LEFT JOIN FETCH t.user "
+                            + "LEFT JOIN FETCH t.movieSession  ",
+                    Ticket.class);
             return getAllTicketQuery.getResultList();
         } catch (Exception e) {
             throw new DataProcessingException("Cant get all Tickets from db", e);
