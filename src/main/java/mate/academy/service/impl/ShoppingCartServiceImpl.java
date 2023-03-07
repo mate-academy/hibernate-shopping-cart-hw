@@ -15,6 +15,8 @@ import mate.academy.service.ShoppingCartService;
 
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
+
+    private List<Ticket> tickets = new ArrayList<>();
     @Inject
     private TicketDao ticketDao;
     @Inject
@@ -23,9 +25,10 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public void addSession(MovieSession movieSession, User user) {
         Ticket ticket = new Ticket(movieSession, user);
+        tickets.add(ticket);
         ticketDao.add(ticket);
         Optional<ShoppingCart> shoppingCart = shoppingCartService.getByUser(user);
-        shoppingCart.get().setTickets(List.of(ticket));
+        shoppingCart.get().setTickets(tickets);
         shoppingCartService.update(shoppingCart.get());
     }
 

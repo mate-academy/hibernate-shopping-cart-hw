@@ -52,8 +52,8 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
 
     @Override
     public void update(ShoppingCart shoppingCart) {
-        Transaction transaction = null;
         Session session = null;
+        Transaction transaction = null;
         try {
             session = sessionFactory.openSession();
             transaction = session.beginTransaction();
@@ -63,7 +63,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Can't update shopping cart" + shoppingCart, e);
+            throw new DataProcessingException("Can't update a shopping cart: " + shoppingCart, e);
         } finally {
             if (session != null) {
                 session.close();
