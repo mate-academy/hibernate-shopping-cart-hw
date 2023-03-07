@@ -38,7 +38,7 @@ public class TicketDaoImpl implements TicketDao {
     @Override
     public List<Ticket> getAll() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Query getAllTicketQuery = session.createQuery("from Ticket", Ticket.class);
+            Query getAllTicketQuery = session.createQuery("SELECT t from Ticket t ",Ticket.class);
             return getAllTicketQuery.getResultList();
         } catch (Exception e) {
             throw new DataProcessingException("Cant get all Tickets from db", e);

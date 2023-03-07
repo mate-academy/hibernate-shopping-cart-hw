@@ -3,6 +3,8 @@ package mate.academy.model;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
@@ -11,12 +13,12 @@ import javax.persistence.OneToOne;
 @Entity
 public class ShoppingCart {
     @Id
-    //@Column(unique=true)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne
     @MapsId
+    @OneToOne(fetch = FetchType.LAZY)
     private User user;
-    @OneToMany(fetch = FetchType.LAZY)//  join fetch
+    @OneToMany(fetch = FetchType.LAZY)
     private List<Ticket> tickets;
 
     public Long getId() {
