@@ -2,7 +2,6 @@ package mate.academy.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
 import mate.academy.lib.Inject;
@@ -15,37 +14,36 @@ import mate.academy.service.ShoppingCartService;
 
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
-
-    private List<Ticket> tickets = new ArrayList<>();
+    @Inject
+    private ShoppingCartDao shoppingCartDao;
     @Inject
     private TicketDao ticketDao;
-    @Inject
-    private ShoppingCartDao shoppingCartService;
 
     @Override
     public void addSession(MovieSession movieSession, User user) {
-        Ticket ticket = new Ticket(movieSession, user);
-        tickets.add(ticket);
-        ticketDao.add(ticket);
-        Optional<ShoppingCart> shoppingCart = shoppingCartService.getByUser(user);
-        shoppingCart.get().setTickets(tickets);
-        shoppingCartService.update(shoppingCart.get());
+        Ticket newTicket = new Ticket();
+        newTicket.setUser(user);
+        newTicket.setMovieSession(movieSession);
+
+        ShoppingCart shoppingCart = shoppingCartDao.getByUser(user).get();
+        shoppingCart.getTickets().add(ticketDao.add(newTicket));
+        shoppingCartDao.update(shoppingCart);
     }
 
     @Override
     public ShoppingCart getByUser(User user) {
-        return shoppingCartService.getByUser(user).orElseThrow();
+        return shoppingCartDao.getByUser(user).orElseThrow();
     }
 
     @Override
     public void registerNewShoppingCart(User user) {
-        shoppingCartService.add(new ShoppingCart(user));
+        shoppingCartDao.add(new ShoppingCart(user));
     }
 
     @Override
     public void clear(ShoppingCart shoppingCart) {
         List<Ticket> tickets = new ArrayList<>();
         shoppingCart.setTickets(tickets);
-        shoppingCartService.update(shoppingCart);
+        shoppingCartDao.update(shoppingCart);
     }
 }
