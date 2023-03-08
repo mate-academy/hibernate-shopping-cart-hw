@@ -1,7 +1,6 @@
 package mate.academy.dao;
 
 import java.util.List;
-import java.util.Optional;
 import mate.academy.model.Ticket;
 
 public interface TicketDao {
@@ -9,5 +8,4 @@ public interface TicketDao {
 
     List<Ticket> getAll();
 
-    Optional<Ticket> get(Long id);
 }

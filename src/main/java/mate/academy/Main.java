@@ -35,6 +35,7 @@ public class Main {
         ShoppingCart ponyShoppingCart = shoppingCartService.getByUser(pony);
         System.out.println(ponyShoppingCart);
         MovieSession movieSession1 = movieSessionService.get(2L);
+        // shoppingCartService.addSession(movieSession1,pony);
         System.out.println(ponyShoppingCart);
     }
 }
