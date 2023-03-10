@@ -66,7 +66,7 @@ public class Main {
         AuthenticationService authenticationService =
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
         try {
-            user = authenticationService.register("цппdd3d3d33dd3d33иd4цпцу.com", "1234");
+            user = authenticationService.register("moshun@gmail.com", "1234");
         } catch (RegistrationException e) {
             throw new RuntimeException(e);
         }
@@ -75,12 +75,13 @@ public class Main {
                 injector.getInstance(ShoppingCartService.class);
 
         shoppingCartService.addSession(tomorrowMovieSession, user);
-        shoppingCartService.addSession(yesterdayMovieSession, user);
 
         ShoppingCart shoppingCart = shoppingCartService.getByUser(user);
         System.out.println(shoppingCart);
 
         shoppingCartService.clear(shoppingCart);
+
+        shoppingCartService.addSession(yesterdayMovieSession, user);
 
         ShoppingCart shoppingCartUpdated = shoppingCartService.getByUser(user);
         System.out.println(shoppingCartUpdated);
