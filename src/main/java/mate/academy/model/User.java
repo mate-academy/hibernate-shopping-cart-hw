@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -17,6 +18,8 @@ public class User {
     private String email;
     private String password;
     private byte[] salt;
+    @OneToOne(mappedBy = "user")
+    private ShoppingCart shoppingCart;
 
     public Long getId() {
         return id;
