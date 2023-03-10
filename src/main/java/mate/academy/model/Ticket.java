@@ -15,8 +15,6 @@ public class Ticket {
     @Id
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
-    private ShoppingCart shoppingCart;
-    @ManyToOne(fetch = FetchType.LAZY)
     private MovieSession movieSession;
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
@@ -27,14 +25,6 @@ public class Ticket {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public ShoppingCart getShoppingCart() {
-        return shoppingCart;
-    }
-
-    public void setShoppingCart(ShoppingCart shoppingCart) {
-        this.shoppingCart = shoppingCart;
     }
 
     public MovieSession getMovieSession() {
@@ -57,7 +47,6 @@ public class Ticket {
     public String toString() {
         return "Ticket{"
                 + "id=" + id
-                + ", shoppingCart=" + shoppingCart
                 + ", movieSession=" + movieSession
                 + ", user=" + user
                 + '}';

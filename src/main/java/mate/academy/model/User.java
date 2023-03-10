@@ -19,8 +19,6 @@ public class User {
     private String email;
     private String password;
     private byte[] salt;
-    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
-    private ShoppingCart shoppingCart;
 
     public Long getId() {
         return id;
