@@ -37,7 +37,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
     @Override
     public Optional<ShoppingCart> getByUser(User user) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("FROM ShoppingCart sc left join fetch sc.tickets "
+            return session.createQuery("FROM ShoppingCart sc LEFT JOIN FETCH sc.tickets "
                                     + "WHERE sc.user = :user",
                             ShoppingCart.class)
                     .setParameter("user", user).uniqueResultOptional();

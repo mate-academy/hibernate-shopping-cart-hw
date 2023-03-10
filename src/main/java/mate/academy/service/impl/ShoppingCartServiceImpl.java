@@ -25,8 +25,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         ticket.setUser(user);
         ticket.setMovieSession(movieSession);
         ticketDao.add(ticket);
-        ShoppingCart shoppingCart = shoppingCartDao.getByUser(user).orElseThrow(() ->
-                new NoSuchElementException("Couldn't get user" + user));
+        ShoppingCart shoppingCart = getByUser(user);
         shoppingCart.getTickets().add(ticket);
         shoppingCartDao.update(shoppingCart);
     }
@@ -40,7 +39,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public void registerNewShoppingCart(User user) {
         ShoppingCart shoppingCart = new ShoppingCart();
-        shoppingCart.setTickets(Collections.emptyList());
         shoppingCart.setUser(user);
         shoppingCartDao.add(shoppingCart);
     }
