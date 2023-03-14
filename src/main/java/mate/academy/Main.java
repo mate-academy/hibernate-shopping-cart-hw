@@ -127,7 +127,12 @@ public class Main {
         userService.add(childIvo);
 
         shoppingCartService.registerNewShoppingCart(childIvo);
+        shoppingCartService.addSession(tomorrowMovieSession, childIvo);
+        shoppingCartService.addSession(yesterdayMovieSession, childIvo);
+        System.out.println(shoppingCartService.getByUser(childIvo));
 
-        shoppingCartService.clear(shoppingCart);
+        shoppingCartService.clear(shoppingCartDao.getByUser(childIvo).get());
+
+        System.out.println(shoppingCartService.getByUser(childIvo));
     }
 }
