@@ -45,21 +45,30 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
                     + "LEFT JOIN FETCH ms.cinemaHall c "
                     + "WHERE sc.id = :id", ShoppingCart.class);
             query.setParameter("id", user.getId());
-            ShoppingCart shoppingCart = query.uniqueResult();
-            return Optional.ofNullable(shoppingCart);
+            return query.uniqueResultOptional();
         } catch (Exception e) {
             throw new DataProcessingException("Can't find user : " + user, e);
         }
     }
 
     @Override
-    public void update(ShoppingCart shoppingCart) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            session.beginTransaction();
-            session.update(shoppingCart);
-            session.getTransaction().commit();
+    public void update(ShoppingCart entity) {
+        Transaction transaction = null;
+        Session session = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            transaction = session.beginTransaction();
+            session.update(entity);
+            transaction.commit();
         } catch (Exception e) {
-            throw new DataProcessingException("Can't update shoppingCart: " + shoppingCart, e);
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            throw new DataProcessingException("Can't update shoppingCart: " + entity, e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
         }
     }
 }
