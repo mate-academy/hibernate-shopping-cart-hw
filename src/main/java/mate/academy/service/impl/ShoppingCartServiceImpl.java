@@ -1,8 +1,8 @@
 package mate.academy.service.impl;
 
+import java.util.List;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
-import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.MovieSession;
@@ -10,23 +10,14 @@ import mate.academy.model.ShoppingCart;
 import mate.academy.model.Ticket;
 import mate.academy.model.User;
 import mate.academy.service.ShoppingCartService;
-import mate.academy.util.HibernateUtil;
-import org.hibernate.Session;
-import org.hibernate.query.Query;
-
-import java.util.List;
 
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
-    /**
-     * This method is responsible for adding a Ticket to the ShoppingCart
-     * @param movieSession contains the information required for the ticket
-     * @param user - the User who wants to buy the ticket for a specific movieSession
-     */
     @Inject
-    TicketDao ticketDao;
+    private TicketDao ticketDao;
     @Inject
-    ShoppingCartDao shoppingCartDao;
+    private ShoppingCartDao shoppingCartDao;
+
     @Override
     public void addSession(MovieSession movieSession, User user) {
         Ticket ticket = new Ticket();
@@ -54,5 +45,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void clear(ShoppingCart shoppingCart) {
+        shoppingCartDao.update(shoppingCart);
+        shoppingCart.getTickets().clear();
+        shoppingCartDao.update(shoppingCart);
     }
 }
