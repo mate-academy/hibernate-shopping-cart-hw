@@ -21,7 +21,6 @@ public class UserServiceImpl implements UserService {
         user.setSalt(HashUtil.getSalt());
         user.setPassword(HashUtil.hashPassword(user.getPassword(), user.getSalt()));
         userDao.add(user);
-        shoppingCartService.registerNewShoppingCart(user);
         return user;
     }
 

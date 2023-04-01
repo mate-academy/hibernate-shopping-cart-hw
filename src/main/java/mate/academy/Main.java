@@ -76,9 +76,6 @@ public class Main {
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(
                 fastAndFurious.getId(), LocalDate.now()));
-        shoppingCartService.addSession(movieSessionService.get(16L),
-                userService.findByEmail("Denis").get());
-        shoppingCartService.clear(shoppingCartDao.getByUser(userService
-                .findByEmail("Denis").get()).get());
+
     }
 }
