@@ -22,6 +22,11 @@ public class Ticket {
     public Ticket() {
     }
 
+    public Ticket(MovieSession movieSession, User user) {
+        this.movieSession = movieSession;
+        this.user = user;
+    }
+
     public Long getId() {
         return id;
     }
@@ -44,5 +49,14 @@ public class Ticket {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "Ticket{"
+                + "id=" + id
+                + ", movieSession=" + movieSession
+                + ", user=" + user
+                + '}';
     }
 }
