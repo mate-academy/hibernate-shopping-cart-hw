@@ -2,14 +2,38 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
+import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
+import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.model.Order;
+import mate.academy.model.ShoppingCart;
+import mate.academy.model.User;
+import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
+import mate.academy.service.OrderService;
+import mate.academy.service.ShoppingCartService;
 
 public class Main {
+    private static final Injector injector = Injector.getInstance("mate.academy");
+    private static final MovieService movieService =
+            (MovieService) injector.getInstance(MovieService.class);
+    private static final CinemaHallService cinemaHallService =
+            (CinemaHallService) injector.getInstance(CinemaHallService.class);
+    private static final MovieSessionService movieSessionService =
+            (MovieSessionService) injector.getInstance(MovieSessionService.class);
+    private static final AuthenticationService authenticationService =
+            (AuthenticationService) injector.getInstance(AuthenticationService.class);
+    private static final ShoppingCartService shoppingCartService =
+            (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
+    private static final OrderService orderService =
+            (OrderService) injector.getInstance(OrderService.class);
+
     public static void main(String[] args) {
         MovieService movieService = null;
 
@@ -51,5 +75,30 @@ public class Main {
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(
                 fastAndFurious.getId(), LocalDate.now()));
+        try {
+            authenticationService.register("manager@cinema.net", "3d56hj81");
+        } catch (RegistrationException e) {
+            throw new RuntimeException("Can't register user ", e);
+        }
+
+        User loginUser;
+        try {
+            loginUser = authenticationService.login("manager@cinema.net", "3d56hj81");
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("Can't login user ", e);
+        }
+        System.out.println(loginUser);
+
+        shoppingCartService.addSession(movieSessionService.get(1L), loginUser);
+        ShoppingCart shoppingCartPerson = shoppingCartService.getByUser(loginUser);
+        System.out.println(shoppingCartPerson);
+
+        Order order = orderService.completeOrder(shoppingCartPerson);
+        System.out.println(order);
+        System.out.println("---- Complete ordering by shoppingCartPerson ---");
+        System.out.println(shoppingCartPerson);
+        List<Order> ordersHistoryByUser = orderService.getOrdersHistory(loginUser);
+        System.out.println("---- Orders by person ---");
+        ordersHistoryByUser.forEach(System.out::println);
     }
 }

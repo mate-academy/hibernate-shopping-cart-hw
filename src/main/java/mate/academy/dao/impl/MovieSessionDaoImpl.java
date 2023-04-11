@@ -1,13 +1,13 @@
 package mate.academy.dao.impl;
 
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import mate.academy.dao.MovieSessionDao;
 import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Dao;
@@ -24,9 +24,7 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
     @Override
     public MovieSession add(MovieSession movieSession) {
         Transaction transaction = null;
-        Session session = null;
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             session.save(movieSession);
             transaction.commit();
@@ -36,10 +34,6 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
                 transaction.rollback();
             }
             throw new DataProcessingException("Can't insert movie session" + movieSession, e);
-        } finally {
-            if (session != null) {
-                session.close();
-            }
         }
     }
 
@@ -68,10 +62,10 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
     public Optional<MovieSession> get(Long id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query<MovieSession> getMovieSessionByIdQuery =
-                    session.createQuery("FROM MovieSession ms "
-                            + "JOIN FETCH ms.movie "
-                            + "JOIN FETCH ms.cinemaHall "
-                            + "WHERE ms.id = :id ", MovieSession.class);
+                    session.createQuery("from MovieSession ms "
+                            + "join fetch ms.movie "
+                            + "join fetch ms.cinemaHall "
+                            + "where ms.id = :id ", MovieSession.class);
             getMovieSessionByIdQuery.setParameter("id", id);
             return getMovieSessionByIdQuery.uniqueResultOptional();
         } catch (Exception e) {
