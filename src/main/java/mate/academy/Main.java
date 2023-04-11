@@ -8,6 +8,7 @@ import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
 import mate.academy.model.User;
+import mate.academy.service.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
@@ -17,7 +18,7 @@ import mate.academy.service.UserService;
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.academy");
 
-    public static void main(String[] args) throws RegistrationException {
+    public static void main(String[] args) {
 
         MovieService movieService = (MovieService)
                 injector.getInstance(MovieService.class);
@@ -63,14 +64,24 @@ public class Main {
         System.out.println(movieSessionService.findAvailableSessions(
                 fastAndFurious.getId(), LocalDate.now()));
 
-        UserService userService = (UserService) injector.getInstance(UserService.class);
+        AuthenticationService authenticationService = (AuthenticationService)
+                injector.getInstance(AuthenticationService.class);
+        User user;
+        try {
+            user = authenticationService.register("gmail.com", "123456");
+        } catch (RegistrationException e) {
+            throw new RuntimeException(e);
+        }
+
+        UserService userService = (UserService)
+                injector.getInstance(UserService.class);
+
         ShoppingCartService shoppingCartService = (ShoppingCartService)
                 injector.getInstance(ShoppingCartService.class);
-        User user = userService.findByEmail("login2").get();
-        shoppingCartService.addSession(yesterdayMovieSession, user);
         shoppingCartService.addSession(tomorrowMovieSession, user);
-        System.out.println(shoppingCartService.getByUser(user));
+        System.out.println(shoppingCartService.getByUser(user).getTickets());
+
         shoppingCartService.clear(shoppingCartService.getByUser(user));
-        shoppingCartService.getByUser(user);
+        System.out.println(shoppingCartService.getByUser(user).getTickets());
     }
 }
