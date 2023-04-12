@@ -56,10 +56,10 @@ public class MovieSession {
     @Override
     public String toString() {
         return "MovieSession{"
-                + "id=" + id
-                + ", movie=" + movie
-                + ", cinemaHall=" + cinemaHall
-                + ", showTime=" + showTime
+                + "id = " + id
+                + ", movie = " + movie
+                + ", cinemaHall = " + cinemaHall
+                + ", showTime = " + showTime
                 + '}';
     }
 }
