@@ -2,16 +2,23 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import mate.academy.model.CinemaHall;
-import mate.academy.model.Movie;
-import mate.academy.model.MovieSession;
+import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
+import mate.academy.lib.Injector;
+import mate.academy.model.*;
+import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
+import mate.academy.service.ShoppingCartService;
 
 public class Main {
+    private static final Injector injector
+            = Injector.getInstance("mate.academy");
+
     public static void main(String[] args) {
-        MovieService movieService = null;
+        MovieService movieService
+                = (MovieService) injector.getInstance(MovieService.class);
 
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
@@ -27,7 +34,8 @@ public class Main {
         secondCinemaHall.setCapacity(200);
         secondCinemaHall.setDescription("second hall with capacity 200");
 
-        CinemaHallService cinemaHallService = null;
+        CinemaHallService cinemaHallService
+                = (CinemaHallService) injector.getInstance(CinemaHallService.class);
         cinemaHallService.add(firstCinemaHall);
         cinemaHallService.add(secondCinemaHall);
 
@@ -44,12 +52,57 @@ public class Main {
         yesterdayMovieSession.setMovie(fastAndFurious);
         yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(1L));
 
-        MovieSessionService movieSessionService = null;
+        MovieSessionService movieSessionService
+                = (MovieSessionService) injector.getInstance(MovieSessionService.class);
         movieSessionService.add(tomorrowMovieSession);
         movieSessionService.add(yesterdayMovieSession);
 
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(
                 fastAndFurious.getId(), LocalDate.now()));
+
+        AuthenticationService authenticationService
+                = (AuthenticationService) injector.getInstance(AuthenticationService.class);
+        User user;
+        try {
+            user = authenticationService.register(
+                    "test@mate.academy",
+                    "Mate2023");
+        } catch (RegistrationException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+        try {
+            user = authenticationService.login(
+                    "test@mate.academy",
+                    "Mate2023");
+        } catch (AuthenticationException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+
+        ShoppingCartService shoppingCartService
+                = (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
+        System.out.println("----------------------------");
+        System.out.println("Start testing ShoppingCartService.");
+
+        System.out.println("----------------------------");
+        System.out.println("AddSession method was called.");
+        shoppingCartService.addSession(yesterdayMovieSession, user);
+        shoppingCartService.addSession(tomorrowMovieSession, user);
+        System.out.println("Done.");
+
+        System.out.println("----------------------------");
+        System.out.println("GetByUser method was called.");
+        ShoppingCart userCart = shoppingCartService.getByUser(user);
+        System.out.println(userCart);
+        System.out.println("Done.");
+
+        System.out.println("----------------------------");
+        System.out.println("Clear method was called.");
+        shoppingCartService.clear(userCart);
+        shoppingCartService.getByUser(user);
+        System.out.println("Done.");
+
+        System.out.println("----------------------------");
+        System.out.println("All tests finished.");
     }
 }
