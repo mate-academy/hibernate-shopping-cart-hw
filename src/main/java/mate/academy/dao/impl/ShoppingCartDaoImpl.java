@@ -40,8 +40,8 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
     public Optional<ShoppingCart> getByUser(User user) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query<ShoppingCart> query = session.createQuery(
-                    "FROM mate.academy.model.ShoppingCart sc "
-                    + "left join fetch sc.tickets "
+                    "FROM ShoppingCart sc "
+                    + "LEFT JOIN FETCH sc.tickets "
                     + "WHERE sc.user.id = :userId", ShoppingCart.class);
             query.setParameter("userId", user.getId());
             return query.uniqueResultOptional();
