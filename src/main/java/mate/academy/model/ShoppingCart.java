@@ -18,7 +18,7 @@ public class ShoppingCart {
     @Id
     private Long id;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "ticket_id")
+    @JoinColumn(name = "shopping_cart_id")
     private List<Ticket> tickets;
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
