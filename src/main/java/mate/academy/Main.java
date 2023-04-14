@@ -76,7 +76,6 @@ public class Main {
         }
         System.out.println(loginUser);
         // ---- Test shoppingCartService ----
-        shoppingCartService.registerNewShoppingCart(loginUser);
         shoppingCartService.addSession(yesterdayMovieSession, loginUser);
         ShoppingCart shoppingCartPerson = shoppingCartService.getByUser(loginUser);
         System.out.println(shoppingCartPerson.getUser());
