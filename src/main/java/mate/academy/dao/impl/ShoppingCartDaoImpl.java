@@ -3,6 +3,7 @@ package mate.academy.dao.impl;
 import java.util.Optional;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.exception.DataProcessingException;
+import mate.academy.lib.Dao;
 import mate.academy.model.ShoppingCart;
 import mate.academy.model.User;
 import mate.academy.util.HibernateUtil;
@@ -11,6 +12,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
+@Dao
 public class ShoppingCartDaoImpl implements ShoppingCartDao {
     private final SessionFactory factory = HibernateUtil.getSessionFactory();
 
@@ -21,7 +23,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
         try {
             session = factory.openSession();
             transaction = session.beginTransaction();
-            session.persist(shoppingCart);
+            session.save(shoppingCart);
             transaction.commit();
             return shoppingCart;
         } catch (Exception e) {
@@ -29,6 +31,10 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
                 transaction.rollback();
             }
             throw new DataProcessingException("Can't save shopping cart: " + shoppingCart, e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
         }
     }
 
@@ -37,7 +43,13 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
         try (Session session = factory.openSession()) {
             Query<ShoppingCart> getShoppingCartByUserQuery =
                     session.createQuery("from ShoppingCart sc "
-                            + "where sc.user.id = :user_id", ShoppingCart.class);
+                            + "left join fetch sc.tickets t "
+                            + "left join fetch t.user "
+                            + "left join fetch t.movieSession ms "
+                            + "left join fetch ms.movie "
+                            + "left join fetch ms.cinemaHall "
+                            + "where sc.user =:user", ShoppingCart.class);
+            getShoppingCartByUserQuery.setParameter("user", user);
             return getShoppingCartByUserQuery.uniqueResultOptional();
         } catch (Exception e) {
             throw new DataProcessingException("Can't get shopping cart by user: " + user, e);
@@ -58,6 +70,10 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
                 transaction.rollback();
             }
             throw new DataProcessingException("Can't update shopping cart: " + shoppingCart, e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
         }
     }
 }
