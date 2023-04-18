@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapsId;
@@ -15,6 +17,7 @@ import javax.persistence.Table;
 @Table(name = "shopping_carts")
 public class ShoppingCart {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @OneToMany
     private List<Ticket> tickets;
@@ -22,10 +25,6 @@ public class ShoppingCart {
     @MapsId
     @JoinColumn(name = "id")
     private User user;
-
-    public ShoppingCart() {
-
-    }
 
     public Long getId() {
         return id;
