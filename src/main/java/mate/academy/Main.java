@@ -29,7 +29,9 @@ public class Main {
     private static final ShoppingCartService shoppingCartService
             = (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
 
-    public static void main(String[] args) throws RegistrationException, AuthenticationException {
+    private static final Long firstUserId = 1L;
+
+    public static void main(String[] args) {
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
         movieService.add(fastAndFurious);
@@ -63,11 +65,20 @@ public class Main {
 
         String email = "email@email.com";
         String password = "PPBus1304";
-        authenticationService.register(email, password);
-        User user = authenticationService.login(email, password);
+        try {
+            authenticationService.register(email, password);
+        } catch (RegistrationException e) {
+            throw new RuntimeException("This user cannot be registered " + email, e);
+        }
+        User user;
+        try {
+            user = authenticationService.login(email, password);
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("Can't login, please pay attention to your credentials", e);
+        }
         System.out.println(user);
 
-        shoppingCartService.addTicket(movieSessionService.get(1L), user);
+        shoppingCartService.addTicket(movieSessionService.get(firstUserId), user);
         ShoppingCart shoppingCart = shoppingCartService.getByUser(user);
         System.out.println(shoppingCart);
         shoppingCartService.clear(shoppingCart);
