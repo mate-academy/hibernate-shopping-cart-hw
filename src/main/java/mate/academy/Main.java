@@ -85,6 +85,7 @@ public class Main {
         shoppingCartService.registerNewShoppingCart(userService.findByEmail(EMAIL).get());
         System.out.println(shoppingCartService.getByUser(userService.findByEmail(EMAIL).get()));
         shoppingCartService.addSession(tomorrowMovieSession, userService.findByEmail(EMAIL).get());
-        shoppingCartService.clear(shoppingCartService.getByUser(userService.findByEmail(EMAIL).get()));
+        shoppingCartService
+                .clear(shoppingCartService.getByUser(userService.findByEmail(EMAIL).get()));
     }
 }
