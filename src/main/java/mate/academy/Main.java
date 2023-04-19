@@ -67,7 +67,6 @@ public class Main {
 
         MovieSession movieSession = movieSessionService.add(tomorrowMovieSession);
         User user = authenticationService.register("dominskyj@gmail.com", "qwerty12");
-        shoppingCartService.registerNewShoppingCart(user);
         shoppingCartService.addSession(movieSession, user);
         ShoppingCart shoppingCart = shoppingCartService.getByUser(user);
         System.out.println(shoppingCart);

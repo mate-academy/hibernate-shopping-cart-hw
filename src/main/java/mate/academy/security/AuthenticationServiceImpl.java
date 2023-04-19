@@ -33,6 +33,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             user.setEmail(email);
             user.setPassword(password);
             userService.add(user);
+            shoppingCartService.registerNewShoppingCart(user);
             return user;
         }
         throw new RegistrationException("This email is already registered.");
