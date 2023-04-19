@@ -21,8 +21,9 @@ public class ShoppingCart {
     private Long id;
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
+    @JoinColumn(name = "id")
     private User user;
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany
     @JoinTable(name = "shopping_carts_tickets",
             joinColumns = @JoinColumn(name = "shopping_cart_id"),
             inverseJoinColumns = @JoinColumn(name = "ticket_id"))
