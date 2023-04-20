@@ -1,7 +1,6 @@
 package mate.academy.model;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -9,7 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinTable;
 import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -23,18 +22,21 @@ public class ShoppingCart {
     @Column(name = "id", nullable = false)
     private Long id;
     @OneToMany
+    @JoinTable(name = "shopping_carts_tickets",
+            joinColumns = @JoinColumn(name = "shopping_cart_id"),
+            inverseJoinColumns = @JoinColumn(name = "ticket_id"))
     private List<Ticket> tickets;
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     @JoinColumn(name = "user_id")
     private User user;
 
-    public User getUsers() {
+    public User getUser() {
         return user;
     }
 
-    public void setUsers(User users) {
-        this.user = users;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Long getId() {
@@ -45,14 +47,20 @@ public class ShoppingCart {
         this.id = id;
     }
 
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
+    }
+
     @Override
     public String toString() {
         return "ShoppingCart{"
                 + "id=" + id
-                + ", " + tickets.stream()
-                .map(t -> t.toString())
-                .collect(Collectors.joining(", "))
-                + ", " + user.toString()
+                + ", user=" + user
+                + ", tickets=" + tickets
                 + '}';
     }
 }
