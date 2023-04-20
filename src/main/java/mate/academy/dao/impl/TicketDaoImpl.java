@@ -19,16 +19,16 @@ public class TicketDaoImpl implements TicketDao {
             transaction = session.beginTransaction();
             session.save(ticket);
             transaction.commit();
-            return ticket;
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Can't insert ticket " + ticket, e);
+            throw new DataProcessingException("Can't add ticket " + ticket + " to db", e);
         } finally {
             if (session != null) {
                 session.close();
             }
         }
+        return ticket;
     }
 }
