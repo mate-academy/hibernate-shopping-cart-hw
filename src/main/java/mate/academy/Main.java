@@ -70,7 +70,7 @@ public class Main {
         System.out.println(movieSessionService.findAvailableSessions(
                 fastAndFurious.getId(), LocalDate.now()));
 
-        System.out.println("----------------------------new added functions--------------------------------");
+        System.out.println("---------------------new added functions---------------------------");
 
         try {
             authService.register(VALID_EMAIL, PASS);
