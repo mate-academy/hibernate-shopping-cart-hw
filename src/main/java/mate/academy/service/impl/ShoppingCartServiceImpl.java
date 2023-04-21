@@ -1,8 +1,8 @@
 package mate.academy.service.impl;
 
-import java.time.DateTimeException;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
+import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.MovieSession;
@@ -31,7 +31,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public ShoppingCart getByUser(User user) {
         return shoppingCartDao.getByUser(user).orElseThrow(
-                () -> new DateTimeException("Can't find shopping cart by user " + user)
+                () -> new DataProcessingException("Can't find shopping cart by user " + user)
         );
     }
 
