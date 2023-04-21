@@ -75,7 +75,7 @@ public class Main {
             firstUser = authService.register(firstUser.getEmail(), firstUser.getPassword());
             authService.login("pechivo@gmail.com", "123456");
         } catch (RegistrationException | AuthenticationException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Invalid email or password ", e);
         }
         System.out.println(firstUser);
 
