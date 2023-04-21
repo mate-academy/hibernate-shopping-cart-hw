@@ -2,12 +2,15 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
 import mate.academy.model.ShoppingCart;
 import mate.academy.model.User;
+import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
@@ -26,6 +29,8 @@ public class Main {
             (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
     private static final UserService userService =
             (UserService) injector.getInstance(UserService.class);
+    private static final AuthenticationService authenticationService =
+            (AuthenticationService) injector.getInstance(AuthenticationService.class);
 
     public static void main(String[] args) {
         Movie fastAndFurious = new Movie("Fast and Furious");
@@ -65,12 +70,23 @@ public class Main {
         System.out.println(movieSessionService.findAvailableSessions(
                 fastAndFurious.getId(), LocalDate.now()));
 
-        User user = new User("mail", "super-password");
-        userService.add(user);
+        String mail = "mail";
+        String password = "super-password";
+        try {
+            authenticationService.register(mail, password);
+        } catch (RegistrationException e) {
+            throw new RuntimeException("Can't register user" + e);
+        }
+        try {
+            authenticationService.login(mail, password);
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("Email or password don't match");
+        }
+        User userFromDb = userService.findByEmail(mail).orElseThrow(() -> new RuntimeException("Can't find user with mail" + mail));
 
-        shoppingCartService.registerNewShoppingCart(user);
-        shoppingCartService.addSession(tomorrowMovieSession, user);
-        ShoppingCart shoppingCartByUser = shoppingCartService.getByUser(user);
+        shoppingCartService.registerNewShoppingCart(userFromDb);
+        shoppingCartService.addSession(tomorrowMovieSession, userFromDb);
+        ShoppingCart shoppingCartByUser = shoppingCartService.getByUser(userFromDb);
         shoppingCartService.clear(shoppingCartByUser);
     }
 }
