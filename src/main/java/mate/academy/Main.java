@@ -69,17 +69,14 @@ public class Main {
         System.out.println(movieSessionService.findAvailableSessions(
                 fastAndFurious.getId(), LocalDate.now()));
 
+        User userFromDB = null;
         try {
             System.out.println("Registered user: "
                     + authenticationService.register(EMAIL,PASSWORD));
-        } catch (RegistrationException e) {
-            System.out.println("Can't registered user email " + EMAIL + " password " + PASSWORD);
-        }
-
-        User userFromDB = null;
-        try {
             userFromDB = authenticationService.login(EMAIL, PASSWORD);
             System.out.println("Login user: " + userFromDB);
+        } catch (RegistrationException e) {
+            System.out.println("Can't registered user email " + EMAIL + " password " + PASSWORD);
         } catch (AuthenticationException e) {
             System.out.println("Can't login user email " + EMAIL + " password " + PASSWORD);
         }
