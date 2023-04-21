@@ -13,4 +13,3 @@ public interface ShoppingCartService {
 
     void clear(ShoppingCart shoppingCart);
 }
-
