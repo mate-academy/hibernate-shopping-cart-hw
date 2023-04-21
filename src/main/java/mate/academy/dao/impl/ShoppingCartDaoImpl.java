@@ -46,6 +46,8 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
                             + "WHERE sc.user = :user", ShoppingCart.class)
                     .setParameter("user", user)
                     .uniqueResultOptional();
+        } catch (Exception e) {
+            throw new DataProcessingException("Can't get shopping cart by user: " + user, e);
         }
     }
 
