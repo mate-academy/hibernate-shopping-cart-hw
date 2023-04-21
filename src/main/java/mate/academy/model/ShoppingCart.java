@@ -19,19 +19,12 @@ public class ShoppingCart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @OneToMany
+    @JoinColumn(name = "shopping_cart_id")
     private List<Ticket> tickets;
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     @JoinColumn(name = "id")
     private User user;
-
-    public ShoppingCart() {
-    }
-
-    public ShoppingCart(User user, List<Ticket> tickets) {
-        this.user = user;
-        this.tickets = tickets;
-    }
 
     public Long getId() {
         return id;

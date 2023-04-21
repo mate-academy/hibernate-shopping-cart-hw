@@ -17,7 +17,7 @@ import mate.academy.service.MovieSessionService;
 import mate.academy.service.ShoppingCartService;
 
 public class Main {
-    private static final String VALID_EMAIL = "user@com";
+    private static final String EMAIL = "user@com";
     private static final String PASS = "12345678";
     private static final Injector injector =
             Injector.getInstance("mate.academy");
@@ -72,7 +72,9 @@ public class Main {
 
         System.out.println("---------------------new added functions---------------------------");
 
-        User user = new User(VALID_EMAIL, PASS);
+        User user = new User();
+        user.setEmail(EMAIL);
+        user.setPassword(PASS);
         try {
             authService.register(user.getEmail(), user.getPassword());
             System.out.println("User registered");
