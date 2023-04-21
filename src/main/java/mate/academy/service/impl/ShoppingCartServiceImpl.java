@@ -40,9 +40,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         ticket.setUser(user);
         Ticket ticketFromDb = ticketDao.add(ticket);
 
-        ShoppingCart shoppingCart = shoppingCartDao.getByUser(user).orElseThrow(
-                () -> new NoSuchElementException("Can't get shopping cart"
-                        + " for user in DB " + user));
+        ShoppingCart shoppingCart = getByUser(user);
         shoppingCart.getTickets().add(ticketFromDb);
         shoppingCartDao.update(shoppingCart);
     }
