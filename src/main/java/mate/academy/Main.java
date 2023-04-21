@@ -30,7 +30,7 @@ public class Main {
     private static final ShoppingCartService shoppingCartService =
             (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
 
-    public static void main(String[] args) throws RegistrationException, AuthenticationException {
+    public static void main(String[] args) {
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
         movieService.add(fastAndFurious);
@@ -71,8 +71,12 @@ public class Main {
         User firstUser = new User();
         firstUser.setEmail("pechivo@gmail.com");
         firstUser.setPassword("123456");
-        firstUser = authService.register(firstUser.getEmail(), firstUser.getPassword());
-        authService.login("pechivo@gmail.com", "123456");
+        try {
+            firstUser = authService.register(firstUser.getEmail(), firstUser.getPassword());
+            authService.login("pechivo@gmail.com", "123456");
+        } catch (RegistrationException | AuthenticationException e) {
+            throw new RuntimeException(e);
+        }
         System.out.println(firstUser);
 
         shoppingCartService.addSession(tomorrowMovieSession, firstUser);
