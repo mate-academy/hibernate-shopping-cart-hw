@@ -15,6 +15,8 @@ import mate.academy.service.UserService;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.academy");
+    private static final String EMAIL = "userBob@gmai.com";
+    private static final String PASSWORD = "passwordForBob";
     private static final MovieSessionService movieSessionService = (MovieSessionService)
             injector.getInstance(MovieSessionService.class);
     private static final MovieService movieService = (MovieService)
@@ -65,8 +67,8 @@ public class Main {
                 fastAndFurious.getId(), LocalDate.now()));
 
         User userBob = new User();
-        userBob.setEmail("userBob@gmai.com");
-        userBob.setPassword("passwordForBob");
+        userBob.setEmail(EMAIL);
+        userBob.setPassword(PASSWORD);
         userService.add(userBob);
         shoppingCartService.registerNewShoppingCart(userBob);
         shoppingCartService.addSession(tomorrowMovieSession, userBob);

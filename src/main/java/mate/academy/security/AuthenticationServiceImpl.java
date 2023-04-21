@@ -14,6 +14,7 @@ import mate.academy.util.HashUtil;
 public class AuthenticationServiceImpl implements AuthenticationService {
     @Inject
     private UserService userService;
+    @Inject
     private ShoppingCartService shoppingCartService;
 
     @Override
