@@ -72,8 +72,10 @@ public class Main {
         } catch (RegistrationException e) {
             System.out.println("Invalid  data");
         }
-        ShoppingCart shoppingCart = shoppingCartService.getByUser(bill);
         shoppingCartService.addSession(tomorrowMovieSession, bill);
+        ShoppingCart shoppingCart = shoppingCartService.getByUser(bill);
+        System.out.println(shoppingCart);
         shoppingCartService.clear(shoppingCart);
+        System.out.println(shoppingCartService.getByUser(bill));
     }
 }
