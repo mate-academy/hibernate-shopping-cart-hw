@@ -82,7 +82,8 @@ public class Main {
         } catch (AuthenticationException e) {
             throw new RuntimeException("Email or password don't match");
         }
-        User userFromDb = userService.findByEmail(mail).orElseThrow(() -> new RuntimeException("Can't find user with mail" + mail));
+        User userFromDb = userService.findByEmail(mail).orElseThrow(() ->
+                new RuntimeException("Can't find user with mail" + mail));
 
         shoppingCartService.registerNewShoppingCart(userFromDb);
         shoppingCartService.addSession(tomorrowMovieSession, userFromDb);
