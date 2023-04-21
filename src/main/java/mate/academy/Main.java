@@ -72,7 +72,8 @@ public class Main {
         lory.setPassword("3lwznmds7vfdgpfg[yekbfrrjhltjyljlegb");
         try {
             lory = authenticationService.register(lory.getEmail(), lory.getPassword());
-            authenticationService.login("lory.cat@gmail.com", "3lwznmds7vfdgpfg[yekbfrrjhltjyljlegb");
+            authenticationService
+                    .login("lory.cat@gmail.com", "3lwznmds7vfdgpfg[yekbfrrjhltjyljlegb");
             System.out.println(lory);
         } catch (RegistrationException | AuthenticationException e) {
             throw new RuntimeException(e);
