@@ -32,7 +32,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             User user = new User();
             user.setEmail(email);
             user.setPassword(password);
-            user = userService.add(user);
+            userService.add(user);
             shoppingCartService.registerNewShoppingCart(user);
             return user;
         }
