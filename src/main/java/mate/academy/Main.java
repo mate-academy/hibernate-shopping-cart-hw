@@ -109,5 +109,6 @@ public class Main {
         System.out.println(shoppingCartService.getByUser(aliceFromDb));
 
         shoppingCartService.clear(shoppingCartService.getByUser(bobFromDb));
+        System.out.println(shoppingCartService.getByUser(bobFromDb));
     }
 }
