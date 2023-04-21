@@ -52,7 +52,7 @@ public class Ticket {
     public String toString() {
         return "ShoppingCart{"
                 + "id=" + id
-                + ", MovieSession=" + movieSession
+                + ", movieSession=" + movieSession
                 + ", user=" + user + '\''
                 + '}';
     }

@@ -28,7 +28,9 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             }
             throw new DataProcessingException("Can`t add shopping cart: " + shoppingCart, e);
         } finally {
-            session.close();
+            if (session != null) {
+                session.close();
+            }
         }
         return shoppingCart;
     }
@@ -65,7 +67,9 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             }
             throw new DataProcessingException("Can`t update shopping cart: " + shoppingCart, e);
         } finally {
-            session.close();
+            if (session != null) {
+                session.close();
+            }
         }
     }
 }

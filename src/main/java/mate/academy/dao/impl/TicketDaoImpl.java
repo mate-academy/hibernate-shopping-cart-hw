@@ -25,7 +25,9 @@ public class TicketDaoImpl implements TicketDao {
             }
             throw new DataProcessingException("Can`t add ticket: " + ticket, e);
         } finally {
-            session.close();
+            if (session != null) {
+                session.close();
+            }
         }
         return ticket;
     }
