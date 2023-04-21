@@ -42,7 +42,6 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
                             + "left join fetch sc.tickets t "
                             + "left join fetch sc.user u "
                             + "left join fetch t.movieSession tm "
-                            + "left join fetch t.user "
                             + "left join fetch tm.cinemaHall "
                             + "left join fetch tm.movie "
                             + "where u = :user", ShoppingCart.class)
