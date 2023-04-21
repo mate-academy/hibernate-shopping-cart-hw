@@ -3,6 +3,7 @@ package mate.academy;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.DataProcessingException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
@@ -66,12 +67,12 @@ public class Main {
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(
                 fastAndFurious.getId(), LocalDate.now()));
-        User loginUser;
+        User loginUser = new User();
         try {
             authenticationService.register("someLogin", "112233");
             loginUser = authenticationService.login("someLogin", "112233");
         } catch (RegistrationException | AuthenticationException e) {
-            throw new RuntimeException(e);
+            throw new DataProcessingException("can`t login user with " + loginUser.getEmail());
         }
         try {
             authenticationService.register("someLogin", "wrongPass");

@@ -18,7 +18,6 @@ import javax.persistence.Table;
 @Table(name = "shopping_carts")
 public class ShoppingCart {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
@@ -59,24 +58,5 @@ public class ShoppingCart {
         return "ShoppingCart{" + "id=" + id
                 + ", user=" + user
                 + ", tickets=" + tickets + '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        ShoppingCart that = (ShoppingCart) o;
-        return Objects.equals(id, that.id)
-                && Objects.equals(user, that.user)
-                && Objects.equals(tickets, that.tickets);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, user, tickets);
     }
 }
