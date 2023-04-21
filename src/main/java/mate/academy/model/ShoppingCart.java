@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -16,7 +17,7 @@ public class ShoppingCart {
     @Id
     private Long id;
     @OneToMany
-    @JoinColumn(name = "ticket_id")
+    @JoinTable(name = "shopping_carts_tickets")
     private List<Ticket> tickets;
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
