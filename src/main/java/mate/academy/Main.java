@@ -72,23 +72,18 @@ public class Main {
 
         System.out.println("---------------------new added functions---------------------------");
 
+        User user = new User(VALID_EMAIL, PASS);
         try {
-            authService.register(VALID_EMAIL, PASS);
+            authService.register(user.getEmail(), user.getPassword());
             System.out.println("User registered");
+            user = authService.login(user.getEmail(), user.getPassword());
+            System.out.println("User logged");
         } catch (RegistrationException e) {
             System.out.println("Couldn't register user");
-        }
-
-        User user = null;
-        try {
-            user = authService.login(VALID_EMAIL, PASS);
-            System.out.println("User logged");
         } catch (AuthenticationException e) {
             System.out.println("Couldn't login user");
         }
-        System.out.println(user);
-
-        shopCartService.addSession(movieSessionService.get(user.getId()), user);
+        shopCartService.addSession(movieSessionService.get(tomorrowMovieSession.getId()), user);
         ShoppingCart shoppingCart = shopCartService.getByUser(user);
         System.out.println(shoppingCart + "added");
         shopCartService.clear(shoppingCart);
