@@ -2,11 +2,13 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
 import mate.academy.model.User;
+import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
@@ -64,26 +66,25 @@ public class Main {
         UserService userService =
                 (UserService) injector.getInstance(UserService.class);
 
-        User user = new User();
         String userEmail = "email@email.email";
-        user.setEmail(userEmail);
-        user.setPassword("AMDgovno");
-        User addedUser = userService.add(user);
 
-        ShoppingCartService shoppingCartService =
-                (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
+        AuthenticationService authenticationService =
+                (AuthenticationService) injector.getInstance(AuthenticationService.class);
+        ShoppingCartService shoppingCartService = authenticationService.getShoppingCartService();
 
-        shoppingCartService.registerNewShoppingCart(addedUser);
+        User user = null;
+        try {
+            user = authenticationService.register(userEmail, "AMDgovno");
+        } catch (RegistrationException e) {
+            throw new RuntimeException(e);
+        }
+
         System.out.println(
-                "A shopping cart for this created user: "
-                + shoppingCartService.getByUser(addedUser));
-        shoppingCartService.addSession(tomorrowMovieSession, addedUser);
+                "A shopping cart after adding a ticket: "
+                        + shoppingCartService.getByUser(user));
+        shoppingCartService.clear(shoppingCartService.getByUser(user));
         System.out.println(
-                "A shopping cart for this created user after adding a ticket: "
-                        + shoppingCartService.getByUser(addedUser));
-        shoppingCartService.clear(shoppingCartService.getByUser(addedUser));
-        System.out.println(
-                "A shopping cart for this created user after clearing it: "
-                        + shoppingCartService.getByUser(addedUser));
+                "A shopping cart after clearing it: "
+                        + shoppingCartService.getByUser(user));
     }
 }
