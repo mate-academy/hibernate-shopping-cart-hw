@@ -78,13 +78,9 @@ public class Main {
         user.setPassword("1111");
         try {
             authenticationService.register(user.getEmail(), user.getPassword());
-        } catch (RegistrationException e) {
-            throw new RuntimeException(e);
-        }
-        try {
             user = authenticationService.login(user.getEmail(), user.getPassword());
-        } catch (AuthenticationException e) {
-            throw new RuntimeException(e);
+        } catch (RegistrationException | AuthenticationException e) {
+            throw new RuntimeException("Can't login or register user" + user, e);
         }
 
         System.out.println(COLOR_ANSI_BEGIN + shoppingCartService.getByUser(user) + COLOR_ANSI_END);
