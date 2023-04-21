@@ -22,9 +22,6 @@ public class ShoppingCart {
     @Column(name = "id", nullable = false)
     private Long id;
     @OneToMany
-    @JoinTable(name = "shopping_carts_tickets",
-            joinColumns = @JoinColumn(name = "shopping_cart_id"),
-            inverseJoinColumns = @JoinColumn(name = "ticket_id"))
     private List<Ticket> tickets;
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId

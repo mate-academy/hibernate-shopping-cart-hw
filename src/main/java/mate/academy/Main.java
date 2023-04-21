@@ -18,16 +18,16 @@ import mate.academy.service.ShoppingCartService;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.academy");
-    private static final CinemaHallService cinemaHallService =
-            (CinemaHallService) injector.getInstance(CinemaHallService.class);
     private static final MovieService movieService =
             (MovieService) injector.getInstance(MovieService.class);
     private static final MovieSessionService movieSessionService =
             (MovieSessionService) injector.getInstance(MovieSessionService.class);
+    private static final CinemaHallService cinemaHallService =
+            (CinemaHallService) injector.getInstance(CinemaHallService.class);
     private static final AuthenticationService authenticationService =
             (AuthenticationService) injector.getInstance(AuthenticationService.class);
-    private static final ShoppingCartService shoppingCartService = (ShoppingCartService) injector
-            .getInstance(ShoppingCartService.class);
+    private static final ShoppingCartService shoppingCartService =
+            (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
 
     public static void main(String[] args) {
         Movie fastAndFurious = new Movie("Fast and Furious");
@@ -71,20 +71,18 @@ public class Main {
         lory.setEmail("lory.cat@gmail.com");
         lory.setPassword("3lwznmds7vfdgpfg[yekbfrrjhltjyljlegb");
         try {
-            System.out.println(authenticationService.register(lory.getEmail(), lory.getPassword()));
-        } catch (RegistrationException e) {
-            throw new RuntimeException("Can`t register user", e);
+            lory = authenticationService.register(lory.getEmail(), lory.getPassword());
+            authenticationService.login("lory.cat@gmail.com", "3lwznmds7vfdgpfg[yekbfrrjhltjyljlegb");
+            System.out.println(lory);
+        } catch (RegistrationException | AuthenticationException e) {
+            throw new RuntimeException(e);
         }
-        try {
-            System.out.println(authenticationService.login(lory.getEmail(), lory.getPassword()));
-            System.out.println(authenticationService.login(lory.getEmail(), "qwerty"));
-        } catch (AuthenticationException e) {
-            throw new RuntimeException("Invalid data", e);
-        }
+
         shoppingCartService.addSession(tomorrowMovieSession, lory);
         ShoppingCart loryShoppingCart = shoppingCartService.getByUser(lory);
-        System.out.println(loryShoppingCart);
+
+        System.out.println(lory);
         shoppingCartService.clear(loryShoppingCart);
-        System.out.println(loryShoppingCart);
+        System.out.println(lory);
     }
 }
