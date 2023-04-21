@@ -73,14 +73,13 @@ public class Main {
         bob.setPassword("12345");
         try {
             System.out.println(authenticationService.register(bob.getEmail(), bob.getPassword()));
+            System.out.println(authenticationService.login(bob.getEmail(), bob.getPassword()));
         } catch (RegistrationException e) {
             System.out.println("Can`t register user");
-        }
-        try {
-            System.out.println(authenticationService.login(bob.getEmail(), bob.getPassword()));
         } catch (AuthenticationException e) {
             System.out.println("Can`t login with this data");
         }
+
         shoppingCartService.registerNewShoppingCart(bob);
         shoppingCartService.addSession(tomorrowMovieSession, bob);
         ShoppingCart shoppingCart = shoppingCartService.getByUser(bob);
