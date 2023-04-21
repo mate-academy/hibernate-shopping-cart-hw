@@ -24,13 +24,10 @@ public class Main {
             (CinemaHallService) injector.getInstance(CinemaHallService.class);
     private static final MovieSessionService movieSessionService =
             (MovieSessionService) injector.getInstance(MovieSessionService.class);
-
     private static final UserService userService =
             (UserService) injector.getInstance(UserService.class);
-
     private static final AuthenticationService authenticationService =
             (AuthenticationService) injector.getInstance(AuthenticationService.class);
-
     private static final ShoppingCartService shoppingCartService
             = (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
 
