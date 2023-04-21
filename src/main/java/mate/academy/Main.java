@@ -76,14 +76,14 @@ public class Main {
                     .login("lory.cat@gmail.com", "3lwznmds7vfdgpfg[yekbfrrjhltjyljlegb");
             System.out.println(lory);
         } catch (RegistrationException | AuthenticationException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Incorrect email or password ", e);
         }
 
         shoppingCartService.addSession(tomorrowMovieSession, lory);
         ShoppingCart loryShoppingCart = shoppingCartService.getByUser(lory);
 
-        System.out.println(lory);
+        System.out.println(loryShoppingCart);
         shoppingCartService.clear(loryShoppingCart);
-        System.out.println(lory);
+        System.out.println(shoppingCartService.getByUser(lory));
     }
 }
