@@ -8,6 +8,7 @@ import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.model.ShoppingCart;
 import mate.academy.model.User;
 import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
@@ -70,14 +71,15 @@ public class Main {
         User firstUser = new User();
         firstUser.setEmail("pechivo@gmail.com");
         firstUser.setPassword("123456");
-        authService.register(firstUser.getEmail(), firstUser.getPassword());
-        authService.login(firstUser.getEmail(), firstUser.getPassword());
+        firstUser = authService.register(firstUser.getEmail(), firstUser.getPassword());
+        authService.login("pechivo@gmail.com", "123456");
         System.out.println(firstUser);
 
-        shoppingCartService.getByUser(firstUser);
         shoppingCartService.addSession(tomorrowMovieSession, firstUser);
-        System.out.println(shoppingCartService.getByUser(firstUser));
-        shoppingCartService.clear(shoppingCartService.getByUser(firstUser));
-        System.out.println(shoppingCartService.getByUser(firstUser));
+        ShoppingCart byUser = shoppingCartService.getByUser(firstUser);
+
+        System.out.println(firstUser);
+        shoppingCartService.clear(byUser);
+        System.out.println(firstUser);
     }
 }
