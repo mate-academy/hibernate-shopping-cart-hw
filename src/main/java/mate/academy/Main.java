@@ -35,22 +35,24 @@ public class Main {
             = (UserService) injector.getInstance(UserService.class);
     private static final ShoppingCartService shoppingCartService
             = (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
+    private static final long FIRST_ID = 1L;
+    private static final long SECOND_ID = 2L;
 
     public static void main(String[] args) {
         initializeMovies();
         initializeCinemaHalls();
         initializeMovieSessions();
         initializeUsers();
-        testRegistration();
         testShoppingCartService();
+        testRegistration();
     }
 
     private static void testShoppingCartService() {
         User user = userService.findByEmail(EMAIL_1).get();
         System.out.println(shoppingCartService.getByUser(user));
         //expect no tickets in shopping cart
-        shoppingCartService.addSession(movieSessionService.get(1L), user);
-        shoppingCartService.addSession(movieSessionService.get(2L), user);
+        shoppingCartService.addSession(movieSessionService.get(FIRST_ID), user);
+        shoppingCartService.addSession(movieSessionService.get(SECOND_ID), user);
         ShoppingCart shoppingCart = shoppingCartService.getByUser(user);
         System.out.println(shoppingCart.getTickets());
         //expect two tickets in shopping cart
@@ -91,32 +93,32 @@ public class Main {
     private static void initializeMovieSessions() {
 
         MovieSession pastShowingPart2 = new MovieSession();
-        pastShowingPart2.setCinemaHall(cinemaHallService.get(1L));
-        pastShowingPart2.setMovie(movieService.get(1L));
+        pastShowingPart2.setCinemaHall(cinemaHallService.get(FIRST_ID));
+        pastShowingPart2.setMovie(movieService.get(FIRST_ID));
         pastShowingPart2.setShowTime(LocalDateTime.now().minusDays(1));
         movieSessionService.add(pastShowingPart2);
 
         MovieSession regularShowingPart2 = new MovieSession();
-        regularShowingPart2.setCinemaHall(cinemaHallService.get(1L));
-        regularShowingPart2.setMovie(movieService.get(1L));
+        regularShowingPart2.setCinemaHall(cinemaHallService.get(FIRST_ID));
+        regularShowingPart2.setMovie(movieService.get(FIRST_ID));
         regularShowingPart2.setShowTime(LocalDateTime.now());
         movieSessionService.add(regularShowingPart2);
 
         MovieSession vipShowingPart3 = new MovieSession();
-        vipShowingPart3.setCinemaHall(cinemaHallService.get(2L));
-        vipShowingPart3.setMovie(movieService.get(2L));
+        vipShowingPart3.setCinemaHall(cinemaHallService.get(SECOND_ID));
+        vipShowingPart3.setMovie(movieService.get(SECOND_ID));
         vipShowingPart3.setShowTime(LocalDateTime.now().plusHours(3));
         movieSessionService.add(vipShowingPart3);
 
         MovieSession futureShowingPart2 = new MovieSession();
-        futureShowingPart2.setCinemaHall(cinemaHallService.get(2L));
-        futureShowingPart2.setMovie(movieService.get(1L));
+        futureShowingPart2.setCinemaHall(cinemaHallService.get(SECOND_ID));
+        futureShowingPart2.setMovie(movieService.get(FIRST_ID));
         futureShowingPart2.setShowTime(LocalDateTime.now().plusDays(1));
         movieSessionService.add(futureShowingPart2);
 
         MovieSession futureVipShowingPart2 = new MovieSession();
-        futureVipShowingPart2.setCinemaHall(cinemaHallService.get(2L));
-        futureVipShowingPart2.setMovie(movieService.get(1L));
+        futureVipShowingPart2.setCinemaHall(cinemaHallService.get(SECOND_ID));
+        futureVipShowingPart2.setMovie(movieService.get(FIRST_ID));
         futureVipShowingPart2.setShowTime(LocalDateTime.now().plusDays(1));
         movieSessionService.add(futureVipShowingPart2);
     }
