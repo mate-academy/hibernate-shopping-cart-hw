@@ -82,8 +82,10 @@ public class Main {
             throw new RuntimeException("Can't login user ", e);
         }
         shoppingCartService.getByUser(user);
-        shoppingCartService.addSession(movieSessionService.get(tomorrowMovieSession.getId()), user);
-        shoppingCartService.addSession(movieSessionService.get(yesterdayMovieSession.getId()), user);
+        shoppingCartService.addSession(movieSessionService.get(
+                tomorrowMovieSession.getId()), user);
+        shoppingCartService.addSession(movieSessionService.get(
+                yesterdayMovieSession.getId()), user);
         System.out.println(shoppingCartService.getByUser(user));
         shoppingCartService.clear(shoppingCartService.getByUser(user));
         System.out.println(shoppingCartService.getByUser(user));
