@@ -67,16 +67,13 @@ public class Main {
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(
                 fastAndFurious.getId(), LocalDate.now()));
-
-        try {
-            authenticationService.register("test@gmail.com", "123456");
-        } catch (RegistrationException e) {
-            throw new RuntimeException("Can't register user", e);
-        }
-
         User user;
         try {
+            authenticationService.register("test@gmail.com", "123456");
             user = authenticationService.login("test@gmail.com", "123456");
+
+        } catch (RegistrationException e) {
+            throw new RuntimeException("Can't register user", e);
         } catch (AuthenticationException e) {
             throw new RuntimeException("Can't authenticate user", e);
         }
