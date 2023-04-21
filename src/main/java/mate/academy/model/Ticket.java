@@ -22,9 +22,6 @@ public class Ticket {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Ticket() {
-    }
-
     public Long getId() {
         return id;
     }
