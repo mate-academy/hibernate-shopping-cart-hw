@@ -68,19 +68,16 @@ public class Main {
         System.out.println(movieSessionService.findAvailableSessions(
                 fastAndFurious.getId(), LocalDate.now()));
 
-        User bob = new User();
-        bob.setEmail("bob12345@gmail.com");
-        bob.setPassword("12345");
+        User bob = null;
         try {
-            System.out.println(authenticationService.register(bob.getEmail(), bob.getPassword()));
-            System.out.println(authenticationService.login(bob.getEmail(), bob.getPassword()));
+            System.out.println(authenticationService.register("bob1234@gmail.com", "12345"));
+            bob = authenticationService.login("bob1234@gmail.com", "12345");
         } catch (RegistrationException e) {
             System.out.println("Can`t register user");
         } catch (AuthenticationException e) {
             System.out.println("Can`t login with this data");
         }
 
-        shoppingCartService.registerNewShoppingCart(bob);
         shoppingCartService.addSession(tomorrowMovieSession, bob);
         ShoppingCart shoppingCart = shoppingCartService.getByUser(bob);
         System.out.println(shoppingCart);
