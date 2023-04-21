@@ -5,10 +5,7 @@ import java.time.LocalDateTime;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
-import mate.academy.model.CinemaHall;
-import mate.academy.model.Movie;
-import mate.academy.model.MovieSession;
-import mate.academy.model.User;
+import mate.academy.model.*;
 import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
@@ -72,20 +69,18 @@ public class Main {
 
         String email = "test@gmail.com";
         String password = "123456";
-        try {
-            authenticationService.register(email, password);
-        } catch (RegistrationException e) {
-            throw new RuntimeException("Can't register user ", e);
-        }
         User user;
         try {
+            authenticationService.register(email, password);
             user = authenticationService.login(email, password);
+        } catch (RegistrationException e) {
+            throw new RuntimeException("Can't register user ", e);
         } catch (AuthenticationException e) {
             throw new RuntimeException("Can't login user ", e);
         }
-
         shoppingCartService.getByUser(user);
         shoppingCartService.addSession(movieSessionService.get(1L), user);
         shoppingCartService.addSession(movieSessionService.get(2L), user);
+        shoppingCartService.clear(shoppingCartService.getByUser(user));
     }
 }
