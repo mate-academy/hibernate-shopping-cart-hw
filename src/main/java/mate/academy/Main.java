@@ -85,9 +85,12 @@ public class Main {
         User userFromDb = userService.findByEmail(mail).orElseThrow(() ->
                 new RuntimeException("Can't find user with mail" + mail));
 
-        shoppingCartService.registerNewShoppingCart(userFromDb);
+        shoppingCartService.addSession(movieSessionService.get(userFromDb.getId()), userFromDb);
+        ShoppingCart shoppingCart = shoppingCartService.getByUser(userFromDb);
+        shoppingCartService.addSession(yesterdayMovieSession, userFromDb);
         shoppingCartService.addSession(tomorrowMovieSession, userFromDb);
-        ShoppingCart shoppingCartByUser = shoppingCartService.getByUser(userFromDb);
-        shoppingCartService.clear(shoppingCartByUser);
+        System.out.println(shoppingCart);
+        shoppingCartService.clear(shoppingCart);
+        System.out.println(shoppingCart);
     }
 }
