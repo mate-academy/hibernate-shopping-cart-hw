@@ -8,6 +8,7 @@ import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.model.User;
 import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
@@ -82,9 +83,10 @@ public class Main {
                 fastAndFurious.getId(), LocalDate.now()));
 
         // ShoppingCart
-        System.out.println(shoppingCartService.getByUser(userService.findByEmail(EMAIL).get()));
-        shoppingCartService.addSession(tomorrowMovieSession, userService.findByEmail(EMAIL).get());
+        User user = userService.findByEmail(EMAIL).get();
+        System.out.println(shoppingCartService.getByUser(user));
+        shoppingCartService.addSession(tomorrowMovieSession, user);
         shoppingCartService
-                .clear(shoppingCartService.getByUser(userService.findByEmail(EMAIL).get()));
+                .clear(shoppingCartService.getByUser(user));
     }
 }
