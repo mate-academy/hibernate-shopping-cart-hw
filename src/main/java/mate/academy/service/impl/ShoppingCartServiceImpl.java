@@ -40,6 +40,5 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public void clear(ShoppingCart shoppingCart) {
         shoppingCart.getTickets().clear();
         shoppingCartDao.update(shoppingCart);
-
     }
 }
