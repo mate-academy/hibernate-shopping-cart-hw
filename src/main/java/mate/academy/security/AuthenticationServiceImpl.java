@@ -43,8 +43,4 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String hashedPassword = HashUtil.hashPassword(rawPassword, userFromDb.getSalt());
         return hashedPassword.equals(userFromDb.getPassword());
     }
-
-    public ShoppingCartService getShoppingCartService() {
-        return shoppingCartService;
-    }
 }

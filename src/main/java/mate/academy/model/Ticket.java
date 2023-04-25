@@ -1,12 +1,10 @@
 package mate.academy.model;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -16,10 +14,8 @@ public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinTable(name = "tickets_movie_sessions",
-            joinColumns = @JoinColumn(name = "ticket_id"),
-            inverseJoinColumns = @JoinColumn(name = "movie_session_id"))
+    @ManyToOne
+    @JoinColumn(name = "movie_session_id")
     private MovieSession movieSession;
     @ManyToOne
     @JoinColumn(name = "user_id")

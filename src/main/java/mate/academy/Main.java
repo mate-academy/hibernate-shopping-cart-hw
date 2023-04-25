@@ -66,14 +66,16 @@ public class Main {
 
         AuthenticationService authenticationService =
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
-        ShoppingCartService shoppingCartService = authenticationService.getShoppingCartService();
 
         User user;
         try {
             user = authenticationService.register(userEmail, "AMDgovno");
         } catch (RegistrationException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Could not initialize user ", e);
         }
+
+        ShoppingCartService shoppingCartService =
+                (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
 
         shoppingCartService.addSession(tomorrowMovieSession, user);
         System.out.println(
