@@ -75,6 +75,7 @@ public class Main {
             throw new RuntimeException(e);
         }
 
+        shoppingCartService.addSession(tomorrowMovieSession, user);
         System.out.println(
                 "A shopping cart after adding a ticket: "
                         + shoppingCartService.getByUser(user));

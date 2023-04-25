@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -16,17 +17,19 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "title")
-    private MovieSession title;
+    @JoinTable(name = "tickets_movie_sessions",
+            joinColumns = @JoinColumn(name = "ticket_id"),
+            inverseJoinColumns = @JoinColumn(name = "movie_session_id"))
+    private MovieSession movieSession;
     @ManyToOne
-    @JoinColumn(name = "user")
+    @JoinColumn(name = "user_id")
     private User user;
 
     public Ticket() {
     }
 
-    public Ticket(MovieSession title, User user) {
-        this.title = title;
+    public Ticket(MovieSession movieSession, User user) {
+        this.movieSession = movieSession;
         this.user = user;
     }
 
@@ -38,12 +41,12 @@ public class Ticket {
         this.id = id;
     }
 
-    public MovieSession getTitle() {
-        return title;
+    public MovieSession getMovieSession() {
+        return movieSession;
     }
 
-    public void setTitle(MovieSession title) {
-        this.title = title;
+    public void setMovieSession(MovieSession title) {
+        this.movieSession = title;
     }
 
     public User getUser() {
@@ -57,7 +60,7 @@ public class Ticket {
     @Override
     public String toString() {
         return "Ticket{"
-                + "title=" + title
+                + "title=" + movieSession
                 + ", user=" + user
                 + '}';
     }
