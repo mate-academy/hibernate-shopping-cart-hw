@@ -2,10 +2,14 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
+import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
-import mate.academy.model.*;
+import mate.academy.model.CinemaHall;
+import mate.academy.model.Movie;
+import mate.academy.model.MovieSession;
+import mate.academy.model.ShoppingCart;
+import mate.academy.model.User;
 import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
@@ -31,7 +35,8 @@ public class Main {
         secondCinemaHall.setCapacity(200);
         secondCinemaHall.setDescription("second hall with capacity 200");
 
-        CinemaHallService cinemaHallService = (CinemaHallService) injector.getInstance(CinemaHallService.class);
+        CinemaHallService cinemaHallService
+                = (CinemaHallService) injector.getInstance(CinemaHallService.class);
         cinemaHallService.add(firstCinemaHall);
         cinemaHallService.add(secondCinemaHall);
 
@@ -48,7 +53,8 @@ public class Main {
         yesterdayMovieSession.setMovie(fastAndFurious);
         yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(1L));
 
-        MovieSessionService movieSessionService = (MovieSessionService) injector.getInstance(MovieSessionService.class);
+        MovieSessionService movieSessionService
+                = (MovieSessionService) injector.getInstance(MovieSessionService.class);
         movieSessionService.add(tomorrowMovieSession);
         movieSessionService.add(yesterdayMovieSession);
 
@@ -59,18 +65,17 @@ public class Main {
         AuthenticationService authenticationService
                 = (AuthenticationService) injector.getInstance(AuthenticationService.class);
         try {
-            User newUser = authenticationService.register("newUser@gmail.com", "12345");
+            authenticationService.register("newUser@gmail.com", "12345");
+            User newUser = authenticationService.login("newUser@gmail.com", "12345");
             ShoppingCartService shoppingCartService
                     = (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
-            shoppingCartService.addSession(tomorrowMovieSession, newUser);
             ShoppingCart shoppingCart = shoppingCartService.getByUser(newUser);
             System.out.println(shoppingCart);
+            shoppingCartService.addSession(tomorrowMovieSession, newUser);
             shoppingCartService.clear(shoppingCart);
             System.out.println(shoppingCart);
-        } catch (RegistrationException e) {
+        } catch (RegistrationException | AuthenticationException e) {
             throw new RuntimeException(e);
         }
-
-
     }
 }

@@ -38,15 +38,16 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
     @Override
     public Optional<ShoppingCart> getByUser(User user) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Query<ShoppingCart> getShoppingCartByUserIdQuery
-                    = session.createQuery("FROM ShoppingCart sc JOIN FETCH sc.user "
-                    + "JOIN FETCH sc.tickets "
-                    + "WHERE sc.user.id = :userId", ShoppingCart.class);
-            getShoppingCartByUserIdQuery.setParameter("userId", user.getId());
-            return getShoppingCartByUserIdQuery.uniqueResultOptional();
+            Query<ShoppingCart> getShoppingCartByUserQuery
+                    = session.createQuery("FROM ShoppingCart sc LEFT JOIN FETCH sc.tickets t "
+                    + "LEFT JOIN FETCH t.movieSession tms "
+                    + "LEFT JOIN FETCH tms.movie LEFT JOIN FETCH tms.cinemaHall "
+                    + "WHERE sc.user = :user", ShoppingCart.class);
+            getShoppingCartByUserQuery.setParameter("user", user);
+            return getShoppingCartByUserQuery.uniqueResultOptional();
         } catch (Exception e) {
-            throw new DataProcessingException("Can't get a shopping cart by user id: "
-                    + user.getId(), e);
+            throw new DataProcessingException("Can't get a shopping cart by user: "
+                    + user, e);
         }
     }
 
