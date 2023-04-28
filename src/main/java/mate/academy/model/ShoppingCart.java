@@ -14,15 +14,19 @@ import javax.persistence.Table;
 @Table (name = "shopping_carts")
 public class ShoppingCart {
     @Id
-    @Column (name = "id")
     private long id;
     @OneToMany
-    @Column (name = "tickets")
     private List<Ticket> tickets;
     @OneToOne (fetch = FetchType.LAZY)
     @MapsId
-    @Column (name = "user")
     private User user;
+
+    public ShoppingCart() {
+    }
+
+    public ShoppingCart(User user) {
+        this.user = user;
+    }
 
     public long getId() {
         return id;

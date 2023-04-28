@@ -17,4 +17,45 @@ public class Ticket {
     private MovieSession movieSession;
     @ManyToOne
     private User user;
+
+    public Ticket() {
+    }
+
+    public Ticket(MovieSession movieSession, User user) {
+        this.movieSession = movieSession;
+        this.user = user;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public MovieSession getMovieSession() {
+        return movieSession;
+    }
+
+    public void setMovieSession(MovieSession movieSession) {
+        this.movieSession = movieSession;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "id=" + id +
+                ", movieSession=" + movieSession +
+                ", user=" + user +
+                '}';
+    }
 }
