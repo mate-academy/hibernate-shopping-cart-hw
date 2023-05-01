@@ -5,11 +5,12 @@
     Be careful choosing the type of these relationships. 
     __Remember__ that one user can buy many tickets, and many users can attend one movie session.
 * Don't cast result of `query.getSingleResult()` or `query.uniqueResult()`, it works just fine without it:
-    ```
-        Wrong:
+    - Wrong:
+    ```java
            return (ShoppingCart) query.getSingleResult();
-        
-        Good:
+    ```
+    - Good:
+    ```java
            return query.getSingleResult();
     ```
 * Use `@MapsId` with `ShoppingCart`. Think about whether to use an annotation `@GeneratedValue` in `ShoppingCart`.
