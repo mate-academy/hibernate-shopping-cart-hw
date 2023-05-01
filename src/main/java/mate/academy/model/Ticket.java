@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -12,8 +14,12 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @OneToOne
+    @MapsId
+    @JoinColumn(name = "id_ms")
     private MovieSession movieSession;
     @OneToOne
+    @MapsId
+    @JoinColumn(name = "id_u")
     private User user;
 
     public Long getId() {
