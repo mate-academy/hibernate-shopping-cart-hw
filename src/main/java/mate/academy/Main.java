@@ -35,18 +35,18 @@ public class Main {
             .getInstance(ShoppingCartService.class);
 
     public static void main(String[] args) throws RegistrationException, AuthenticationException {
-        Movie fastAndFurious = new Movie("Autumn in New York");
-        fastAndFurious.setDescription("fantastic");
+        Movie fastAndFurious = new Movie("Fast and Furious");
+        fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
         movieService.add(fastAndFurious);
         System.out.println(movieService.get(fastAndFurious.getId()));
         movieService.getAll().forEach(System.out::println);
 
         CinemaHall firstCinemaHall = new CinemaHall();
-        firstCinemaHall.setCapacity(101);
+        firstCinemaHall.setCapacity(100);
         firstCinemaHall.setDescription("first hall with capacity 100");
 
         CinemaHall secondCinemaHall = new CinemaHall();
-        secondCinemaHall.setCapacity(202);
+        secondCinemaHall.setCapacity(200);
         secondCinemaHall.setDescription("second hall with capacity 200");
 
         cinemaHallService.add(firstCinemaHall);
