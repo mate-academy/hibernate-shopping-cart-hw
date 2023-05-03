@@ -13,7 +13,6 @@ import org.hibernate.query.Query;
 
 @Dao
 public class ShoppingCartDaoImpl implements ShoppingCartDao {
-
     @Override
     public ShoppingCart add(ShoppingCart shoppingCart) {
         Session session = null;
@@ -39,7 +38,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
     @Override
     public Optional<ShoppingCart> getByUser(User user) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Query<ShoppingCart> query = session.createQuery("SELECT sc.id FROM ShoppingCart sc "
+            Query<ShoppingCart> query = session.createQuery("FROM ShoppingCart sc "
                     + "left join fetch sc.user u "
                     + "left join fetch sc.tickets t where u.id = :userId", ShoppingCart.class);
             return query.setParameter("userId", user).uniqueResultOptional();

@@ -2,21 +2,16 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
-import mate.academy.dao.ShoppingCartDao;
-import mate.academy.dao.TicketDao;
-import mate.academy.dao.UserDao;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
-import mate.academy.model.ShoppingCart;
-import mate.academy.model.Ticket;
 import mate.academy.model.User;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
 import mate.academy.service.ShoppingCartService;
+import mate.academy.service.UserService;
 
 public class Main {
     public static void main(String[] args) {
@@ -66,40 +61,17 @@ public class Main {
         System.out.println(movieSessionService.findAvailableSessions(
                 fastAndFurious.getId(), LocalDate.now()));
 
-        final UserDao userDao = (UserDao) injector.getInstance(UserDao.class);
-        final TicketDao ticketDao = (TicketDao) injector.getInstance(TicketDao.class);
-        final ShoppingCartDao shoppingCartDao = (ShoppingCartDao) injector
-                .getInstance(ShoppingCartDao.class);
         final ShoppingCartService shoppingCartService = (ShoppingCartService) injector
                 .getInstance(ShoppingCartService.class);
 
-        User valera = new User();
-        valera.setSalt(new byte[]{12});
-        valera.setEmail("valera@gmail.com");
-        valera.setPassword("123");
-        userDao.add(valera);
+        User bob = new User();
+        bob.setSalt(new byte[21]);
+        bob.setPassword("1234");
+        bob.setEmail("bob@gmail.com");
+        UserService userService = (UserService) injector
+                .getInstance(UserService.class);
+        User bob1 = userService.add(bob);
 
-        Ticket ticket = new Ticket();
-        ticket.setMovieSession(tomorrowMovieSession);
-        ticket.setUser(valera);
-        ticketDao.add(ticket);
-
-        ShoppingCart shoppingCart = new ShoppingCart();
-        shoppingCart.setUser(valera);
-        shoppingCart.setTickets(List.of(ticket));
-        shoppingCartDao.add(shoppingCart);
-
-        User dmytro = new User();
-        dmytro.setId(1L);
-        dmytro.setSalt(new byte[]{1});
-        dmytro.setEmail("dmytro@gmail.com");
-        dmytro.setPassword("321");
-
-        ShoppingCart shoppingCart1 = new ShoppingCart();
-        shoppingCart1.setId(1L);
-        shoppingCart1.setUser(dmytro);
-        shoppingCart1.setTickets(List.of(ticket));
-        shoppingCartDao.update(shoppingCart1);
-        shoppingCartService.clear(shoppingCart);
+        shoppingCartService.addSession(yesterdayMovieSession, bob1);
     }
 }
