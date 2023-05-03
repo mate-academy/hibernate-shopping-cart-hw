@@ -2,7 +2,6 @@ package mate.academy.service.impl;
 
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
-import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.MovieSession;
@@ -13,7 +12,6 @@ import mate.academy.service.ShoppingCartService;
 
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
-
     @Inject
     private ShoppingCartDao shoppingCartDao;
     @Inject
@@ -34,7 +32,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public ShoppingCart getByUser(User user) {
         return shoppingCartDao.getByUser(user)
                 .orElseThrow(() ->
-                        new DataProcessingException("can`t find user " + user));
+                        new RuntimeException("can`t find user " + user));
     }
 
     @Override

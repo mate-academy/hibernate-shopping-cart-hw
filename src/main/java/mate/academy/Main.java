@@ -72,9 +72,14 @@ public class Main {
         System.out.println(movieSessionService.findAvailableSessions(
                 fastAndFurious.getId(), LocalDate.now()));
 
-        authenticationService.register("test5@gmail.com", "sha@1234");
-        User user = authenticationService.login("test5@gmail.com", "sha@1234");
+        authenticationService.register("test2@gmail.com", "sha@1234");
+        User user = authenticationService.login("test2@gmail.com", "sha@1234");
         shoppingCartService.addSession(yesterdayMovieSession, user);
+        shoppingCartService.addSession(tomorrowMovieSession, user);
+        shoppingCartService.getByUser(user).getTickets()
+                .forEach(item -> System.out.println(item));
         shoppingCartService.clear(shoppingCartService.getByUser(user));
+        shoppingCartService.getByUser(user).getTickets()
+                .forEach(item -> System.out.println(item));
     }
 }
