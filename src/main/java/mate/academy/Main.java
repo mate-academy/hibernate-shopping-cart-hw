@@ -2,10 +2,12 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.dao.TicketDao;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.model.Ticket;
 import mate.academy.model.User;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
@@ -70,8 +72,21 @@ public class Main {
         bob.setEmail("bob@gmail.com");
         UserService userService = (UserService) injector
                 .getInstance(UserService.class);
-        User bob1 = userService.add(bob);
+        userService.add(bob);
 
-        shoppingCartService.addSession(yesterdayMovieSession, bob1);
+        Ticket ticket1 = new Ticket();
+        ticket1.setUser(bob);
+        ticket1.setMovieSession(tomorrowMovieSession);
+
+        Ticket ticket2 = new Ticket();
+        ticket2.setUser(bob);
+        ticket2.setMovieSession(yesterdayMovieSession);
+
+        TicketDao ticketDao = (TicketDao) injector.getInstance(TicketDao.class);
+        ticketDao.add(ticket1);
+        ticketDao.add(ticket2);
+
+        shoppingCartService.addSession(tomorrowMovieSession, bob);
+
     }
 }
