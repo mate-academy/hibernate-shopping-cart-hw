@@ -76,11 +76,11 @@ public class Main {
         movieSession.setMovie(new Movie("Marvel"));
         movieSession.setCinemaHall(new CinemaHall());
 
-        shoppingCartService.addSession(movieSession, user);
-
         ShoppingCart shoppingCartByUser = shoppingCartService.getByUser(user);
 
         shoppingCartService.clear(shoppingCartByUser);
+
+        shoppingCartService.addSession(movieSession, user);
 
         User userFromDb = authenticationService.login("qwlg@gmail.com", "12345678");
         System.out.println(userFromDb);
