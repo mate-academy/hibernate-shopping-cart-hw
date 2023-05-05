@@ -39,26 +39,13 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
     @Override
     public Optional<ShoppingCart> getByUser(User user) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Query<ShoppingCart> getShoppingCartByUserQuery = session.createQuery(
-                    "SELECT sc FROM ShoppingCart sc "
-                            + "LEFT JOIN FETCH sc.id "
-                            + "LEFT JOIN FETCH sc.tickets t "
-                            + "LEFT JOIN FETCH sc.user u "
-                            + "LEFT JOIN FETCH u.id "
-                            + "LEFT JOIN FETCH u.email "
-                            + "LEFT JOIN FETCH t.id "
-                            + "LEFT JOIN FETCH t.movieSession ms "
-                            + "LEFT JOIN FETCH ms.id "
-                            + "LEFT JOIN FETCH ms.showTime "
-                            + "LEFT JOIN FETCH ms.cinemaHall ch "
-                            + "LEFT JOIN FETCH ms.movie m "
-                            + "LEFT JOIN FETCH ch.id "
-                            + "LEFT JOIN FETCH ch.description "
-                            + "LEFT JOIN FETCH ch.capacity "
-                            + "LEFT JOIN FETCH m.id "
-                            + "LEFT JOIN FETCH m.description "
-                            + "LEFT JOIN FETCH m.title "
-                            + "WHERE sc.user = :user", ShoppingCart.class);
+            Query<ShoppingCart> getShoppingCartByUserQuery
+                    = session.createQuery("FROM ShoppingCart sc "
+                    + "LEFT JOIN FETCH sc.tickets t "
+                    + "LEFT JOIN FETCH t.movieSession ms "
+                    + "LEFT JOIN FETCH ms.movie "
+                    + "LEFT JOIN FETCH ms.cinemaHall "
+                    + "WHERE sc.user =:user", ShoppingCart.class);
             getShoppingCartByUserQuery.setParameter("user", user);
             return getShoppingCartByUserQuery.uniqueResultOptional();
         } catch (Exception e) {
