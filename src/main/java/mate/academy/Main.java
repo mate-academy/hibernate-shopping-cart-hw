@@ -2,13 +2,15 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
 import mate.academy.model.ShoppingCart;
 import mate.academy.model.User;
+import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
@@ -21,8 +23,10 @@ public class Main {
             = (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
     private static UserService userService
             = (UserService) injector.getInstance(UserService.class);
+    private static AuthenticationService authenticationService
+            = (AuthenticationService) injector.getInstance(AuthenticationService.class);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws RegistrationException, AuthenticationException {
         MovieService movieService = null;
 
         Movie fastAndFurious = new Movie("Fast and Furious");
@@ -64,26 +68,21 @@ public class Main {
         System.out.println(movieSessionService.findAvailableSessions(
                 fastAndFurious.getId(), LocalDate.now()));
 
-        User user = new User();
-        user.setEmail("qwq.gmail.com");
-        user.setPassword("12321");
-        userService.add(user);
-
-        shoppingCartService.registerNewShoppingCart(user);
+        User user = authenticationService.register("qwlg@gmail.com", "12345678");
+        System.out.println(user);
 
         MovieSession movieSession = new MovieSession();
         movieSession.setShowTime(LocalDateTime.now());
         movieSession.setMovie(new Movie("Marvel"));
         movieSession.setCinemaHall(new CinemaHall());
+
         shoppingCartService.addSession(movieSession, user);
 
-        ShoppingCart shoppingCart = new ShoppingCart();
-        shoppingCart.setId(1L);
-        shoppingCart.setUser(user);
-        shoppingCart.setTickets(new ArrayList<>());
-        shoppingCartService.clear(shoppingCart);
+        ShoppingCart shoppingCartByUser = shoppingCartService.getByUser(user);
 
-        ShoppingCart byUser = shoppingCartService.getByUser(user);
-        System.out.println(byUser);
+        shoppingCartService.clear(shoppingCartByUser);
+
+        User userFromDb = authenticationService.login("qwlg@gmail.com", "12345678");
+        System.out.println(userFromDb);
     }
 }
