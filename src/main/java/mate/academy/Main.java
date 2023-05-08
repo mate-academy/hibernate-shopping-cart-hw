@@ -2,12 +2,13 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import mate.academy.dao.TicketDao;
+import java.util.List;
+import mate.academy.dao.ShoppingCartDao;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
-import mate.academy.model.Ticket;
+import mate.academy.model.ShoppingCart;
 import mate.academy.model.User;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
@@ -67,26 +68,23 @@ public class Main {
                 .getInstance(ShoppingCartService.class);
 
         User bob = new User();
+        bob.setId(1L);
         bob.setSalt(new byte[21]);
         bob.setPassword("1234");
-        bob.setEmail("bob@gmail.com");
+        bob.setEmail("valera@gmail.com");
         UserService userService = (UserService) injector
                 .getInstance(UserService.class);
-        userService.add(bob);
+        final User addUser = userService.add(bob);
 
-        Ticket ticket1 = new Ticket();
-        ticket1.setUser(bob);
-        ticket1.setMovieSession(tomorrowMovieSession);
+        ShoppingCart shoppingCart = new ShoppingCart();
+        shoppingCart.setUser(bob);
+        shoppingCart.setTickets(List.of());
+        ShoppingCartDao shoppingCartDao = (ShoppingCartDao) injector
+                .getInstance(ShoppingCartDao.class);
+        shoppingCartDao.add(shoppingCart);
 
-        Ticket ticket2 = new Ticket();
-        ticket2.setUser(bob);
-        ticket2.setMovieSession(yesterdayMovieSession);
-
-        TicketDao ticketDao = (TicketDao) injector.getInstance(TicketDao.class);
-        ticketDao.add(ticket1);
-        ticketDao.add(ticket2);
-
-        shoppingCartService.addSession(tomorrowMovieSession, bob);
+        shoppingCartService.addSession(yesterdayMovieSession,addUser);
+        shoppingCartService.addSession(tomorrowMovieSession,addUser);
 
     }
 }
