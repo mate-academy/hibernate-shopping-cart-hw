@@ -41,7 +41,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void registerNewShoppingCart(User user) throws RegistrationException {
-        authenticationService.register(user.getEmail(), user.getPassword());
+        ShoppingCart shoppingCart = new ShoppingCart();
+        shoppingCart.setUser(user);
+        shoppingCartDao.add(shoppingCart);
     }
 
     @Override
