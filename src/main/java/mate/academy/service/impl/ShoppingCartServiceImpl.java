@@ -1,7 +1,7 @@
 package mate.academy.service.impl;
 
-import java.util.Optional;
 import mate.academy.dao.ShoppingCartDao;
+import mate.academy.dao.TicketDao;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.MovieSession;
@@ -14,19 +14,16 @@ import mate.academy.service.ShoppingCartService;
 public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Inject
     private ShoppingCartDao shoppingCartDao;
+    @Inject
+    private TicketDao ticketDao;
 
     @Override
     public void addTicket(MovieSession movieSession, User user) {
-        Optional<ShoppingCart> cart = shoppingCartDao.getByUser(user);
-        if (cart.isPresent()) {
-            ShoppingCart shoppingCart = cart.get();
-            shoppingCart.getTickets().add(new Ticket(movieSession, user));
-            shoppingCartDao.update(shoppingCart);
-        } else {
-            ShoppingCart shoppingCart = new ShoppingCart(user);
-            shoppingCart.getTickets().add(new Ticket(movieSession, user));
-            shoppingCartDao.add(shoppingCart);
-        }
+        ShoppingCart shoppingCart = getByUser(user);
+        Ticket ticket = new Ticket(movieSession, user);
+        ticketDao.add(ticket);
+        shoppingCart.getTickets().add(ticket);
+        shoppingCartDao.update(shoppingCart);
     }
 
     @Override

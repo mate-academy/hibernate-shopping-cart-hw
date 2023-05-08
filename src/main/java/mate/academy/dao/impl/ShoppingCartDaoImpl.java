@@ -22,36 +22,58 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             transaction = session.beginTransaction();
             session.save(shoppingCart);
             transaction.commit();
-            return null;
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Can't add shopping cart " + shoppingCart + " to DB", e);
+            throw new DataProcessingException("Can't add shopping cart "
+                    + shoppingCart + " to DB", e);
         } finally {
             if (session != null) {
                 session.close();
             }
         }
+        return shoppingCart;
     }
 
     @Override
     public Optional<ShoppingCart> getByUser(User user) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Query<ShoppingCart> query = session.createQuery("FROM ShoppingCart sc WHERE sc.user = :user", ShoppingCart.class);
+            Query<ShoppingCart> query = session.createQuery(
+                    "SELECT sc FROM ShoppingCart sc "
+                            + "LEFT JOIN FETCH sc.tickets ticket "
+                            + "LEFT JOIN FETCH sc.user "
+                            + "LEFT JOIN FETCH ticket.movieSession movieSession "
+                            + "LEFT JOIN FETCH movieSession.movie "
+                            + "LEFT JOIN FETCH movieSession.cinemaHall "
+                            + "WHERE sc.user = :user",
+                    ShoppingCart.class);
             query.setParameter("user", user);
             return query.uniqueResultOptional();
         } catch (Exception e) {
-            throw new DataProcessingException("Can't get shopping cart by user " + user + " from DB", e);
+            throw new DataProcessingException(
+                    "Can't get shopping cart by user " + user + " from DB", e);
         }
     }
 
     @Override
     public void update(ShoppingCart shoppingCart) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        Session session = null;
+        Transaction transaction = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            transaction = session.beginTransaction();
             session.update(shoppingCart);
+            transaction.commit();
         } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
             throw new DataProcessingException("Can't update shopping cart " + shoppingCart, e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
         }
     }
 }
