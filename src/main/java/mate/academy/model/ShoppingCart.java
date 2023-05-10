@@ -1,0 +1,62 @@
+package mate.academy.model;
+
+import javax.persistence.*;
+import java.util.List;
+
+@Entity
+@Table(name = "shoppingCarts")
+public class ShoppingCart {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @OneToMany
+    @JoinTable(name = "shoppingCarts_tickets",
+            joinColumns = @JoinColumn(name = "shoppingCart_id"),
+            inverseJoinColumns = @JoinColumn(name = "ticket_id"))
+    private List<Ticket> ticket;
+    @OneToOne
+    @MapsId
+    private User user;
+
+    public ShoppingCart() {
+    }
+
+    public ShoppingCart(List<Ticket> ticket, User user) {
+        this.ticket = ticket;
+        this.user = user;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public List<Ticket> getTicket() {
+        return ticket;
+    }
+
+    public void setTicket(List<Ticket> ticket) {
+        this.ticket = ticket;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "ShoppingCart{" +
+                "id=" + id +
+                ", ticket=" + ticket +
+                ", user=" + user +
+                '}';
+    }
+}
