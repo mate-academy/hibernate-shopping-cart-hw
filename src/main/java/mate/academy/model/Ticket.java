@@ -10,7 +10,7 @@ public class Ticket {
     private Long id;
     @ManyToOne
     private MovieSession movieSession;
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 

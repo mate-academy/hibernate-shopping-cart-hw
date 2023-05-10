@@ -12,9 +12,7 @@ import mate.academy.dao.impl.TicketDaoImpl;
 import mate.academy.dao.impl.UserDaoImpl;
 import mate.academy.lib.Injector;
 import mate.academy.model.*;
-import mate.academy.service.CinemaHallService;
-import mate.academy.service.MovieService;
-import mate.academy.service.MovieSessionService;
+import mate.academy.service.*;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate");
@@ -25,8 +23,12 @@ public class Main {
     private static MovieSessionService movieSessionService = (MovieSessionService) injector
             .getInstance(MovieSessionService.class);
 
-    public static void main(String[] args) {
+    private static ShoppingCartService shoppingCartService = (ShoppingCartService) injector
+            .getInstance(ShoppingCartService.class);
+    private static UserService userService = (UserService) injector
+            .getInstance(UserService.class);
 
+    public static void main(String[] args) {
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
         movieService.add(fastAndFurious);
@@ -64,22 +66,10 @@ public class Main {
         System.out.println(movieSessionService.findAvailableSessions(
                 fastAndFurious.getId(), LocalDate.now()));
 
-        UserDao userDao = new UserDaoImpl();
-        User bob = new User("bob@gmail.com", "1234567");
-        userDao.add(bob);
-        User alice = new User("alice@gmail.com", "224242424");
-        userDao.add(alice);
+        User userBob = new User("art@gmail.com", "1234567");
+        userService.add(userBob);
 
-        TicketDao ticketDao = new TicketDaoImpl();
-        Ticket ticketOne = new Ticket(movieSessionService.get(1L), userDao.findByEmail("bob@gmail.com").get());
-        Ticket ticketTwo = new Ticket(movieSessionService.get(1L), userDao.findByEmail("bob@gmail.com").get());
-
-        ShoppingCart shoppingCart = new ShoppingCart();
-        shoppingCart.setUser(userDao.findByEmail("bob@gmail.com").get());
-        shoppingCart.setTicket(List.of(ticketDao.add(ticketOne), ticketDao.add(ticketTwo)));
-
-        ShoppingCartDao shoppingCartDao = new ShoppingCartDaoImpl();
-        shoppingCartDao.add(shoppingCart);
-        System.out.println(shoppingCartDao.getByUser(userDao.findByEmail("bob@gmail.com").get()));
+        shoppingCartService.registerNewShoppingCart(userService.findByEmail("art@gmail.com").get());
+        System.out.println(shoppingCartService.getByUser(userService.findByEmail("art@gmail.com").get()));
     }
 }
