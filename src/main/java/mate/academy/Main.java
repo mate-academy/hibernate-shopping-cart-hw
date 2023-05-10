@@ -69,7 +69,22 @@ public class Main {
         User userBob = new User("art@gmail.com", "1234567");
         userService.add(userBob);
 
-        shoppingCartService.registerNewShoppingCart(userService.findByEmail("art@gmail.com").get());
+        Ticket ticket = new Ticket();
+        ticket.setMovieSession(tomorrowMovieSession);
+        ticket.setUser(userService.findByEmail("art@gmail.com").get());
+        TicketDao ticketDao = new TicketDaoImpl();
+        ticketDao.add(ticket);
+
+        ShoppingCart shoppingCart = new ShoppingCart();
+        shoppingCart.setUser(userService.findByEmail("art@gmail.com").get());
+        shoppingCart.setTicket(List.of(ticket));
+
+        ShoppingCartDao shoppingCartDao = new ShoppingCartDaoImpl();
+        shoppingCartDao.add(shoppingCart);
+
+        ShoppingCart bobShoppingCard = shoppingCartService.getByUser(userService.findByEmail("art@gmail.com").get());
+        System.out.println(bobShoppingCard);
+        shoppingCartService.clear(bobShoppingCard);
         System.out.println(shoppingCartService.getByUser(userService.findByEmail("art@gmail.com").get()));
     }
 }
