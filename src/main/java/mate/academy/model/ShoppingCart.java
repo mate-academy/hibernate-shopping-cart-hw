@@ -1,10 +1,16 @@
 package mate.academy.model;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
-import javax.persistence.*;
 import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.MapsId;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "shoppingCarts")
@@ -56,10 +62,10 @@ public class ShoppingCart {
 
     @Override
     public String toString() {
-        return "ShoppingCart{" +
-                "id=" + id +
-                ", ticket=" + tickets +
-                ", user=" + user +
-                '}';
+        return "ShoppingCart{"
+                + "id=" + id
+                + ", ticket=" + tickets
+                + ", user=" + user
+                + '}';
     }
 }
