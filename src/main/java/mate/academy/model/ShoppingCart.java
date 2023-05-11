@@ -1,5 +1,8 @@
 package mate.academy.model;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -14,7 +17,7 @@ public class ShoppingCart {
     @JoinTable(name = "shoppingCarts_tickets",
             joinColumns = @JoinColumn(name = "shoppingCart_id"),
             inverseJoinColumns = @JoinColumn(name = "ticket_id"))
-    private List<Ticket> ticket;
+    private List<Ticket> tickets;
     @OneToOne
     @MapsId
     private User user;
@@ -23,7 +26,7 @@ public class ShoppingCart {
     }
 
     public ShoppingCart(List<Ticket> ticket, User user) {
-        this.ticket = ticket;
+        this.tickets = ticket;
         this.user = user;
     }
 
@@ -35,12 +38,12 @@ public class ShoppingCart {
         this.id = id;
     }
 
-    public List<Ticket> getTicket() {
-        return ticket;
+    public List<Ticket> getTickets() {
+        return tickets;
     }
 
-    public void setTicket(List<Ticket> ticket) {
-        this.ticket = ticket;
+    public void setTickets(List<Ticket> ticket) {
+        this.tickets = ticket;
     }
 
     public User getUser() {
@@ -55,7 +58,7 @@ public class ShoppingCart {
     public String toString() {
         return "ShoppingCart{" +
                 "id=" + id +
-                ", ticket=" + ticket +
+                ", ticket=" + tickets +
                 ", user=" + user +
                 '}';
     }

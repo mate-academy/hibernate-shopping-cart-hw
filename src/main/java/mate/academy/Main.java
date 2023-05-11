@@ -68,12 +68,11 @@ public class Main {
 
         User userBob = new User("art@gmail.com", "1234567");
         userService.add(userBob);
-        User userBobFromDb = userService.findByEmail("art@gmail.com").get();
-        shoppingCartService.registerNewShoppingCart(userBobFromDb);
-        System.out.println(shoppingCartService.getByUser(userBobFromDb));
-        shoppingCartService.addSession(tomorrowMovieSession, userBobFromDb);
-        System.out.println(shoppingCartService.getByUser(userBobFromDb));
-        shoppingCartService.clear(shoppingCartService.getByUser(userBobFromDb));
-        System.out.println(shoppingCartService.getByUser(userBobFromDb));
+        shoppingCartService.registerNewShoppingCart(userBob);
+        System.out.println(shoppingCartService.getByUser(userBob));
+        shoppingCartService.addSession(tomorrowMovieSession, userBob);
+        System.out.println(shoppingCartService.getByUser(userBob));
+        shoppingCartService.clear(shoppingCartService.getByUser(userBob));
+        System.out.println(shoppingCartService.getByUser(userBob));
     }
 }
