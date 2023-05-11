@@ -15,7 +15,7 @@ import mate.academy.model.*;
 import mate.academy.service.*;
 
 public class Main {
-    private static final Injector injector = Injector.getInstance("mate");
+    private static final Injector injector = Injector.getInstance("mate.academy");
     private static MovieService movieService = (MovieService) injector
             .getInstance(MovieService.class);
     private static CinemaHallService cinemaHallService = (CinemaHallService) injector
@@ -68,23 +68,12 @@ public class Main {
 
         User userBob = new User("art@gmail.com", "1234567");
         userService.add(userBob);
-
-        Ticket ticket = new Ticket();
-        ticket.setMovieSession(tomorrowMovieSession);
-        ticket.setUser(userService.findByEmail("art@gmail.com").get());
-        TicketDao ticketDao = new TicketDaoImpl();
-        ticketDao.add(ticket);
-
-        ShoppingCart shoppingCart = new ShoppingCart();
-        shoppingCart.setUser(userService.findByEmail("art@gmail.com").get());
-        shoppingCart.setTicket(List.of(ticket));
-
-        ShoppingCartDao shoppingCartDao = new ShoppingCartDaoImpl();
-        shoppingCartDao.add(shoppingCart);
-
-        ShoppingCart bobShoppingCard = shoppingCartService.getByUser(userService.findByEmail("art@gmail.com").get());
-        System.out.println(bobShoppingCard);
-        shoppingCartService.clear(bobShoppingCard);
-        System.out.println(shoppingCartService.getByUser(userService.findByEmail("art@gmail.com").get()));
+        User userBobFromDb = userService.findByEmail("art@gmail.com").get();
+        shoppingCartService.registerNewShoppingCart(userBobFromDb);
+        System.out.println(shoppingCartService.getByUser(userBobFromDb));
+        shoppingCartService.addSession(tomorrowMovieSession, userBobFromDb);
+        System.out.println(shoppingCartService.getByUser(userBobFromDb));
+        shoppingCartService.clear(shoppingCartService.getByUser(userBobFromDb));
+        System.out.println(shoppingCartService.getByUser(userBobFromDb));
     }
 }
