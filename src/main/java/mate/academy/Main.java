@@ -76,7 +76,8 @@ public class Main {
         shoppingCartService.addSession(tomorrowMovieSession, shoppingCart.getUser());
         System.out.println(shoppingCartService.getByUser(authenticationService
                 .login("peter@gmail.com", "P1234")));
-        shoppingCartService.clear(shoppingCart);
+        shoppingCartService.clear(shoppingCartService.getByUser(authenticationService
+                .login("peter@gmail.com", "P1234")));
         System.out.println(shoppingCartService.getByUser(authenticationService
                 .login("peter@gmail.com", "P1234")));
     }
