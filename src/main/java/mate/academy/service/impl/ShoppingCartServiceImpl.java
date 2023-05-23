@@ -1,6 +1,8 @@
 package mate.academy.service.impl;
 
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
+
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
 import mate.academy.exception.DataProcessingException;
@@ -34,7 +36,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public ShoppingCart getByUser(User user) {
         return shoppingCartDao
                 .getByUser(user)
-                .orElseThrow(() -> new DataProcessingException(
+                .orElseThrow(() -> new NoSuchElementException(
                         "No shopping cart was found by user: " + user));
     }
 
