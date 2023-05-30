@@ -1,7 +1,6 @@
 package mate.academy.service.impl;
 
 import java.util.Collections;
-import java.util.List;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
 import mate.academy.lib.Inject;
@@ -26,11 +25,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         ticket.setUser(user);
         ticketDao.add(ticket);
         ShoppingCart shoppingCartByUser = shoppingCartDao.getByUser(user).get();
-        if (shoppingCartByUser.getTickets().isEmpty()) {
-            shoppingCartByUser.setTickets(List.of(ticket));
-        } else {
-            shoppingCartByUser.getTickets().add(ticket);
-        }
+        shoppingCartByUser.getTickets().add(ticket);
         shoppingCartDao.update(shoppingCartByUser);
     }
 
