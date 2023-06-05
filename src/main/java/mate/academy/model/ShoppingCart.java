@@ -19,7 +19,7 @@ public class ShoppingCart {
     private Long id;
     @OneToMany
     private List<Ticket> userTickets;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.REFRESH})
     @MapsId
     private User user;
 
