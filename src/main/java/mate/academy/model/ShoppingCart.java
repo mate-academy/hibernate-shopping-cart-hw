@@ -1,5 +1,6 @@
 package mate.academy.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -23,13 +24,15 @@ public class ShoppingCart {
     public ShoppingCart() {
     }
 
-    public ShoppingCart(List<Ticket> tickets, User user) {
+
+    public ShoppingCart(User user) {
+        tickets = new ArrayList<>();
         this.user = user;
-        this.tickets = tickets;
     }
 
     public ShoppingCart(Long id, List<Ticket> tickets, User user) {
-        this(tickets, user);
+        this(user);
+        this.tickets = tickets;
         this.id = id;
     }
 
