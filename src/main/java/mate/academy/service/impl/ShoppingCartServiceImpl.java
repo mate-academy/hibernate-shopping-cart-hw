@@ -40,7 +40,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public void registerNewShoppingCart(User user) {
         ShoppingCart shoppingCart = new ShoppingCart();
-        shoppingCart.setTickets(new ArrayList<>());
         shoppingCart.setUser(user);
         shoppingCartDao.add(shoppingCart);
     }

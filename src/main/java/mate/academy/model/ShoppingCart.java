@@ -1,5 +1,6 @@
 package mate.academy.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -18,6 +19,10 @@ public class ShoppingCart {
     @OneToOne
     @MapsId
     private User user;
+
+    public ShoppingCart() {
+        tickets = new ArrayList<>();
+    }
 
     public Long getId() {
         return id;
