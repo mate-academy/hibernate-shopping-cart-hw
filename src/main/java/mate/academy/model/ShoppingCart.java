@@ -24,7 +24,6 @@ public class ShoppingCart {
     public ShoppingCart() {
     }
 
-
     public ShoppingCart(User user) {
         tickets = new ArrayList<>();
         this.user = user;
