@@ -21,11 +21,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public void addSession(MovieSession movieSession, User user) {
         Ticket ticket = ticketDao.add(new Ticket(movieSession, user));
-        ShoppingCart shoppingCart
-                = shoppingCartDao.getByUser(user)
-                .orElseThrow(
-                        () -> new NoSuchElementException("Cant find shopping car for user: "
-                                + user));
+        ShoppingCart shoppingCart = getByUser(user);
         shoppingCart.getTickets().add(ticket);
         shoppingCartDao.update(shoppingCart);
     }
