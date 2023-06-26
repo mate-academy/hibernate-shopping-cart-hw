@@ -7,7 +7,6 @@ import mate.academy.lib.Dao;
 import mate.academy.model.ShoppingCart;
 import mate.academy.model.User;
 import mate.academy.util.HibernateUtil;
-import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -41,15 +40,15 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
     public Optional<ShoppingCart> getByUser(User user) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query<ShoppingCart> getShoppingCartQuery = session.createQuery(
-                    "FROM ShoppingCart sc LEFT JOIN FETCH sc.tickets"
-                            + " JOIN FETCH sc.user"
-                            + " WHERE sc.id = : id", ShoppingCart.class);
+                    "FROM ShoppingCart sc"
+                            + " LEFT JOIN FETCH sc.user"
+                            + " LEFT JOIN FETCH sc.tickets t"
+                            + " LEFT JOIN FETCH t.user"
+                            + " LEFT JOIN FETCH t.movieSession ms"
+                            + " LEFT JOIN FETCH ms.movie"
+                            + " WHERE sc.id = :id", ShoppingCart.class);
             getShoppingCartQuery.setParameter("id", user.getId());
             Optional<ShoppingCart> shoppingCart = getShoppingCartQuery.uniqueResultOptional();
-            shoppingCart.ifPresent(sc -> sc.getTickets()
-                    .forEach(t -> Hibernate.initialize(t.getMovieSession())));
-            shoppingCart.ifPresent(sc -> sc.getTickets()
-                    .forEach(t -> t.setUser(user)));
             return shoppingCart;
         } catch (Exception e) {
             throw new DataProcessingException("Can't get a shopping cart by user: " + user, e);
