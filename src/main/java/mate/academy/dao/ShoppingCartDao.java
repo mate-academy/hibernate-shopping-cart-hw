@@ -1,4 +1,3 @@
-
 package mate.academy.dao;
 
 import java.util.Optional;
