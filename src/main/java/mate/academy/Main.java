@@ -2,6 +2,7 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
@@ -18,7 +19,7 @@ import mate.academy.service.ShoppingCartService;
 public class Main {
     private static Injector injector = Injector.getInstance("mate.academy");
 
-    public static void main(String[] args) throws RegistrationException {
+    public static void main(String[] args) throws RegistrationException, AuthenticationException {
         MovieService movieService =
                 (MovieService) injector.getInstance(MovieService.class);
 
@@ -65,13 +66,13 @@ public class Main {
 
         AuthenticationService authenticationService =
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
-        User bobyk = authenticationService.register("bobyk", "1234");
-
+        authenticationService.register("bobyk@example.com", "1234");
+        User loginedBobyk = authenticationService.login("bobyk@example.com", "1234");
         ShoppingCartService shoppingCartService =
                 (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
-        shoppingCartService.addSession(tomorrowMovieSession, bobyk);
-        shoppingCartService.addSession(yesterdayMovieSession, bobyk);
-        ShoppingCart shoppingCart = shoppingCartService.getByUser(bobyk);
+        shoppingCartService.addSession(tomorrowMovieSession, loginedBobyk);
+        shoppingCartService.addSession(yesterdayMovieSession, loginedBobyk);
+        ShoppingCart shoppingCart = shoppingCartService.getByUser(loginedBobyk);
         System.out.println(shoppingCart);
         shoppingCartService.clear(shoppingCart);
         System.out.println(shoppingCart);
