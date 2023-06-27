@@ -2,9 +2,11 @@ package mate.academy.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -16,7 +18,12 @@ public class User {
     @Column(unique = true)
     private String email;
     private String password;
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+    private ShoppingCart shoppingCart;
     private byte[] salt;
+
+    public User() {
+    }
 
     public Long getId() {
         return id;
@@ -40,6 +47,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public ShoppingCart getShoppingCart() {
+        return shoppingCart;
+    }
+
+    public void setShoppingCart(ShoppingCart shoppingCart) {
+        this.shoppingCart = shoppingCart;
     }
 
     public byte[] getSalt() {
