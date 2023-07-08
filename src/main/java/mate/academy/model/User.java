@@ -30,6 +30,7 @@ public class User {
         return email;
     }
 
+    @Column(unique = true)
     public void setEmail(String email) {
         this.email = email;
     }
