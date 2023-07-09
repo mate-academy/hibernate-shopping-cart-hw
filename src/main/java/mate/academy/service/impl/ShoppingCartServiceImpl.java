@@ -1,10 +1,8 @@
 package mate.academy.service.impl;
 
 import java.util.Collections;
-import java.util.Optional;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
-import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.MovieSession;
@@ -21,16 +19,16 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private ShoppingCartDao shoppingCartDao;
 
     @Override
-    public void addSession(MovieSession movieSession, User user) throws RegistrationException {
-        ShoppingCart shoppingCart = ifExists(user);
+    public void addSession(MovieSession movieSession, User user) {
+        ShoppingCart shoppingCart = shoppingCartDao.getByUser(user).get();
         Ticket ticket = ticketDao.add(new Ticket(movieSession, user));
         shoppingCart.getTickets().add(ticket);
         shoppingCartDao.update(shoppingCart);
     }
 
     @Override
-    public ShoppingCart getByUser(User user) throws RegistrationException {
-        return ifExists(user);
+    public ShoppingCart getByUser(User user) {
+        return shoppingCartDao.getByUser(user).get();
     }
 
     @Override
@@ -42,14 +40,5 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public void clear(ShoppingCart shoppingCart) {
         shoppingCart.setTickets(Collections.emptyList());
         shoppingCartDao.update(shoppingCart);
-    }
-
-    private ShoppingCart ifExists(User user) throws RegistrationException {
-        Optional<ShoppingCart> shoppingCart = shoppingCartDao.getByUser(user);
-        if (shoppingCart.isEmpty()) {
-            throw new RegistrationException("Current user do not have registered carts. "
-                    + "Please register the cart first.");
-        }
-        return shoppingCart.get();
     }
 }
