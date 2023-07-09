@@ -1,5 +1,6 @@
 package mate.academy.model;
 
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -9,28 +10,28 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import java.util.List;
 
 @Entity
 @Table(name = "shopping_carts")
 public class ShoppingCart {
-
     @Id
     private Long id;
-
     @OneToMany
     @JoinTable(name = "shopping_carts_tickets",
-    joinColumns = @JoinColumn(name = "shopping_cart_id"),
-    inverseJoinColumns = @JoinColumn(name = "ticket_id"))
+            joinColumns = @JoinColumn(name = "shopping_cart_id"),
+            inverseJoinColumns = @JoinColumn(name = "ticket_id"))
     private List<Ticket> tickets;
-
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     @JoinColumn(name = "id")
     private User user;
 
-
     public ShoppingCart() {
+    }
+
+    public ShoppingCart(List<Ticket> tickets, User user) {
+        this.tickets = tickets;
+        this.user = user;
     }
 
     public Long getId() {
@@ -55,5 +56,14 @@ public class ShoppingCart {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "ShoppingCart{"
+                + "id=" + id
+                + ", tickets=" + tickets
+                + ", user=" + user
+                + '}';
     }
 }
