@@ -29,7 +29,6 @@ public class Main {
             (AuthenticationService) injector.getInstance(AuthenticationService.class);
 
     public static void main(String[] args) throws RegistrationException {
-
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
         movieService.add(fastAndFurious);
@@ -67,9 +66,9 @@ public class Main {
         System.out.println(movieSessionService.findAvailableSessions(
                 fastAndFurious.getId(), LocalDate.now()));
 
-        User qwerty = authenticationService.register("qwerty@gmail.com", "qwerty");
-        shoppingCartService.addSession(tomorrowMovieSession, qwerty);
-        ShoppingCart byQwertyUser = shoppingCartService.getByUser(qwerty);
+        User bob = authenticationService.register("qwerty@gmail.com", "qwerty");
+        shoppingCartService.addSession(tomorrowMovieSession, bob);
+        ShoppingCart byQwertyUser = shoppingCartService.getByUser(bob);
         System.out.println(byQwertyUser);
         shoppingCartService.clear(byQwertyUser);
         System.out.println(byQwertyUser);
