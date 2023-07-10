@@ -64,10 +64,8 @@ public class Main {
         User user = authenticationService.register("user_email@com.ua", "qwerty");
         authenticationService.login("user_email@com.ua", "qwerty");
         ShoppingCart shoppingCart = shoppingCartService.getByUser(user);
-        List<Ticket> tickets = shoppingCart.getTickets();
         shoppingCartService.addSession(tomorrowMovieSession,user);
         shoppingCartService.addSession(yesterdayMovieSession,user);
-        System.out.println(shoppingCart);
         shoppingCartService.clear(shoppingCart);
     }
 }
