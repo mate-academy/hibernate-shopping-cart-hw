@@ -27,6 +27,7 @@ public class Main {
             (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
     private static final AuthenticationService authenticationService =
             (AuthenticationService) injector.getInstance(AuthenticationService.class);
+
     public static void main(String[] args) throws RegistrationException {
 
         Movie fastAndFurious = new Movie("Fast and Furious");
