@@ -72,11 +72,11 @@ public class Main {
         System.out.println("Registered bob: " + registerAlice + "\n" + "Login Bob: " + loginAlice);
 
         shoppingCartService.addSession(tomorrowMovieSession, loginAlice);
-        System.out.println("Shoping cart by Bob: " + shoppingCartService.getByUser(loginAlice));
+        System.out.println("Shopping cart by Alice: " + shoppingCartService.getByUser(loginAlice));
         shoppingCartService.addSession(yesterdayMovieSession, loginAlice);
-        System.out.println("Shoping cart by Bob: " + shoppingCartService.getByUser(loginAlice));
+        System.out.println("Shopping cart by Alice: " + shoppingCartService.getByUser(loginAlice));
 
         shoppingCartService.clear(shoppingCartService.getByUser(loginAlice));
-        System.out.println("Shoping cart by Bob: " + shoppingCartService.getByUser(loginAlice));
+        System.out.println("Shopping cart by Alice: " + shoppingCartService.getByUser(loginAlice));
     }
 }
