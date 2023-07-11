@@ -57,16 +57,10 @@ public class Main {
                 fastAndFurious.getId(), LocalDate.now()));
 
         User register = authenticationService.register("bob@gmail.com", "12345");
-        cartService.registerNewShoppingCart(register);
-        cartService.addSession(tomorrowMovieSession, register);
-        System.out.println(cartService.getByUser(register));
-
-        User registerCat = authenticationService.register("cat@gmail.com", "qwerty");
-        cartService.registerNewShoppingCart(registerCat);
-        cartService.addSession(yesterdayMovieSession, registerCat);
-        cartService.addSession(tomorrowMovieSession, registerCat);
-        System.out.println(cartService.getByUser(registerCat));
-        cartService.clear(cartService.getByUser(register));
-        System.out.println(cartService.getByUser(register));
+        User login = authenticationService.login("bob@gmail.com", "12345");
+        cartService.addSession(tomorrowMovieSession, login);
+        System.out.println(cartService.getByUser(login));
+        cartService.clear(cartService.getByUser(login));
+        System.out.println(cartService.getByUser(login));
     }
 }
