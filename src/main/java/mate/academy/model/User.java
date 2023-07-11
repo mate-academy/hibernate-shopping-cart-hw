@@ -19,8 +19,6 @@ public class User {
     private String email;
     private String password;
     private byte[] salt;
-    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
-    private ShoppingCart shoppingCart;
 
     public Long getId() {
         return id;
@@ -52,14 +50,6 @@ public class User {
 
     public void setSalt(byte[] salt) {
         this.salt = salt;
-    }
-
-    public ShoppingCart getShoppingCart() {
-        return shoppingCart;
-    }
-
-    public void setShoppingCart(ShoppingCart shoppingCart) {
-        this.shoppingCart = shoppingCart;
     }
 
     @Override
