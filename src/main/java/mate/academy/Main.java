@@ -68,9 +68,9 @@ public class Main {
 
         User bob = authenticationService.register("qwerty@gmail.com", "qwerty");
         shoppingCartService.addSession(tomorrowMovieSession, bob);
-        ShoppingCart byQwertyUser = shoppingCartService.getByUser(bob);
-        System.out.println(byQwertyUser);
-        shoppingCartService.clear(byQwertyUser);
-        System.out.println(byQwertyUser);
+        ShoppingCart shoppingCartBob = shoppingCartService.getByUser(bob);
+        System.out.println(shoppingCartBob);
+        shoppingCartService.clear(shoppingCartBob);
+        System.out.println(shoppingCartBob);
     }
 }
