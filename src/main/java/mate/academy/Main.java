@@ -68,7 +68,7 @@ public class Main {
         System.out.println(movieSessionService.findAvailableSessions(
                 fastAndFurious.getId(), LocalDate.now()));
 
-        String email = "Email@gmail.com";
+        String email = "Emai@gmail.com";
         String password = "somePassword";
         User registeredBob = authenticationService.register(email, password);
         User loginBob = authenticationService.register(email, password);
