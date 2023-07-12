@@ -13,11 +13,7 @@ import org.hibernate.Transaction;
 
 @Dao
 public class ShoppingCartDaoImpl implements ShoppingCartDao {
-    private final SessionFactory sessionFactory;
-
-    {
-        sessionFactory = HibernateUtil.getSessionFactory();
-    }
+    private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
     @Override
     public ShoppingCart add(ShoppingCart shoppingCart) {
