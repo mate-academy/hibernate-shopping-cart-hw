@@ -45,9 +45,9 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
                                                             + "LEFT JOIN FETCH t.movieSession ms "
                                                             + "LEFT JOIN FETCH ms.movie m "
                                                             + "LEFT JOIN FETCH ms.cinemaHall ch "
-                                                            + "WHERE sc.id = :id",
+                                                            + "WHERE sc.user = :user",
                     ShoppingCart.class);
-            query.setParameter("id", user.getId());
+            query.setParameter("user", user);
             return query.uniqueResultOptional();
 
         } catch (Exception e) {
