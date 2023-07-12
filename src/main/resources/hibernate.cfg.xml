@@ -16,3 +16,4 @@
         <mapping class="mate.academy.model.ShoppingCart" />
     </session-factory>
 </hibernate-configuration>
+
