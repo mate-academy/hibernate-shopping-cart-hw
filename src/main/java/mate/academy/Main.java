@@ -69,7 +69,8 @@ public class Main {
 
         User registerAlice = authenticationService.register("alice", "12345");
         User loginAlice = authenticationService.login("alice", "12345");
-        System.out.println("Registered alice: " + registerAlice + "\n" + "Login alice: " + loginAlice);
+        System.out.println("Registered alice: " + registerAlice
+                + "\n" + "Login alice: " + loginAlice);
 
         shoppingCartService.addSession(tomorrowMovieSession, loginAlice);
         System.out.println("Shopping cart by Alice: " + shoppingCartService.getByUser(loginAlice));
