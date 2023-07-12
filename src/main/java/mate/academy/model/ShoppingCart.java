@@ -1,5 +1,6 @@
 package mate.academy.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,6 +24,7 @@ public class ShoppingCart {
     private User user;
 
     public ShoppingCart() {
+        tickets = new ArrayList<>();
     }
 
     public ShoppingCart(User user) {
