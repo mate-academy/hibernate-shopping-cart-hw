@@ -2,28 +2,18 @@ package mate.academy.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.MapsId;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
-@Table(name = "shopping_cards")
+@Table(name = "shopping_carts")
 public class ShoppingCart {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToMany
-    @JoinTable(name = "shopping_cards_tickets",
-            joinColumns = @JoinColumn(name = "shopping_card_id"),
-            inverseJoinColumns = @JoinColumn(name = "ticket_id"))
+    @OneToMany(fetch = FetchType.LAZY)
     private List<Ticket> tickets;
-    @OneToOne
     @MapsId
-    @JoinColumn(name = "id")
+    @OneToOne
     private User user;
 
     public ShoppingCart() {

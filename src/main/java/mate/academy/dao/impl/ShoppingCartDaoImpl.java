@@ -43,8 +43,8 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
                             + "LEFT JOIN FETCH t.movieSession ms "
                             + "LEFT JOIN FETCH ms.movie "
                             + "LEFT JOIN FETCH ms.cinemaHall "
-                            + "WHERE sc.user.id = :id", ShoppingCart.class)
-                    .setParameter("id", user.getId())
+                            + "WHERE sc.user = :user", ShoppingCart.class)
+                    .setParameter("user", user)
                     .uniqueResultOptional();
         } catch (HibernateException e) {
             throw new DataProcessingException("Can't get shopping cart for " + user, e);
