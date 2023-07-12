@@ -18,19 +18,14 @@ import mate.academy.service.ShoppingCartService;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.academy");
-
     private static final MovieService movieService = (MovieService) injector
             .getInstance(MovieService.class);
-
     private static final CinemaHallService cinemaHallService = (CinemaHallService) injector
             .getInstance(CinemaHallService.class);
-
     private static final MovieSessionService movieSessionService = (MovieSessionService) injector
             .getInstance(MovieSessionService.class);
-
     private static final AuthenticationService authenticationService =
             (AuthenticationService) injector.getInstance(AuthenticationService.class);
-
     private static final ShoppingCartService shoppingCartService =
             (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
 
