@@ -8,7 +8,6 @@ import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
-import mate.academy.model.ShoppingCart;
 import mate.academy.model.User;
 import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
@@ -79,9 +78,11 @@ public class Main {
         }
         Objects.requireNonNull(user);
         shoppingCartService.registerNewShoppingCart(user);
-        System.out.println("Shopping cart before adding session: " + shoppingCartService.getByUser(user));
+        System.out.println("Shopping cart before adding session: "
+                + shoppingCartService.getByUser(user));
         shoppingCartService.addSession(tomorrowMovieSession, user);
-        System.out.println("Shopping cart after adding session: " + shoppingCartService.getByUser(user));
+        System.out.println("Shopping cart after adding session: "
+                + shoppingCartService.getByUser(user));
         shoppingCartService.clear(shoppingCartService.getByUser(user));
         System.out.println("Shopping cart after clearing:" + shoppingCartService.getByUser(user));
     }

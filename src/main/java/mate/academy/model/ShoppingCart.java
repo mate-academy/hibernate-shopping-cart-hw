@@ -9,7 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -23,8 +22,8 @@ public class ShoppingCart {
     private Long id;
     @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "shopping_carts_tickets",
-        joinColumns = @JoinColumn(name = "shopping_cart_id"),
-        inverseJoinColumns = @JoinColumn(name = "ticket_id"))
+            joinColumns = @JoinColumn(name = "shopping_cart_id"),
+            inverseJoinColumns = @JoinColumn(name = "ticket_id"))
     private List<Ticket> tickets;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

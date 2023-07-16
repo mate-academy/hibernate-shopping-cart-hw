@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.NoSuchElementException;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
-import mate.academy.lib.Dao;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.MovieSession;
@@ -34,8 +33,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public ShoppingCart getByUser(User user) {
-         return shoppingCartDao.getByUser(user).orElseThrow(() ->
-                new NoSuchElementException("User " + user + " don't have shopping cart"));
+        return shoppingCartDao.getByUser(user).orElseThrow(() ->
+                new NoSuchElementException("Can't find shopping cart by user: " + user));
     }
 
     @Override
