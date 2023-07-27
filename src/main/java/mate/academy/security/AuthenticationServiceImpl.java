@@ -17,7 +17,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Inject
     private ShoppingCartService shoppingCartService;
 
-
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userFromDb = userService.findByEmail(email);
