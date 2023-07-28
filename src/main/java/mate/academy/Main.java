@@ -2,8 +2,6 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
-import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
@@ -30,10 +28,11 @@ public class Main {
     private static final AuthenticationService authenticationService =
             (AuthenticationService) injector.getInstance(AuthenticationService.class);
 
-    private final static ShoppingCartService shoppingCartService =
+    private static final ShoppingCartService shoppingCartService =
             (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
 
-    private final static UserService userService = (UserService)  injector.getInstance(UserService.class);
+    private static final UserService userService =
+            (UserService) injector.getInstance(UserService.class);
 
     public static void main(String[] args) {
 
@@ -73,7 +72,6 @@ public class Main {
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(
                 fastAndFurious.getId(), LocalDate.now()));
-
 
         User bob = new User();
         bob.setEmail("bob@gmail.com");
