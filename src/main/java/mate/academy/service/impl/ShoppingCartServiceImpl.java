@@ -1,5 +1,7 @@
 package mate.academy.service.impl;
 
+import java.util.Collections;
+import java.util.NoSuchElementException;
 import mate.academy.dao.MovieSessionDao;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
@@ -11,11 +13,6 @@ import mate.academy.model.Ticket;
 import mate.academy.model.User;
 import mate.academy.service.ShoppingCartService;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Inject
@@ -24,9 +21,10 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private TicketDao ticketDao;
     @Inject
     private MovieSessionDao movieSessionDao;
+
     @Override
     public void addSession(MovieSession movieSession, User user) {
-        ShoppingCart shoppingCart = shoppingCartDao.getByUser(user).orElseThrow();
+        ShoppingCart shoppingCart = getByUser(user);
         Ticket newTicketForUser = createNewTicketForUser(movieSession, user);
         shoppingCart.getTickets().add(newTicketForUser);
         shoppingCartDao.update(shoppingCart);

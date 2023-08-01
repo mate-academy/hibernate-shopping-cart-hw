@@ -2,7 +2,6 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
@@ -17,15 +16,18 @@ import mate.academy.service.MovieSessionService;
 import mate.academy.service.ShoppingCartService;
 
 public class Main {
+
     public static void main(String[] args) throws RegistrationException, AuthenticationException {
         final Injector injector = Injector.getInstance("mate");
-        MovieService movieService = (MovieService) injector.getInstance(MovieService.class);
-        CinemaHallService cinemaHallService =
+        final MovieService movieService = (MovieService) injector.getInstance(MovieService.class);
+        final CinemaHallService cinemaHallService =
                 (CinemaHallService) injector.getInstance(CinemaHallService.class);
-        MovieSessionService movieSessionService =
+        final MovieSessionService movieSessionService =
                 (MovieSessionService) injector.getInstance(MovieSessionService.class);
-        AuthenticationService authenticationService = (AuthenticationService) injector.getInstance(AuthenticationService.class);
-        ShoppingCartService shoppingCartService = (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
+        final AuthenticationService authenticationService =
+                (AuthenticationService) injector.getInstance(AuthenticationService.class);
+        final ShoppingCartService shoppingCartService =
+                (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
 
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
@@ -57,7 +59,8 @@ public class Main {
         yesterdayMovieSession.setMovie(fastAndFurious);
         yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(1L));
 
-        MovieSession tomorrowMovieSessionFromDb = movieSessionService.add(tomorrowMovieSession);
+        final MovieSession tomorrowMovieSessionFromDb =
+                movieSessionService.add(tomorrowMovieSession);
         movieSessionService.add(yesterdayMovieSession);
 
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
@@ -75,6 +78,5 @@ public class Main {
         shoppingCartService.addSession(tomorrowMovieSessionFromDb, registeredUser);
 
         shoppingCartService.clear(shoppingCartService.getByUser(registeredUser));
-
     }
 }
