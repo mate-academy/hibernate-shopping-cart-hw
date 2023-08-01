@@ -14,6 +14,7 @@ import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
+import mate.academy.service.ShoppingCartService;
 
 public class Main {
     public static void main(String[] args) throws RegistrationException, AuthenticationException {
@@ -24,6 +25,7 @@ public class Main {
         MovieSessionService movieSessionService =
                 (MovieSessionService) injector.getInstance(MovieSessionService.class);
         AuthenticationService authenticationService = (AuthenticationService) injector.getInstance(AuthenticationService.class);
+        ShoppingCartService shoppingCartService = (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
 
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
@@ -55,7 +57,7 @@ public class Main {
         yesterdayMovieSession.setMovie(fastAndFurious);
         yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(1L));
 
-        movieSessionService.add(tomorrowMovieSession);
+        MovieSession tomorrowMovieSessionFromDb = movieSessionService.add(tomorrowMovieSession);
         movieSessionService.add(yesterdayMovieSession);
 
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
@@ -65,7 +67,14 @@ public class Main {
         User user = new User();
         user.setEmail("@userEmail");
         user.setPassword("qwerty");
-        authenticationService.register(user.getEmail(), user.getPassword());
+        User registeredUser = authenticationService.register(user.getEmail(), user.getPassword());
         System.out.println(authenticationService.login("@userEmail", "qwerty"));
+
+        System.out.println(shoppingCartService.getByUser(registeredUser));
+
+        shoppingCartService.addSession(tomorrowMovieSessionFromDb, registeredUser);
+
+        shoppingCartService.clear(shoppingCartService.getByUser(registeredUser));
+
     }
 }

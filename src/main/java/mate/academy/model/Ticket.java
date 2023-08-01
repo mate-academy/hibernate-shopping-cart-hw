@@ -9,6 +9,7 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "movie_session_id")
     private MovieSession movieSession;
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;

@@ -1,5 +1,8 @@
 package mate.academy.model;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -7,12 +10,13 @@ import java.util.List;
 @Table(name = "shopping_carts")
 public class ShoppingCart {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @MapsId
     private Long id;
     @OneToMany
+    @JoinTable(joinColumns = @JoinColumn(name = "shopping_card_id"),
+            inverseJoinColumns = @JoinColumn(name = "ticket_id"))
     private List<Ticket> tickets;
     @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
     private User user;
 
     public ShoppingCart() {
