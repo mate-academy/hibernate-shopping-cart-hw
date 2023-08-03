@@ -24,27 +24,24 @@ public class Ticket {
         return id;
     }
 
-    public Ticket setId(Long id) {
+    public void setId(Long id) {
         this.id = id;
-        return this;
     }
 
     public MovieSession getMovieSession() {
         return movieSession;
     }
 
-    public Ticket setMovieSession(MovieSession movieSession) {
+    public void setMovieSession(MovieSession movieSession) {
         this.movieSession = movieSession;
-        return this;
     }
 
     public User getUser() {
         return user;
     }
 
-    public Ticket setUser(User user) {
+    public void setUser(User user) {
         this.user = user;
-        return this;
     }
 
     @Override

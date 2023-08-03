@@ -30,27 +30,24 @@ public class ShoppingCart {
         return id;
     }
 
-    public ShoppingCart setId(Long id) {
+    public void setId(Long id) {
         this.id = id;
-        return this;
     }
 
     public List<Ticket> getTickets() {
         return tickets;
     }
 
-    public ShoppingCart setTickets(List<Ticket> tickets) {
+    public void setTickets(List<Ticket> tickets) {
         this.tickets = tickets;
-        return this;
     }
 
     public User getUser() {
         return user;
     }
 
-    public ShoppingCart setUser(User user) {
+    public void setUser(User user) {
         this.user = user;
-        return this;
     }
 
     @Override
