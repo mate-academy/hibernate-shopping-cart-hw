@@ -68,34 +68,24 @@ public class Main {
                 fastAndFurious.getId(), LocalDate.now()));
 
         ///////////////////////////////////////////////////////////////////////////////////
-        User userSarahConor = new User();
-        User userJohnConor = new User();
-
-        // Register user (Sarah Conor)
+        // Register user (Sarah Conor + John Conor)
+        User userSarahConor;
         String loginSarahConor = "userSarahConor@gmail.com";
         String passwordSarahConor = "NoFate";
-        try {
-            userSarahConor = authenticationService.register(loginSarahConor, passwordSarahConor);
-        } catch (RegistrationException e) {
-            throw new RuntimeException(e);
-        }
-        // Find and show user (Sarah Conor)
-        try {
-            System.out.println(authenticationService.login(loginSarahConor, passwordSarahConor));
-        } catch (AuthenticationException e) {
-            throw new RuntimeException(e);
-        }
-        // Register user (John Conor)
+        User userJohnConor;
         String loginJohnConor = "userJohnConor@gmail.com";
         String passwordJohnConor = "AstaLaVista";
         try {
+            userSarahConor = authenticationService.register(loginSarahConor, passwordSarahConor);
             userJohnConor = authenticationService.register(loginJohnConor, passwordJohnConor);
         } catch (RegistrationException e) {
             throw new RuntimeException(e);
         }
-        // Find and show user (John Conor)
+
+        // Find and show user (Sarah Conor + John Conor)
         try {
             System.out.println(authenticationService.login(loginJohnConor, passwordJohnConor));
+            System.out.println(authenticationService.login(loginSarahConor, passwordSarahConor));
         } catch (AuthenticationException e) {
             throw new RuntimeException(e);
         }
@@ -105,15 +95,16 @@ public class Main {
         shoppingCartService.registerNewShoppingCart(userJohnConor);
 
         shoppingCartService.addSession(tomorrowMovieSession, userSarahConor);
+        shoppingCartService.addSession(tomorrowMovieSession, userJohnConor);
         shoppingCartService.addSession(yesterdayMovieSession, userJohnConor);
 
         ShoppingCart shoppingCartBySarahConor = shoppingCartService.getByUser(userSarahConor);
         ShoppingCart shoppingCartByJohnConor = shoppingCartService.getByUser(userJohnConor);
 
         shoppingCartService.clear(shoppingCartBySarahConor);
-        System.out.println(shoppingCartService.getByUser(userSarahConor));
-
         shoppingCartService.clear(shoppingCartByJohnConor);
+
+        System.out.println(shoppingCartService.getByUser(userSarahConor));
         System.out.println(shoppingCartService.getByUser(userJohnConor));
     }
 }
