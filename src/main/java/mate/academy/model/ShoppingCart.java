@@ -22,7 +22,7 @@ public class ShoppingCart {
             inverseJoinColumns = @JoinColumn(name = "ticket_id")
     )
     private List<Ticket> tickets;
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     private User user;
 
