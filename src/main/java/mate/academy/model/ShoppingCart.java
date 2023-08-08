@@ -1,5 +1,6 @@
 package mate.academy.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -7,8 +8,10 @@ import javax.persistence.Id;
 import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "shopping_carts")
 public class ShoppingCart {
     @Id
     private Long id;
@@ -43,6 +46,9 @@ public class ShoppingCart {
     }
 
     public void addTicket(Ticket ticket) {
+        if (tickets.isEmpty()) {
+            tickets = new ArrayList<>();
+        }
         tickets.add(ticket);
     }
 }
