@@ -39,8 +39,9 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
     public Optional<ShoppingCart> getByUser(User user) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query<ShoppingCart> query =
-                    session.createQuery("from ShoppingCart as shc left join fetch shc.tickets "
-                                        + "where shc.user.id=:id",
+                    session.createQuery("FROM ShoppingCart AS shc LEFT JOIN FETCH shc.user "
+                                        + "LEFT JOIN FETCH shc.tickets "
+                                        + "WHERE shc.user.id=:id",
                             ShoppingCart.class);
             query.setParameter("id", user.getId());
             return query.uniqueResultOptional();
@@ -63,6 +64,10 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
                 transaction.rollback();
             }
             throw new DataProcessingException("Can not update shopping cart" + shoppingCart, e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
         }
     }
 }
