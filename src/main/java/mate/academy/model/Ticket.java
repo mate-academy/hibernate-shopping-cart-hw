@@ -1,19 +1,18 @@
 package mate.academy.model;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 
 @Entity
 public class Ticket {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @OneToOne
     private MovieSession movieSession;
     @OneToOne
+    @MapsId
     private User user;
 
     public Long getId() {
