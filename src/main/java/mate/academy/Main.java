@@ -15,7 +15,7 @@ import mate.academy.util.HashUtil;
 public class Main {
     private static final Injector INJECTOR = Injector.getInstance("mate.academy");
     public static void main(String[] args) {
-        MovieService movieService = null;
+        MovieService movieService = (MovieService) INJECTOR.getInstance(MovieService.class);
 
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
@@ -61,7 +61,7 @@ public class Main {
 
         User user = new User();
         user.setSalt(HashUtil.getSalt());
-        user.setEmail("romakuch@gmail.com");
+        user.setEmail("romaku");
         String hashedPassword = HashUtil.hashPassword("qwerty", user.getSalt());
         user.setPassword(hashedPassword);
 
