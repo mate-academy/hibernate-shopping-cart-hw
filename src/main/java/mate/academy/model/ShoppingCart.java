@@ -1,22 +1,25 @@
 package mate.academy.model;
 
+import java.util.List;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "tickets")
-public class Ticket {
+@Table(name = "shopping_carts")
+public class ShoppingCart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne(fetch = FetchType.LAZY)
-    private MovieSession movieSession;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToMany
+    private List<Ticket> tickets;
+    @OneToOne
+    @MapsId
     private User user;
 
     public Long getId() {
@@ -27,12 +30,12 @@ public class Ticket {
         this.id = id;
     }
 
-    public MovieSession getMovieSession() {
-        return movieSession;
+    public List<Ticket> getTickets() {
+        return tickets;
     }
 
-    public void setMovieSession(MovieSession movieSession) {
-        this.movieSession = movieSession;
+    public void setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
     }
 
     public User getUser() {
@@ -45,9 +48,9 @@ public class Ticket {
 
     @Override
     public String toString() {
-        return "Ticket{"
+        return "ShoppingCart{"
                 + "id=" + id
-                + ", movieSession=" + movieSession
+                + ", tickets=" + tickets
                 + ", user=" + user
                 + '}';
     }
