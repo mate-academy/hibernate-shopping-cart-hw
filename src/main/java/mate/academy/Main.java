@@ -81,15 +81,15 @@ public class Main {
         ShoppingCartService shoppingCartService = (ShoppingCartService)
                 injector.getInstance(ShoppingCartService.class);
 
-        System.out.println("Bobs shopping cart before adding sessions: "
-                + shoppingCartService.getByUser(bob));
+        System.out.println("Number of tickets in Bobs shopping cart before adding sessions: "
+                + shoppingCartService.getByUser(bob).getTickets().size());
 
         shoppingCartService.addSession(tomorrowMovieSession, bob);
         shoppingCartService.addSession(todayMovieSession, bob);
 
         ShoppingCart bobsShoppingCart = shoppingCartService.getByUser(bob);
-        System.out.println("Bobs shopping cart after adding two sessions: "
-                + bobsShoppingCart);
+        System.out.println("Number of tickets in Bobs shopping cart after adding two sessions: "
+                + bobsShoppingCart.getTickets().size());
 
         shoppingCartService.clear(bobsShoppingCart);
 
