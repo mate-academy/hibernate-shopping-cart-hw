@@ -25,7 +25,7 @@ public class UserDaoImpl implements UserDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Can't insert to DB user: "
+            throw new DataProcessingException("Can't save to DB user: "
                     + user, e);
         } finally {
             if (session != null) {
