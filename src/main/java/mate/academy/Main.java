@@ -67,11 +67,13 @@ public class Main {
         newUser.setPassword(HashUtil.hashPassword("qwerty", newUser.getSalt()));
         UserService userService = (UserService) injector.getInstance(UserService.class);
         userService.add(newUser);
+
         ShoppingCartService shoppingCartService = (ShoppingCartService) injector
                 .getInstance(ShoppingCartService.class);
         shoppingCartService.registerNewShoppingCart(newUser);
         shoppingCartService.addSession(tomorrowMovieSession, newUser);
         ShoppingCart shoppingCart = shoppingCartService.getByUser(newUser);
+
         System.out.println(shoppingCart);
         shoppingCartService.clear(shoppingCart);
         System.out.println(shoppingCart);
