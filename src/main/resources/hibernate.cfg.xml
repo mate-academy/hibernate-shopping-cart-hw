@@ -19,6 +19,5 @@
         <mapping class="mate.academy.model.MovieSession"/>
         <mapping class="mate.academy.model.ShoppingCart"/>
         <mapping class="mate.academy.model.Ticket"/>
-
     </session-factory>
 </hibernate-configuration>

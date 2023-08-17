@@ -21,6 +21,8 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
+            User user = (User) session.merge(shoppingCart.getUser());
+            shoppingCart.setUser(user);
             session.persist(shoppingCart);
             transaction.commit();
             return shoppingCart;
@@ -46,10 +48,9 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
                                         + "left join fetch t.movieSession ms "
                                         + "left join fetch  ms.movie "
                                         + "left join fetch  ms.cinemaHall "
-                                        + "where u.id = :id",
-
+                                        + "where u = :user",
                             ShoppingCart.class);
-            getShoppingCartQuery.setParameter("id", user.getId());
+            getShoppingCartQuery.setParameter("user", user);
             return getShoppingCartQuery.uniqueResultOptional();
         } catch (HibernateException e) {
             throw new DataProcessingException("Can't get shopping cart by user: " + user, e);
