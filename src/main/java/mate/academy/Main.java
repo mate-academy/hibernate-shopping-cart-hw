@@ -77,9 +77,9 @@ public class Main {
 
         User user = new User();
         user.setEmail("ulia@gmail.com");
-        user.setPassword("1234");
+        user.setPassword("1111");
 
-        authenticationService.register("ulia@gmail.com", "1234");
+        authenticationService.register("ulia@gmail.com", "1111");
         shoppingCartService.addSession(tomorrowMovieSession, user);
         ShoppingCart shoppingCart = shoppingCartService.getByUser(user);
         shoppingCartService.clear(shoppingCart);
