@@ -6,6 +6,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -19,6 +20,7 @@ public class ShoppingCart {
     @OneToMany
     private List<Ticket> ticketList;
     @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
     private User user;
 
     public ShoppingCart() {
