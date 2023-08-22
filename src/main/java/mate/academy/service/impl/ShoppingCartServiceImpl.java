@@ -1,5 +1,7 @@
 package mate.academy.service.impl;
 
+import java.util.ArrayList;
+import java.util.NoSuchElementException;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
 import mate.academy.lib.Inject;
@@ -10,15 +12,8 @@ import mate.academy.model.Ticket;
 import mate.academy.model.User;
 import mate.academy.service.ShoppingCartService;
 
-import java.util.ArrayList;
-import java.util.NoSuchElementException;
-
 @Service
-public class ShoppingCartServiceImpl implements ShoppingCartService {/**
-     * This method is responsible for adding a Ticket to the ShoppingCart
-     * @param movieSession contains the information required for the ticket
-     * @param user - the User who wants to buy the ticket for a specific movieSession
-     */
+public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Inject
     private ShoppingCartDao shoppingCartDao;
     @Inject
