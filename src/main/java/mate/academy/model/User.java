@@ -2,13 +2,15 @@ package mate.academy.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,6 +19,8 @@ public class User {
     private String email;
     private String password;
     private byte[] salt;
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+    private ShoppingCart shoppingCart;
 
     public Long getId() {
         return id;
