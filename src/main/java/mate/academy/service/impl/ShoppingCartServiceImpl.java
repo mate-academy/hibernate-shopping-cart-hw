@@ -1,6 +1,8 @@
 package mate.academy.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
 import mate.academy.lib.Inject;
@@ -20,11 +22,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void addSession(MovieSession movieSession, User user) {
-        Ticket ticket = new Ticket();
-        ticket.setMovieSession(movieSession);
-        ticket.setUser(user);
-        ticketDao.add(ticket);
-
+        Ticket ticket = createTicket(movieSession, user);
         ShoppingCart shoppingCart = getByUser(user);
         List<Ticket> tickets = shoppingCart.getTickets();
         tickets.add(ticket);
@@ -34,21 +32,30 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public ShoppingCart getByUser(User user) {
-        return shoppingCartDao.getByUser(user).get();
+        return shoppingCartDao.getByUser(user).orElseThrow(
+                () -> new NoSuchElementException("Can't find shopping cart by user " + user)
+        );
     }
 
     @Override
     public void registerNewShoppingCart(User user) {
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setUser(user);
+        shoppingCart.setTickets(new ArrayList<>());
         shoppingCartDao.add(shoppingCart);
     }
 
     @Override
     public void clear(ShoppingCart shoppingCart) {
-        ShoppingCart emptyCart = new ShoppingCart();
-        emptyCart.setId(shoppingCart.getId());
-        emptyCart.setUser(shoppingCart.getUser());
-        shoppingCartDao.update(emptyCart);
+        shoppingCart.getTickets().clear();
+        shoppingCartDao.update(shoppingCart);
+    }
+
+    private Ticket createTicket(MovieSession movieSession, User user) {
+        Ticket ticket = new Ticket();
+        ticket.setMovieSession(movieSession);
+        ticket.setUser(user);
+        ticketDao.add(ticket);
+        return ticket;
     }
 }
