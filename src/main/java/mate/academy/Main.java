@@ -6,9 +6,14 @@ import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.model.ShoppingCart;
+import mate.academy.model.User;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
+import mate.academy.service.ShoppingCartService;
+import mate.academy.service.UserService;
+import mate.academy.util.HashUtil;
 
 public class Main {
     private static final Injector INJECTOR = Injector.getInstance("mate.academy");
@@ -51,5 +56,23 @@ public class Main {
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(
                 fastAndFurious.getId(), LocalDate.now()));
+
+        User user = new User();
+        user.setEmail("alice@gmail.com");
+        user.setSalt(HashUtil.getSalt());
+        user.setPassword("qwerty");
+
+        UserService userService = (UserService) INJECTOR.getInstance(UserService.class);
+        userService.add(user);
+
+        ShoppingCartService shoppingCartService = (ShoppingCartService)
+                INJECTOR.getInstance(ShoppingCartService.class);
+        shoppingCartService.registerNewShoppingCart(user);
+        shoppingCartService.addSession(tomorrowMovieSession, user);
+
+        ShoppingCart shoppingCart = shoppingCartService.getByUser(user);
+        System.out.println("ShoppingCart before cleaning: " + shoppingCart);
+        shoppingCartService.clear(shoppingCart);
+        System.out.println("ShoppingCart after cleaning: " + shoppingCart);
     }
 }
