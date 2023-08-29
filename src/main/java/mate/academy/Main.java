@@ -1,18 +1,18 @@
 package mate.academy;
 
 import java.time.LocalDateTime;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
 import mate.academy.model.ShoppingCart;
 import mate.academy.model.User;
+import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
 import mate.academy.service.ShoppingCartService;
-import mate.academy.service.UserService;
-import mate.academy.util.HashUtil;
 
 public class Main {
     public static void main(String[] args) {
@@ -59,17 +59,18 @@ public class Main {
 
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
 
-        User userOne = new User();
-        userOne.setEmail("nikitazuber@gmail.com");
-        userOne.setSalt(HashUtil.getSalt());
-        userOne.setPassword("1234Qwerty");
+        AuthenticationService authenticationService = (AuthenticationService) inject
+                .getInstance(AuthenticationService.class);
 
-        UserService userService = (UserService) inject.getInstance(UserService.class);
-        userService.add(userOne);
+        User userOne;
+        try {
+            userOne = authenticationService.register("nikitazuber@gmail.com", "1234Qwerty");
+        } catch (RegistrationException e) {
+            throw new RuntimeException(e);
+        }
 
         ShoppingCartService shoppingCartService =
                 (ShoppingCartService) inject.getInstance(ShoppingCartService.class);
-        shoppingCartService.registerNewShoppingCart(userOne);
         shoppingCartService.addSession(tomorrowMovieSession, userOne);
 
         ShoppingCart shoppingCart = shoppingCartService.getByUser(userOne);
