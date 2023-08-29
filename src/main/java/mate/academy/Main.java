@@ -64,7 +64,7 @@ public class Main {
 
         User userOne;
         try {
-            userOne = authenticationService.register("nikitazuber@gmail.com", "1234Qwerty");
+            userOne = authenticationService.register("nikita@gmail.com", "1234Qwerty");
         } catch (RegistrationException e) {
             throw new RuntimeException(e);
         }
