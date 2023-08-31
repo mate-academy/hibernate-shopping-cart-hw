@@ -72,9 +72,9 @@ public class Main {
         authenticationService.login("gmail@gmail.com", "somePassword");
 
         ShoppingCartService shoppingCartService =
-                (ShoppingCartService) injector.getInstance(ShoppingCart.class);
+                (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
         shoppingCartService.addSession(tomorrowMovieSession, user);
-        ShoppingCart shoppingCart = shoppingCartService.getBUser(user);
+        ShoppingCart shoppingCart = shoppingCartService.getByUser(user);
         System.out.println(shoppingCart);
         shoppingCartService.clear(shoppingCart);
         System.out.println(shoppingCart);
