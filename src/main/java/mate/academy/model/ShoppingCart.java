@@ -9,6 +9,8 @@ import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -27,10 +29,11 @@ public class ShoppingCart {
     private User user;
 
     public ShoppingCart() {
+        tickets = new ArrayList<>();
     }
 
-    public ShoppingCart(List<Ticket> tickets, User user) {
-        this.tickets = tickets;
+    public ShoppingCart(User user) {
+        tickets = new ArrayList<>();
         this.user = user;
     }
 

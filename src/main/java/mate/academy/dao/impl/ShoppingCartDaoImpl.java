@@ -13,7 +13,6 @@ import org.hibernate.query.Query;
 
 @Dao
 public class ShoppingCartDaoImpl implements ShoppingCartDao {
-
     @Override
     public ShoppingCart add(ShoppingCart shoppingCart) {
         Session session = null;
@@ -68,7 +67,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new RuntimeException("Can't remove " + entity, e);
+            throw new RuntimeException("Can't remove a shopping cart: " + entity, e);
         } finally {
             if (session != null) {
                 session.close();
