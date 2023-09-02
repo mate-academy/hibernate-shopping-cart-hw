@@ -17,25 +17,25 @@ import mate.academy.service.ShoppingCartService;
 import mate.academy.service.UserService;
 
 public class Main {
-    private static final Injector injector = Injector.getInstance("mate.academy");
+    private static final Injector INJECTOR = Injector.getInstance("mate.academy");
 
     private static MovieService movieService
-            = (MovieService) injector.getInstance(MovieService.class);
+            = (MovieService) INJECTOR.getInstance(MovieService.class);
 
     private static CinemaHallService cinemaHallService
-            = (CinemaHallService) injector.getInstance(CinemaHallService.class);
+            = (CinemaHallService) INJECTOR.getInstance(CinemaHallService.class);
 
     private static MovieSessionService movieSessionService
-            = (MovieSessionService) injector.getInstance(MovieSessionService.class);
+            = (MovieSessionService) INJECTOR.getInstance(MovieSessionService.class);
 
     private static UserService userService
-            = (UserService) injector.getInstance(UserService.class);
+            = (UserService) INJECTOR.getInstance(UserService.class);
 
     private static AuthenticationService authenticationService
-            = (AuthenticationService) injector.getInstance(AuthenticationService.class);
+            = (AuthenticationService) INJECTOR.getInstance(AuthenticationService.class);
 
     private static ShoppingCartService shoppingCartService
-            = (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
+            = (ShoppingCartService) INJECTOR.getInstance(ShoppingCartService.class);
 
     public static void main(String[] args) throws RegistrationException {
         Movie fastAndFurious = new Movie("Fast and Furious");
