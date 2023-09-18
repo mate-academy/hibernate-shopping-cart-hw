@@ -95,10 +95,11 @@ public class Main {
         authenticationService.register(bob.getEmail(), bob.getPassword());
         User userBob = authenticationService.login("bob@com.ua", "123456");
 
+        SHOPPINGCARTSERVICE.addSession(yesterdayMovieSession, userBob);
         SHOPPINGCARTSERVICE.addSession(tomorrowMovieSession, userBob);
         ShoppingCart shoppingCart = SHOPPINGCARTSERVICE.getByUser(userBob);
-        System.out.println(shoppingCart);
+        System.out.println(shoppingCart.getTickets() + " before clear ");
         SHOPPINGCARTSERVICE.clear(shoppingCart);
-        System.out.println(shoppingCart);
+        System.out.println(shoppingCart.getTickets() + " after clear ");
     }
 }
