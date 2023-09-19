@@ -1,5 +1,6 @@
 package mate.academy.dao.impl;
 
+import java.util.Optional;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Dao;
@@ -9,8 +10,6 @@ import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-
-import java.util.Optional;
 
 @Dao
 public class ShoppingCartDaoImpl implements ShoppingCartDao {
@@ -44,7 +43,8 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
             Query<ShoppingCart> query = session.createQuery("FROM ShoppingCart sc "
-                    + "JOIN FETCH sc.user u "
+                    + "LEFT JOIN FETCH sc.user u "
+                    + "LEFT JOIN FETCH sc.tickets t " // why left join?
                     + "WHERE u.id = :user", ShoppingCart.class);
             query.setParameter("user", user.getId());
             Optional<ShoppingCart> shoppingCart = query.uniqueResultOptional();
