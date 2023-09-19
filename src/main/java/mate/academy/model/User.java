@@ -19,16 +19,6 @@ public class User {
     private String email;
     private String password;
     private byte[] salt;
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private ShoppingCart shoppingCart;
-
-    public ShoppingCart getShoppingCart() {
-        return shoppingCart;
-    }
-
-    public void setShoppingCart(ShoppingCart shoppingCart) {
-        this.shoppingCart = shoppingCart;
-    }
 
     public Long getId() {
         return id;
@@ -67,7 +57,6 @@ public class User {
         return "User{"
                 + "id=" + id
                 + ", email='" + email + '\''
-                + ", shoppingCart=" + shoppingCart
                 + '}';
     }
 }

@@ -14,7 +14,7 @@ public class ShoppingCart {
     @Id
     private Long id;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.LAZY)
     private List<Ticket> tickets;
 
     @OneToOne
