@@ -16,11 +16,11 @@ public class ShoppingCart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.EAGER)
-    List<Ticket> tickets;
     @OneToOne
     @MapsId
-    User user;
+    private User user;
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.EAGER)
+    private List<Ticket> tickets;
 
     public ShoppingCart() {
     }

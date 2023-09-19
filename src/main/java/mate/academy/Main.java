@@ -19,9 +19,6 @@ import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
 import mate.academy.service.ShoppingCartService;
-import mate.academy.service.UserService;
-import mate.academy.service.impl.MovieSessionServiceImpl;
-import mate.academy.service.impl.UserServiceImpl;
 
 public class Main {
     private static final Injector INJECTOR = Injector.getInstance("mate.academy");
@@ -56,13 +53,12 @@ public class Main {
                 .getInstance(ShoppingCartService.class);
         shoppingCartService.registerNewShoppingCart(user);
         shoppingCartService.addSession(movieSession, user);
-        shoppingCartService.registerNewShoppingCart(user);
         System.out.println(shoppingCartService.getByUser(user));
         System.out.println(shoppingCartService.getByUser(new User()));
         shoppingCartService.clear(shoppingCartService.getByUser(user));
         shoppingCartService.clear(shoppingCartService.getByUser(new User()));
 
-        /*MovieService movieService = null;
+        MovieService movieService = null;
 
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
@@ -101,6 +97,6 @@ public class Main {
 
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(
-                fastAndFurious.getId(), LocalDate.now()));*/
+                fastAndFurious.getId(), LocalDate.now()));
     }
 }
