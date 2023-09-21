@@ -1,6 +1,7 @@
 package mate.academy.service.impl;
 
 import java.util.Collections;
+import java.util.NoSuchElementException;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
 import mate.academy.lib.Inject;
@@ -31,14 +32,13 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public ShoppingCart getByUser(User user) {
-        return shoppingCartDao.getByUser(user).get();
+        return shoppingCartDao.getByUser(user)
+                .orElseThrow(() -> new NoSuchElementException("Can't find shopping"
+                        + " cart by User: " + user));
     }
 
     @Override
     public void registerNewShoppingCart(User user) {
-        if (shoppingCartDao.getByUser(user).isPresent()) {
-            throw new RuntimeException("User has already a shopping cart.");
-        }
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setUser(user);
         shoppingCartDao.add(shoppingCart);
