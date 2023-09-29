@@ -61,4 +61,13 @@ public class ShoppingCart {
     public void clear() {
         tickets.clear();
     }
+
+    @Override
+    public String toString() {
+        return "ShoppingCart{"
+                + "id=" + id
+                + ", user=" + user
+                + ", tickets=" + tickets
+                + '}';
+    }
 }

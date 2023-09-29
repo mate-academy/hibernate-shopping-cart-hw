@@ -49,6 +49,9 @@ public class ShoppingCartDaoImpl extends AbstractDao implements ShoppingCartDao 
            from ShoppingCart c
            join fetch c.user
            left join fetch c.tickets ct
+           left join fetch ct.movieSession ms
+           left join fetch ms.movie
+           left join fetch ms.cinemaHall
            where c.user = :user""", ShoppingCart.class);
     }
 }
