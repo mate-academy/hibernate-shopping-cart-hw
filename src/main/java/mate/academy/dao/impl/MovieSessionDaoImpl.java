@@ -14,32 +14,21 @@ import mate.academy.lib.Dao;
 import mate.academy.model.MovieSession;
 import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 @Dao
-public class MovieSessionDaoImpl implements MovieSessionDao {
+public class MovieSessionDaoImpl extends AbstractDao implements MovieSessionDao {
     private static final LocalTime END_OF_DAY = LocalTime.of(23, 59, 59);
 
     @Override
     public MovieSession add(MovieSession movieSession) {
-        Transaction transaction = null;
-        Session session = null;
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            transaction = session.beginTransaction();
-            session.persist(movieSession);
-            transaction.commit();
-            return movieSession;
+            return performWithinTx(session -> {
+                session.persist(movieSession);
+                return movieSession;
+            });
         } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
             throw new DataProcessingException("Can't insert movie session" + movieSession, e);
-        } finally {
-            if (session != null) {
-                session.close();
-            }
         }
     }
 
@@ -50,7 +39,7 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
             CriteriaQuery<MovieSession> criteriaQuery =
                     criteriaBuilder.createQuery(MovieSession.class);
             Root<MovieSession> root = criteriaQuery.from(MovieSession.class);
-            Predicate moviePredicate = criteriaBuilder.equal(root.get("movie"), movieId);
+            Predicate moviePredicate = criteriaBuilder.equal(root.get("movie").get("id"), movieId);
             Predicate datePredicate = criteriaBuilder.between(root.get("showTime"),
                     date.atStartOfDay(), date.atTime(END_OF_DAY));
             Predicate allConditions = criteriaBuilder.and(moviePredicate, datePredicate);

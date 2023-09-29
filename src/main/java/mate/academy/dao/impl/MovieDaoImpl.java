@@ -9,29 +9,18 @@ import mate.academy.lib.Dao;
 import mate.academy.model.Movie;
 import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 @Dao
-public class MovieDaoImpl implements MovieDao {
+public class MovieDaoImpl extends AbstractDao implements MovieDao {
     @Override
     public Movie add(Movie movie) {
-        Transaction transaction = null;
-        Session session = null;
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            transaction = session.beginTransaction();
-            session.persist(movie);
-            transaction.commit();
-            return movie;
+            return performWithinTx(session -> {
+                session.persist(movie);
+                return movie;
+            });
         } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            throw new DataProcessingException("Can't insert movie " + movie, e);
-        } finally {
-            if (session != null) {
-                session.close();
-            }
+            throw new DataProcessingException("Can't add movie to DB", e);
         }
     }
 
