@@ -53,13 +53,4 @@ public class Ticket {
     public void setUser(User user) {
         this.user = user;
     }
-
-    @Override
-    public String toString() {
-        return "Ticket{"
-                + "id=" + id
-                + ", movieSession=" + movieSession
-                + ", user=" + user
-                + '}';
-    }
 }
