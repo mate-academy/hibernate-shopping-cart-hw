@@ -1,8 +1,15 @@
 package mate.academy.model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToOne;
+
 public class Ticket {
     private Long id;
+    @OneToOne(fetch = FetchType.LAZY)
     private MovieSession movieSession;
+    @OneToOne(fetch = FetchType.LAZY)
+    @Column(unique = true)
     private User user;
 
     public Long getId() {
