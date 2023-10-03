@@ -1,5 +1,6 @@
 package mate.academy.dao.impl;
 
+import java.util.List;
 import mate.academy.dao.TicketDao;
 import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Dao;
@@ -31,5 +32,27 @@ public class TicketDaoImpl implements TicketDao {
             }
         }
         return ticket;
+    }
+
+    @Override
+    public void removeList(List<Ticket> ticket) {
+        Session session = null;
+        Transaction transaction = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            transaction = session.beginTransaction();
+            ticket.forEach(session::remove);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            throw new DataProcessingException("Can't remove tickets "
+                    + ticket + " from the database", e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
     }
 }
