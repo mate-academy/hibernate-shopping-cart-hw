@@ -1,5 +1,6 @@
 package mate.academy.service.impl;
 
+import jakarta.persistence.EntityNotFoundException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -34,11 +35,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public ShoppingCart getByUser(User user) {
         Optional<ShoppingCart> userCart = shoppingCartDao.getByUser(user);
-        if (userCart.isEmpty()) {
-            throw new RuntimeException("There is no user "
-                    + user + " in the database");
-        }
-        return userCart.get();
+        return userCart.orElseThrow(() -> new EntityNotFoundException("There is no user "
+                + user + " in the database"));
     }
 
     @Override
@@ -50,15 +48,12 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void clear(ShoppingCart shoppingCart) {
-        Optional<ShoppingCart> cartByUser =
-                shoppingCartDao.getByUser(shoppingCart.getOwner());
-        if (cartByUser.isEmpty()) {
-            throw new RuntimeException("There is no shopping cart "
-                    + shoppingCart + " in the database");
-        }
-        List<Ticket> tickets = shoppingCart.getTickets();
-        shoppingCart.setTickets(Collections.emptyList());
-        shoppingCartDao.update(shoppingCart);
+        ShoppingCart cartByUser = shoppingCartDao.getByUser(shoppingCart.getOwner())
+                .orElseThrow(() -> new EntityNotFoundException("There is no shopping cart "
+                        + shoppingCart + " in the database"));
+        List<Ticket> tickets = cartByUser.getTickets();
+        cartByUser.setTickets(Collections.emptyList());
+        shoppingCartDao.update(cartByUser);
         ticketDao.removeList(tickets);
     }
 }
