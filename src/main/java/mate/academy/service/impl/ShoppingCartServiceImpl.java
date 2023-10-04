@@ -1,10 +1,6 @@
 package mate.academy.service.impl;
 
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
@@ -15,8 +11,6 @@ import mate.academy.model.ShoppingCart;
 import mate.academy.model.Ticket;
 import mate.academy.model.User;
 import mate.academy.service.ShoppingCartService;
-import mate.academy.util.HibernateUtil;
-import org.hibernate.Session;
 
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
@@ -41,26 +35,20 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public ShoppingCart getByUser(User user) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            CriteriaBuilder cb = session.getCriteriaBuilder();
-            CriteriaQuery<ShoppingCart> scCriteriaQuery = cb.createQuery(ShoppingCart.class);
-            Root<ShoppingCart> cartRoot = scCriteriaQuery.from(ShoppingCart.class);
-            Predicate getByUserPredicate = cb.equal(cartRoot.get("user_id"), user.getId());
-            scCriteriaQuery.where(getByUserPredicate);
-            return session.createQuery(scCriteriaQuery).getSingleResult();
-        } catch (Exception e) {
-            throw new RuntimeException("", e);
+        if (shoppingCartDao.getByUser(user).isPresent()) {
+            return shoppingCartDao.getByUser(user).get();
         }
+        throw new RuntimeException("Shopping cart by user: " + user + "is null");
     }
 
     @Override
     public void registerNewShoppingCart(User user) {
-        shoppingCartDao.add(new ShoppingCart(user, new ArrayList<Ticket>()));
+        shoppingCartDao.add(new ShoppingCart(user));
     }
 
     @Override
     public void clear(ShoppingCart shoppingCart) {
-        shoppingCart.setTickets(new ArrayList<Ticket>());
+        shoppingCart.setTickets(Collections.emptyList());
         shoppingCartDao.update(shoppingCart);
     }
 }
