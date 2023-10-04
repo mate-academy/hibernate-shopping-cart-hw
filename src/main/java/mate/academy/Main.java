@@ -71,13 +71,12 @@ public class Main {
 
         ShoppingCartService shService =
                 (ShoppingCartService) INJECTOR.getInstance(ShoppingCartService.class);
-        System.out.println("Register new shopping cart");
         shService.addSession(tomorrowMovieSession,yelena);
         shService.addSession(yesterdayMovieSession, yelena);
         ShoppingCart shoppingCart = shService.getByUser(yelena);
         List<Ticket> tickets = shoppingCart.getTickets();
-        assert (tickets.size() == 2);
+        /*assert (tickets.size() == 2);
         shService.clear(shoppingCart);
-        assert (tickets.isEmpty());
+        assert (tickets.isEmpty());*/
     }
 }

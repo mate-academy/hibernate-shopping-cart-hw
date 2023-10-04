@@ -57,11 +57,11 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
 
     private String getByUserQuery() {
         return "FROM ShoppingCart sc "
-                + "JOIN FETCH sc.user "
+                + "JOIN FETCH sc.user u "
                 + "LEFT JOIN FETCH sc.tickets t "
-                + "LEFT JOIN FETCH t.movieSession ms "
-                + "LEFT JOIN FETCH ms.movie "
-                + "LEFT JOIN FETCH ms.cinemaHall "
-                + "WHERE sc.user = :user";
+                + "JOIN FETCH t.movieSession ms "
+                + "JOIN FETCH ms.movie "
+                + "JOIN FETCH ms.cinemaHall "
+                + "WHERE sc.user =:user";
     }
 }
