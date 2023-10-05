@@ -2,7 +2,6 @@ package mate.academy.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
 import mate.academy.exception.DataProcessingException;
@@ -28,19 +27,13 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         ticket.setUser(user);
         ticket = ticketDao.add(ticket);
 
-        Optional<ShoppingCart> shoppingCartByUser = shoppingCartDao.getByUser(user);
-        if (shoppingCartByUser.isPresent()) {
-            ShoppingCart shoppingCart = shoppingCartByUser.get();
-            List<Ticket> tickets = new ArrayList<>(shoppingCart.getTickets());
-            tickets.add(ticket);
-            shoppingCart.setTickets(tickets);
-            shoppingCartDao.update(shoppingCart);
-        } else {
-            ShoppingCart shoppingCart = new ShoppingCart();
-            shoppingCart.setUser(user);
-            shoppingCart.setTickets(List.of(ticket));
-            shoppingCartDao.add(shoppingCart);
-        }
+        ShoppingCart shoppingCartByUser = shoppingCartDao.getByUser(user).orElseThrow(
+                () -> new DataProcessingException("We didn't find shopping cart by user with id: "
+                        + user.getId()));
+        List<Ticket> tickets = new ArrayList<>(shoppingCartByUser.getTickets());
+        tickets.add(ticket);
+        shoppingCartByUser.setTickets(tickets);
+        shoppingCartDao.update(shoppingCartByUser);
     }
 
     @Override

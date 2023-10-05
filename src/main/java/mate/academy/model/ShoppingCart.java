@@ -8,13 +8,15 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import java.util.List;
 
 @Entity
+@Table(name = "shopping_cart")
 public class ShoppingCart {
     @Id
     private Long id;
-    @OneToMany()
+    @OneToMany
     @JoinTable(name = "shopping_carts_tickets",
             joinColumns = @JoinColumn(name = "shopping_cart_id"),
             inverseJoinColumns = @JoinColumn(name = "ticket_id"))
@@ -51,8 +53,6 @@ public class ShoppingCart {
     public String toString() {
         return "ShoppingCart{"
                 + "id=" + id
-                + ", tickets=" + tickets
-                + ", user=" + user
                 + '}';
     }
 }
