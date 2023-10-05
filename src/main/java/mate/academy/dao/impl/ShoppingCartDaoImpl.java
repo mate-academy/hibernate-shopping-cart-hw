@@ -59,9 +59,6 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
         return "FROM ShoppingCart sc "
                 + "JOIN FETCH sc.user u "
                 + "LEFT JOIN FETCH sc.tickets t "
-                + "JOIN FETCH t.movieSession ms "
-                + "JOIN FETCH ms.movie "
-                + "JOIN FETCH ms.cinemaHall "
                 + "WHERE sc.user =:user";
     }
 }
