@@ -6,13 +6,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import java.util.List;
 
 @Entity
+@Table(name = "shopping_carts")
 public class ShoppingCart {
     @Id
     private Long id;
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.LAZY)
     private List<Ticket> tickets;
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
@@ -42,9 +44,4 @@ public class ShoppingCart {
         this.user = user;
     }
 
-    @Override
-    public String toString() {
-        return "ShoppingCart{" + "id=" + id + ", tickets="
-                + tickets + ", user=" + user + '}';
-    }
 }

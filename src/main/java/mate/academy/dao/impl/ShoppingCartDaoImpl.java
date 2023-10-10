@@ -1,9 +1,5 @@
 package mate.academy.dao.impl;
 
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
 import java.util.Optional;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.exception.DataProcessingException;
@@ -13,6 +9,7 @@ import mate.academy.model.User;
 import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 @Dao
 public class ShoppingCartDaoImpl implements ShoppingCartDao {
@@ -41,19 +38,16 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
     @Override
     public Optional<ShoppingCart> getByUser(User user) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-            CriteriaQuery<ShoppingCart> criteriaQuery =
-                    criteriaBuilder.createQuery(ShoppingCart.class);
-            Root<ShoppingCart> root = criteriaQuery.from(ShoppingCart.class);
-            Predicate moviePredicate = criteriaBuilder.equal(root.get("user")
-                    .get("id"), user.getId());
-            criteriaQuery.select(root).where(moviePredicate);
-            root.fetch("user");
-            //root.fetch("cinemaHall");
-            return session.createQuery(criteriaQuery).uniqueResultOptional();
+            Query<ShoppingCart> query = session.createQuery(
+                    "SELECT sc FROM ShoppingCart sc "
+                            + "LEFT JOIN FETCH sc.tickets "
+                            + "WHERE sc.user = :user",
+                    ShoppingCart.class
+            );
+            query.setParameter("user", user);
+            return Optional.ofNullable(query.uniqueResult());
         } catch (Exception e) {
-            throw new DataProcessingException("Can't get available sessions for movie with id: "
-                    + user.getId(), e);
+            throw new DataProcessingException("Error retrieving shopping cart by user", e);
         }
     }
 

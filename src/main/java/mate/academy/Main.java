@@ -1,12 +1,15 @@
 package mate.academy;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.model.ShoppingCart;
+import mate.academy.model.Ticket;
 import mate.academy.model.User;
 import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
@@ -61,9 +64,11 @@ public class Main {
         movieSessionService.add(tomorrowMovieSession);
         movieSessionService.add(yesterdayMovieSession);
 
-        User user = authenticationService.register("Oleh@gmail.com", "password");
+        User user = authenticationService.register("new@gmail.com", "password");
+        System.out.println(user + "was login");
         shoppingCartService.addSession(yesterdayMovieSession,user);
-        System.out.println(shoppingCartService.getByUser(user).getTickets());
-
+        ShoppingCart shoppingCart = shoppingCartService.getByUser(user);
+        List<Ticket> list = shoppingCart.getTickets();
+        shoppingCartService.clear(shoppingCart);
     }
 }
