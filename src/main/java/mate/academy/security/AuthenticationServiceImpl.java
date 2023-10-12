@@ -33,6 +33,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             return user;
         }
         throw new RegistrationException("This email is already registered.");
+
     }
 
     private boolean matchPasswords(String rawPassword, User userFromDb) {
