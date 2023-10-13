@@ -1,4 +1,4 @@
-# Implement shopping cart
+# Implement a shopping cart
 We will continue working on our Cinema project.
 
 - Create models
@@ -40,9 +40,9 @@ We will continue working on our Cinema project.
             void clear(ShoppingCart shoppingCart);
         }
         ```
-- In the `mate/academy/Main.main()` method create instance of ShoppingCartService using injector and test all methods from it.
+- In the `mate/academy/Main.main()` method create an instance of ShoppingCartService using injector and test all methods from it.
 
-__You can check yourself using this__ [checklist](https://mate-academy.github.io/jv-program-common-mistakes/hibernate/add-shopping-cart/add-shopping-cart-hw)
+__You can check yourself using this__ [checklist](./checklist.md)
 
 ### Model structure 
 ![pic](Hibernate_Cinema_Uml.png)
