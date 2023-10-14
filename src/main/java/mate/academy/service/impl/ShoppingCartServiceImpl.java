@@ -24,14 +24,11 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public void addSession(MovieSession movieSession, User user) {
         Ticket ticket = new Ticket(movieSession, user);
         Optional<ShoppingCart> optionalShoppingCart = shoppingCartDao.getByUser(user);
-        if (optionalShoppingCart.isPresent()) {
-            ticketDao.add(ticket);
-            ShoppingCart shoppingCart = optionalShoppingCart.get();
-            shoppingCart.getTickets().add(ticket);
-            shoppingCartDao.update(shoppingCart);
-        } else {
-            throw new RuntimeException("Can't add session");
-        }
+        ShoppingCart shoppingCart = optionalShoppingCart
+                .orElseThrow(() -> new RuntimeException("Can't add session"));
+        ticketDao.add(ticket);
+        shoppingCart.getTickets().add(ticket);
+        shoppingCartDao.update(shoppingCart);
     }
 
     @Override

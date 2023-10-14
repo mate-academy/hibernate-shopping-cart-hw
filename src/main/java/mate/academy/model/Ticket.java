@@ -3,7 +3,6 @@ package mate.academy.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -13,7 +12,7 @@ public class Ticket {
     @Id
     private Long id;
 
-    @OneToOne
+    @ManyToOne
     private MovieSession movieSession;
 
     @ManyToOne
