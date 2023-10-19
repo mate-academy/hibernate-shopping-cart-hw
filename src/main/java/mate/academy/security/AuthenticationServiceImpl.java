@@ -6,11 +6,14 @@ import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.User;
+import mate.academy.service.ShoppingCartService;
 import mate.academy.service.UserService;
 import mate.academy.util.HashUtil;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
+    @Inject
+    private ShoppingCartService shoppingCartService;
     @Inject
     private UserService userService;
 
@@ -29,7 +32,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             User user = new User();
             user.setEmail(email);
             user.setPassword(password);
-            userService.add(user);
+            user = userService.add(user);
+            shoppingCartService.registerNewShoppingCart(user);
             return user;
         }
         throw new RegistrationException("This email is already registered.");
