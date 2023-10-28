@@ -18,8 +18,7 @@ public class Ticket {
 
     @ManyToOne
     private MovieSession movieSession;
-    @OneToOne
-    @MapsId
+    @ManyToOne
     private User user;
 
     public Long getId() {

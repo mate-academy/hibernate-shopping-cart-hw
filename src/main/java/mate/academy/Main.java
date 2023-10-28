@@ -70,6 +70,7 @@ public class Main {
         User user = new User();
         user.setPassword("124223");
         user.setEmail("qwert@gmail.com");
+        userService.add(user);
 
         shoppingCartService.addSession(tomorrowMovieSession, user);
         ShoppingCart shoppingCart = shoppingCartService.getByUser(user);
