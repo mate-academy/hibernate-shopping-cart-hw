@@ -1,11 +1,6 @@
 package mate.academy.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "users")
@@ -17,6 +12,8 @@ public class User {
     private String email;
     private String password;
     private byte[] salt;
+    @OneToOne(mappedBy = "user")
+    private ShoppingCart shoppingCart;
 
     public Long getId() {
         return id;
@@ -48,6 +45,14 @@ public class User {
 
     public void setSalt(byte[] salt) {
         this.salt = salt;
+    }
+
+    public ShoppingCart getShoppingCart() {
+        return shoppingCart;
+    }
+
+    public void setShoppingCart(ShoppingCart shoppingCart) {
+        this.shoppingCart = shoppingCart;
     }
 
     @Override

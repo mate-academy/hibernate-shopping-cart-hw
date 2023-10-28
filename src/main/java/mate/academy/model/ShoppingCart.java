@@ -20,7 +20,7 @@ public class ShoppingCart {
     @OneToOne(cascade = CascadeType.ALL)
     @MapsId
     private User user;
-    @OneToMany(fetch = FetchType.EAGER,
+    @OneToMany(fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
     @JoinTable(name = "shopping_carts_tickets",
             joinColumns = @JoinColumn(name = "cart_id"),
@@ -52,5 +52,14 @@ public class ShoppingCart {
 
     public void setTickets(List<Ticket> tickets) {
         this.tickets = tickets;
+    }
+
+    @Override
+    public String toString() {
+        return "ShoppingCart{"
+                + "id=" + id
+                + ", user=" + user
+                + ", tickets=" + tickets
+                + '}';
     }
 }

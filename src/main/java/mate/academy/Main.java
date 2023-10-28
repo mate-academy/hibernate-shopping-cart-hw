@@ -1,6 +1,6 @@
 package mate.academy;
 
-//import java.time.LocalDate;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
@@ -59,8 +59,8 @@ public class Main {
         movieSessionService.add(yesterdayMovieSession);
 
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
-        //        System.out.println(movieSessionService.findAvailableSessions(
-        //                fastAndFurious.getId(), LocalDate.now()));
+        System.out.println(movieSessionService.findAvailableSessions(
+                fastAndFurious.getId(), LocalDate.now()));
 
         AuthenticationService authenticationService =
                 (AuthenticationService) INJECTOR_MAP.getInstance(AuthenticationService.class);
@@ -71,6 +71,8 @@ public class Main {
             shoppingCartService.addSession(tomorrowMovieSession, bob);
             shoppingCartService.addSession(tomorrowMovieSession, bob);
             shoppingCartService.addSession(tomorrowMovieSession, bob);
+            System.out.println("\n\nShopping cart user " + bob + "\n\n"
+                    + shoppingCartService.getByUser(bob));
         } catch (RegistrationException e) {
             System.out.println(e);
         }
@@ -82,6 +84,8 @@ public class Main {
             shoppingCartService.addSession(tomorrowMovieSession, alice);
             shoppingCartService.addSession(tomorrowMovieSession, alice);
             shoppingCartService.addSession(tomorrowMovieSession, alice);
+            System.out.println("\n\nShopping cart user " + alice + "\n\n"
+                    + shoppingCartService.getByUser(alice));
         } catch (RegistrationException e) {
             System.out.println(e);
         }
@@ -89,7 +93,11 @@ public class Main {
         try {
             User del = authenticationService.register("del@email.com", "querty");
             shoppingCartService.addSession(tomorrowMovieSession, del);
+            System.out.println("\n\nShopping cart user " + del
+                    + "\n\nbefore clearing - " + shoppingCartService.getByUser(del));
             shoppingCartService.clear(shoppingCartService.getByUser(del));
+            System.out.println("\n\nShopping cart user " + del
+                    + "\n\nafter clearing - " + shoppingCartService.getByUser(del));
         } catch (RegistrationException e) {
             System.out.println(e);
         }

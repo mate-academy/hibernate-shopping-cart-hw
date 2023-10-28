@@ -14,7 +14,8 @@ import mate.academy.util.HashUtil;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
-    private static final Injector INJECTOR_MAP = Injector.getInstance("mate.academy");
+    @Inject
+    private ShoppingCartService shoppingCartService;
     @Inject
     private UserService userService;
 
@@ -34,10 +35,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             user.setEmail(email);
             user.setPassword(password);
             userService.add(user);
-            ShoppingCartService shoppingCartService =
-                    (ShoppingCartService) INJECTOR_MAP.getInstance(ShoppingCartService.class);
-            ShoppingCart shoppingCart = new ShoppingCart();
-            shoppingCart.setUser(user);
             shoppingCartService.registerNewShoppingCart(user);
             return user;
         }
