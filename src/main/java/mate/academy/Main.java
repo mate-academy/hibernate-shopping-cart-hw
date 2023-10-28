@@ -64,8 +64,9 @@ public class Main {
         System.out.println(movieSessionService.findAvailableSessions(
                 fastAndFurious.getId(), LocalDate.now()));
 
-        ShoppingCartService shoppingCartService =
+        final ShoppingCartService shoppingCartService =
                 (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
+
         UserService userService = (UserService) injector.getInstance(UserService.class);
         User user = new User();
         user.setPassword("124223");
@@ -75,6 +76,5 @@ public class Main {
         shoppingCartService.addSession(tomorrowMovieSession, user);
         ShoppingCart shoppingCart = shoppingCartService.getByUser(user);
         shoppingCartService.clear(shoppingCart);
-        shoppingCartService.registerNewShoppingCart(user);
     }
 }
