@@ -2,16 +2,36 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.dao.UserDao;
+import mate.academy.dao.impl.UserDaoImpl;
+import mate.academy.exception.RegistrationException;
+import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.model.ShoppingCart;
+import mate.academy.model.User;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
+import mate.academy.service.ShoppingCartService;
 
 public class Main {
-    public static void main(String[] args) {
-        MovieService movieService = null;
+    public static void main(String[] args) throws RegistrationException {
+        final Injector inject = Injector.getInstance("mate.academy");
+
+        ShoppingCartService shoppingCartService = (ShoppingCartService) inject
+                .getInstance(ShoppingCartService.class);
+        User user = new User();
+        UserDao userDao = new UserDaoImpl();
+        userDao.add(user);
+        MovieSession movieSession = new MovieSession();
+        ShoppingCart shoppingCart = new ShoppingCart();
+        shoppingCartService.registerNewShoppingCart(user);
+        shoppingCartService.addSession(movieSession, user);
+        shoppingCartService.clear(shoppingCart);
+
+        MovieService movieService = (MovieService) inject.getInstance(MovieService.class);
 
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
