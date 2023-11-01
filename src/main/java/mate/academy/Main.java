@@ -72,7 +72,7 @@ public class Main {
                 = (AuthenticationService) injector.getInstance(AuthenticationService.class);
         User alice = null;
         try {
-            alice = authenticationService.register("iamalice", "my_password");
+            alice = authenticationService.register("i_am_alice", "my_password");
         } catch (RegistrationException e) {
             throw new RuntimeException(e);
         }
