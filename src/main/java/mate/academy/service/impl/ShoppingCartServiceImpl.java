@@ -67,7 +67,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             for (Ticket ticket : tickets) {
                 session.delete(ticket);
             }
-            shoppingDao.update(shoppingCart);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
