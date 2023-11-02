@@ -61,9 +61,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                     .createQuery("select s.tickets from ShoppingCart s "
                             + "where s.id = :id", Ticket.class);
             ticketQuery.setParameter("id", shoppingCart.getId());
+            List<Ticket> tickets = ticketQuery.getResultList();
             shoppingCart.setTickets(null);
             shoppingDao.update(shoppingCart);
-            List<Ticket> tickets = ticketQuery.getResultList();
             for (Ticket ticket : tickets) {
                 session.delete(ticket);
             }
