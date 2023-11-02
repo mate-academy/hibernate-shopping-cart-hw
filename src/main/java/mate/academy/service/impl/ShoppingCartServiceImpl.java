@@ -32,9 +32,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         ticket.setUser(user);
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             ticketDao.add(ticket);
-            ShoppingCart shoppingCart = shoppingDao.getByUser(user)
-                    .orElseThrow(() -> new NoSuchElementException(
-                            String.format(EXCEPTION_GET + user)));
+            ShoppingCart shoppingCart = getByUser(user);
             shoppingCart.getTickets().add(ticket);
             shoppingDao.update(shoppingCart);
         }
