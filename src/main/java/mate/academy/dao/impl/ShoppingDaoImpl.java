@@ -19,7 +19,9 @@ public class ShoppingDaoImpl implements ShoppingDao {
     @Override
     public ShoppingCart add(ShoppingCart shoppingCart) {
         Transaction transaction = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        Session session = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
             session.save(shoppingCart);
             transaction.commit();
@@ -29,16 +31,20 @@ public class ShoppingDaoImpl implements ShoppingDao {
                 transaction.rollback();
             }
             throw new DataProcessingException(String.format(EXCEPTION_ADD + shoppingCart), e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
         }
     }
 
     @Override
     public Optional<ShoppingCart> getByUser(User user) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Query<ShoppingCart> query = session.createQuery("from ShoppingCart s "
-                    + "left join fetch s.tickets "
-                    + "left join fetch s.user "
-                    + "where s.user = :user ", ShoppingCart.class);
+            Query<ShoppingCart> query = session.createQuery("FROM ShoppingCart s "
+                    + "LEFT JOIN FETCH s.tickets "
+                    + "LEFT JOIN FETCH s.user "
+                    + "WHERE s.user = :user ", ShoppingCart.class);
             query.setParameter("user", user);
             return query.uniqueResultOptional();
         }
@@ -47,7 +53,9 @@ public class ShoppingDaoImpl implements ShoppingDao {
     @Override
     public void update(ShoppingCart shoppingCart) {
         Transaction transaction = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        Session session = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
             session.update(shoppingCart);
             transaction.commit();
@@ -56,6 +64,10 @@ public class ShoppingDaoImpl implements ShoppingDao {
                 transaction.rollback();
             }
             throw new DataProcessingException(String.format(EXCEPTION_UPDATE + shoppingCart), e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
         }
     }
 }

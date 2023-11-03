@@ -55,24 +55,22 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public void clear(ShoppingCart shoppingCart) {
         Transaction transaction = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        Session session = null;
+        try  {
+            session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
-            Query<Ticket> ticketQuery = session
-                    .createQuery("select s.tickets from ShoppingCart s "
-                            + "where s.id = :id", Ticket.class);
-            ticketQuery.setParameter("id", shoppingCart.getId());
-            List<Ticket> tickets = ticketQuery.getResultList();
             shoppingCart.setTickets(null);
             shoppingDao.update(shoppingCart);
-            for (Ticket ticket : tickets) {
-                session.delete(ticket);
-            }
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
             throw new RuntimeException(String.format(EXCEPTION_CLEAR + shoppingCart, e));
+        } finally {
+            if (session != null) {
+                session.close();
+            }
         }
     }
 }
