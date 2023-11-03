@@ -35,7 +35,6 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
         }
     }
 
-    @Override
     public Optional<ShoppingCart> getByUser(User user) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query<ShoppingCart> getUserSessionByShoppingCartQuery =
@@ -49,8 +48,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             getUserSessionByShoppingCartQuery.setParameter("user", user);
             return getUserSessionByShoppingCartQuery.uniqueResultOptional();
         } catch (Exception e) {
-            throw new DataProcessingException("Can't get a shoppingCart session by user: "
-                    + user, e);
+            throw new DataProcessingException("Can't get a shoppingCart session by user: " + user, e);
         }
     }
 
