@@ -6,8 +6,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import mate.academy.model.MovieSession;
-import mate.academy.model.User;
 
 @Entity
 @Table(name = "tickets")

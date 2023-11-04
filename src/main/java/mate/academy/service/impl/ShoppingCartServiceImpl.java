@@ -1,7 +1,6 @@
 package mate.academy.service.impl;
 
 import java.util.Collections;
-import java.util.Optional;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
 import mate.academy.exception.DataProcessingException;

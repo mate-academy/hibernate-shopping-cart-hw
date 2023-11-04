@@ -48,7 +48,8 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             getUserSessionByShoppingCartQuery.setParameter("user", user);
             return getUserSessionByShoppingCartQuery.uniqueResultOptional();
         } catch (Exception e) {
-            throw new DataProcessingException("Can't get a shoppingCart session by user: " + user, e);
+            throw new DataProcessingException("Can't get a shoppingCart session by user: "
+                    + user, e);
         }
     }
 
