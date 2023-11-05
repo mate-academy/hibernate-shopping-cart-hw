@@ -63,7 +63,7 @@ public class Main {
                 .getInstance(ShoppingCartService.class);
 
         shoppingCartService.registerNewShoppingCart(userService
-                .findByEmail("1945678@gmail.com").get());
+                .findByEmail(bob.getEmail()).get());
         MovieSession movieSession = movieSessionService.get(1L);
         shoppingCartService.addSession(movieSession, bob);
     }

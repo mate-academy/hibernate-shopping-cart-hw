@@ -1,6 +1,6 @@
 package mate.academy.service.impl;
 
-import java.util.ArrayList;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.Optional;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
@@ -27,38 +27,38 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         newTicket.setUser(user);
         newTicket.setMovieSession(movieSession);
 
-        Optional<ShoppingCart> shoppingCart = shoppingCartDao.getByUser(user);
-        if (shoppingCart.isPresent()) {
-            ShoppingCart cart = shoppingCart.get();
-            cart.getTickets().add(ticketDao.add(newTicket));
-            shoppingCartDao.update(cart);
+        ShoppingCart shoppingCart = getByUser(user);
+
+        if (shoppingCart != null) {
+            shoppingCart.getTickets().add(ticketDao.add(newTicket));
+            shoppingCartDao.update(shoppingCart);
         } else {
             throw new RuntimeException("ShoppingCart is empty");
         }
-
     }
 
     @Override
     public ShoppingCart getByUser(User user) {
-        return shoppingCartDao.getByUser(user).orElse(null);
+        return shoppingCartDao.getByUser(user)
+                .orElseThrow(EntityNotFoundException::new);
     }
 
     @Override
     public void registerNewShoppingCart(User user) {
         ShoppingCart shoppingCart = new ShoppingCart();
         Optional<User> userOptional = userService.findByEmail(user.getEmail());
-        if (userOptional.isPresent()) {
-            shoppingCart.setUser(userOptional.get());
-        } else {
-            shoppingCart.setUser(user);
+        if (shoppingCartDao.getByUser(user).isPresent()) {
+            throw new RuntimeException("Shopping cart already exist for user: "
+            + user.getEmail());
         }
-        shoppingCartDao.add(shoppingCart);
+        ShoppingCart newShoppingCart = new ShoppingCart();
+        newShoppingCart.setUser(user);
+        shoppingCartDao.add(newShoppingCart);
     }
 
     @Override
     public void clearShoppingCart(ShoppingCart cart) {
-        cart.setTickets(new ArrayList<>());
+        cart.getTickets().clear();
         shoppingCartDao.update(cart);
-
     }
 }
