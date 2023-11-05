@@ -14,6 +14,11 @@ import org.hibernate.query.Query;
 public class UserDaoImpl implements UserDao {
     @Override
     public User add(User user) {
+        Optional<User> existingUser = findByEmail(user.getEmail());
+        if (existingUser.isPresent()) {
+            throw new DataProcessingException("User with email "
+                    + user.getEmail() + " already exists.", null);
+        }
         Session session = null;
         Transaction transaction = null;
         try {
@@ -23,7 +28,7 @@ public class UserDaoImpl implements UserDao {
             transaction.commit();
             return user;
         } catch (Exception e) {
-            if (transaction != null) {
+            if (transaction != null && transaction.isActive()) {
                 transaction.rollback();
             }
             throw new DataProcessingException("Can't insert to DB user: "
