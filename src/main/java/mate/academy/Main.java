@@ -64,7 +64,7 @@ public class Main {
 
         shoppingCartService.registerNewShoppingCart(userService
                 .findByEmail(bob.getEmail()).get());
-        MovieSession movieSession = movieSessionService.get(1L);
+        MovieSession movieSession = movieSessionService.get(bob.getId());
         shoppingCartService.addSession(movieSession, bob);
     }
 }

@@ -40,13 +40,13 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public ShoppingCart getByUser(User user) {
         return shoppingCartDao.getByUser(user)
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(() -> new EntityNotFoundException("Couldn't find user: "
+                        + user));
     }
 
     @Override
     public void registerNewShoppingCart(User user) {
         ShoppingCart shoppingCart = new ShoppingCart();
-        Optional<User> userOptional = userService.findByEmail(user.getEmail());
         if (shoppingCartDao.getByUser(user).isPresent()) {
             throw new RuntimeException("Shopping cart already exist for user: "
             + user.getEmail());
