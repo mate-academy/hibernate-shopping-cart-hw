@@ -1,7 +1,6 @@
 package mate.academy.service.impl;
 
 import jakarta.persistence.EntityNotFoundException;
-import java.util.Optional;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
 import mate.academy.lib.Inject;
