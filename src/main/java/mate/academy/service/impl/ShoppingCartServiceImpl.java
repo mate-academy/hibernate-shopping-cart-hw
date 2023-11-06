@@ -1,6 +1,5 @@
 package mate.academy.service.impl;
 
-import java.util.List;
 import java.util.NoSuchElementException;
 import mate.academy.dao.ShoppingDao;
 import mate.academy.dao.TicketDao;
@@ -11,10 +10,6 @@ import mate.academy.model.ShoppingCart;
 import mate.academy.model.Ticket;
 import mate.academy.model.User;
 import mate.academy.service.ShoppingCartService;
-import mate.academy.util.HibernateUtil;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
@@ -30,12 +25,10 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         Ticket ticket = new Ticket();
         ticket.setMovieSession(movieSession);
         ticket.setUser(user);
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            ticketDao.add(ticket);
-            ShoppingCart shoppingCart = getByUser(user);
-            shoppingCart.getTickets().add(ticket);
-            shoppingDao.update(shoppingCart);
-        }
+        ticketDao.add(ticket);
+        ShoppingCart shoppingCart = getByUser(user);
+        shoppingCart.getTickets().add(ticket);
+        shoppingDao.update(shoppingCart);
     }
 
     @Override
@@ -54,23 +47,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void clear(ShoppingCart shoppingCart) {
-        Transaction transaction = null;
-        Session session = null;
-        try  {
-            session = HibernateUtil.getSessionFactory().openSession();
-            transaction = session.beginTransaction();
-            shoppingCart.setTickets(null);
-            shoppingDao.update(shoppingCart);
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            throw new RuntimeException(String.format(EXCEPTION_CLEAR + shoppingCart, e));
-        } finally {
-            if (session != null) {
-                session.close();
-            }
-        }
+        shoppingCart.setTickets(null);
+        shoppingDao.update(shoppingCart);
     }
 }

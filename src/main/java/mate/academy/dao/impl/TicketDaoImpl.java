@@ -15,21 +15,17 @@ public class TicketDaoImpl implements TicketDao {
     @Override
     public Ticket add(Ticket ticket) {
         Transaction transaction = null;
-        Session session = null;
-        try  {
-            session = HibernateUtil.getSessionFactory().openSession();
-            transaction = session.beginTransaction();
-            session.persist(ticket);
-            transaction.commit();
-            return ticket;
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            throw new DataProcessingException(String.format(EXCEPTION_ADD + ticket), e);
-        } finally {
-            if (session != null) {
-                session.close();
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            try {
+                transaction = session.beginTransaction();
+                session.save(ticket);
+                transaction.commit();
+                return ticket;
+            } catch (Exception e) {
+                if (transaction != null) {
+                    transaction.rollback();
+                }
+                throw new DataProcessingException(EXCEPTION_ADD, e);
             }
         }
     }
