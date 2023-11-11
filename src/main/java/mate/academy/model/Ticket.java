@@ -26,6 +26,11 @@ public class Ticket {
     public Ticket() {
     }
 
+    public Ticket(User user, MovieSession movieSession) {
+        this.user = user;
+        this.movieSession = movieSession;
+    }
+
     public Long getId() {
         return id;
     }
