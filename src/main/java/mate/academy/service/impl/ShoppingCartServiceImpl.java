@@ -1,43 +1,43 @@
 package mate.academy.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
+import mate.academy.lib.Inject;
+import mate.academy.lib.Service;
 import mate.academy.model.MovieSession;
 import mate.academy.model.ShoppingCart;
 import mate.academy.model.Ticket;
 import mate.academy.model.User;
 import mate.academy.service.ShoppingCartService;
 
-import java.util.ArrayList;
-import java.util.List;
-
+@Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
-    private final ShoppingCartDao shoppingCartDao;
-    private final TicketDao ticketDao;
-
-    public ShoppingCartServiceImpl(ShoppingCartDao shoppingCartDao,
-                                   TicketDao ticketDao) {
-        this.shoppingCartDao = shoppingCartDao;
-        this.ticketDao = ticketDao;
-    }
+    @Inject
+    private ShoppingCartDao shoppingCartDao;
+    @Inject
+    private TicketDao ticketDao;
 
     @Override
     public void addSession(MovieSession movieSession, User user) {
         Ticket currentSessionTicket = new Ticket();
         currentSessionTicket.setMovieSession(movieSession);
         currentSessionTicket.setUser(user);
-        Ticket addedTicket = ticketDao.add(currentSessionTicket);
+        ticketDao.add(currentSessionTicket);
 
-        ShoppingCart usersCart = new ShoppingCart();
-        usersCart.getTickets().add(addedTicket);
-        usersCart.setUser(user);
-        shoppingCartDao.add(usersCart);
+        ShoppingCart usersCart = getByUser(user);
+        List<Ticket> updatedTickets = usersCart.getTickets();
+        updatedTickets.add(currentSessionTicket);
+        usersCart.setTickets(updatedTickets);
+        shoppingCartDao.update(usersCart);
     }
 
     @Override
     public ShoppingCart getByUser(User user) {
         return shoppingCartDao.getByUser(user).orElseThrow(
-                () -> new RuntimeException(String.format("User: %s is not exists", user)));
+                () -> new RuntimeException(String.format(
+                        "User: %s doesn't have a shopping car", user)));
     }
 
     @Override
