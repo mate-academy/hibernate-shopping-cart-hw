@@ -4,18 +4,22 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import java.util.List;
 
 @Entity
-@Table(name = "tickets")
-public class Ticket {
+@Table(name = "shopping_carts")
+public class ShoppingCart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
-    private MovieSession movieSession;
-    @ManyToOne
+    @OneToMany
+    private List<Ticket> tickets;
+    @OneToOne
+    @MapsId
     private User user;
 
     public Long getId() {
@@ -26,12 +30,12 @@ public class Ticket {
         this.id = id;
     }
 
-    public MovieSession getMovieSession() {
-        return movieSession;
+    public List<Ticket> getTickets() {
+        return tickets;
     }
 
-    public void setMovieSession(MovieSession movieSession) {
-        this.movieSession = movieSession;
+    public void setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
     }
 
     public User getUser() {
@@ -44,9 +48,9 @@ public class Ticket {
 
     @Override
     public String toString() {
-        return "Ticket{"
+        return "ShoppingCart{"
                 + "id=" + id
-                + ", movieSession=" + movieSession
+                + ", tickets=" + tickets
                 + ", user=" + user
                 + '}';
     }
