@@ -45,14 +45,14 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
-            Query<ShoppingCart> updateQuery = session.createQuery("update ShoppingCart sc "
-                    + "set sc.tickets = :tickets "
-                    + "where sc.id = :id");
-            updateQuery.setParameter("tickets", shoppingCart.getTickets());
-            updateQuery.setParameter("id", shoppingCart.getId());
-            updateQuery.executeUpdate();
+//            Query<ShoppingCart> updateQuery = session.createQuery("update ShoppingCart sc "
+//                    + "set sc.tickets = :tickets "
+//                    + "where sc.id = :id");
+//            updateQuery.setParameter("tickets", shoppingCart.getTickets());
+//            updateQuery.setParameter("id", shoppingCart.getId());
+//            updateQuery.executeUpdate();
 //            session.update(shoppingCart);
-//            session.merge(shoppingCart);
+            session.merge(shoppingCart);
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();

@@ -67,6 +67,7 @@ public class Main {
         ShoppingCart customerCart = shoppingCartService.getByUser(customer);
         System.out.println(customerCart);
         shoppingCartService.addSession(tomorrowMovieSession, customer);
+        customerCart = shoppingCartService.getByUser(customer);
         System.out.println(customerCart);
         shoppingCartService.clear(customerCart);
         System.out.println(customerCart);
