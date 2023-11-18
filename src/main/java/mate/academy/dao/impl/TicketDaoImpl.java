@@ -7,7 +7,8 @@ import mate.academy.model.Ticket;
 
 @Dao
 public class TicketDaoImpl implements TicketDao {
-    DaoOperation<Ticket> daoOperation = new DaoOperation<>("Ticket");
+    private final DaoOperation<Ticket> daoOperation =
+            new DaoOperation<>("Ticket");
 
     @Override
     public Ticket add(Ticket ticket) {

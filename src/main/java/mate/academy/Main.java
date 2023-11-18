@@ -68,15 +68,8 @@ public class Main {
         System.out.println(cart);
 
         shoppingCartService.addSession(tomorrowMovieSession, customer);
-<<<<<<< HEAD
-        customerCart = shoppingCartService.getByUser(customer);
-        System.out.println(customerCart);
-        shoppingCartService.clear(customerCart);
-        System.out.println(customerCart);
-=======
         System.out.println(shoppingCartService.getByUser(customer));
         shoppingCartService.clear(shoppingCartService.getByUser(customer));
         System.out.println(cart);
->>>>>>> 87d558aaff19608fa83b5976da3ff64e7b3e3fb0
     }
 }
