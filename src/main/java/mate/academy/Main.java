@@ -64,11 +64,12 @@ public class Main {
                 (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
         User customer = new User();
         shoppingCartService.registerNewShoppingCart(customer);
-        ShoppingCart customerCart = shoppingCartService.getByUser(customer);
-        System.out.println(customerCart);
+        ShoppingCart cart = shoppingCartService.getByUser(customer);
+        System.out.println(cart);
+
         shoppingCartService.addSession(tomorrowMovieSession, customer);
-        System.out.println(customerCart);
-        shoppingCartService.clear(customerCart);
-        System.out.println(customerCart);
+        System.out.println(shoppingCartService.getByUser(customer));
+        shoppingCartService.clear(shoppingCartService.getByUser(customer));
+        System.out.println(cart);
     }
 }
