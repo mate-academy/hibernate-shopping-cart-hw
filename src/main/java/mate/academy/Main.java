@@ -1,12 +1,7 @@
 package mate.academy;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
-import mate.academy.dao.ShoppingCartDao;
-import mate.academy.dao.TicketDao;
-import mate.academy.dao.impl.ShoppingCartDaoImpl;
-import mate.academy.dao.impl.TicketDaoImpl;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
@@ -14,12 +9,12 @@ import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
 import mate.academy.model.ShoppingCart;
-import mate.academy.model.Ticket;
 import mate.academy.model.User;
 import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
+import mate.academy.service.ShoppingCartService;
 import mate.academy.service.UserService;
 
 public class Main {
@@ -27,7 +22,7 @@ public class Main {
     private static final String USER_EMAIL = "user123@gmail";
     private static final String USER_PASSWORD = "user123";
 
-    public static void main(String[] args) throws RegistrationException, AuthenticationException {
+    public static void main(String[] args) throws AuthenticationException {
         MovieService movieService = (MovieService) injector.getInstance(MovieService.class);
 
         Movie fastAndFurious = new Movie("Fast and Furious");
@@ -73,7 +68,11 @@ public class Main {
 
         AuthenticationService authenticationService
                 = (AuthenticationService) injector.getInstance(AuthenticationService.class);
-        authenticationService.register(USER_EMAIL, USER_PASSWORD);
+        try {
+            authenticationService.register(USER_EMAIL, USER_PASSWORD);
+        } catch (RegistrationException e) {
+            System.out.println("User already registered, no problem, it's just for test!");
+        }
         authenticationService.login(USER_EMAIL, USER_PASSWORD);
 
         UserService userService = (UserService) injector.getInstance(UserService.class);
@@ -83,27 +82,13 @@ public class Main {
                 () -> System.out.println("User is null."));
         User user = optionalUser.get();
 
-        TicketDao ticketDao = new TicketDaoImpl();
-        Ticket ticket = new Ticket();
-        ticket.setMovieSession(tomorrowMovieSession);
-        ticket.setUser(user);
-        ticketDao.add(ticket);
-
-        ShoppingCartDao shoppingCartDao = new ShoppingCartDaoImpl();
-        ShoppingCart shoppingCart = new ShoppingCart();
-        shoppingCart.setUser(user);
-        shoppingCart.setTickets(List.of(ticket));
-        ShoppingCart shoppingCartFromDB = shoppingCartDao.add(shoppingCart);
-        System.out.println(shoppingCartFromDB);
-
-        Ticket ticket01 = new Ticket();
-        ticket01.setMovieSession(yesterdayMovieSession);
-        ticket01.setUser(user);
-        ticketDao.add(ticket01);
-
-        shoppingCartFromDB.setTickets(List.of(ticket, ticket01));
-        shoppingCartDao.update(shoppingCartFromDB);
-        System.out.println(shoppingCartFromDB);
-
+        ShoppingCartService shoppingCartService
+                = (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
+        shoppingCartService.addSession(tomorrowMovieSession, user);
+        shoppingCartService.addSession(yesterdayMovieSession, user);
+        ShoppingCart shoppingCart = shoppingCartService.getByUser(user);
+        System.out.println("Tickets in shopping cart: " + shoppingCart.getTickets().size());
+        shoppingCartService.clear(shoppingCart);
+        System.out.println("Tickets in shopping cart: " + shoppingCart.getTickets().size());
     }
 }
