@@ -28,9 +28,9 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             Query<ShoppingCart> shoppingCartByUser =
                     session.createQuery("from ShoppingCart sc "
                             + "LEFT join fetch sc.tickets "
-                            + "where sc.user = :user ",
+                            + "where sc.id = :id ",
                             ShoppingCart.class);
-            shoppingCartByUser.setParameter("user", user);
+            shoppingCartByUser.setParameter("id", user.getId());
             return shoppingCartByUser.uniqueResultOptional();
         } catch (Exception e) {
             throw new DataProcessingException(
@@ -45,14 +45,10 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
-//            Query<ShoppingCart> updateQuery = session.createQuery("update ShoppingCart sc "
-//                    + "set sc.tickets = :tickets "
-//                    + "where sc.id = :id");
-//            updateQuery.setParameter("tickets", shoppingCart.getTickets());
-//            updateQuery.setParameter("id", shoppingCart.getId());
-//            updateQuery.executeUpdate();
 //            session.update(shoppingCart);
             session.merge(shoppingCart);
+            transaction.commit();
+>>>>>>> 87d558aaff19608fa83b5976da3ff64e7b3e3fb0
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
