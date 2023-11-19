@@ -50,7 +50,8 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
             CriteriaQuery<MovieSession> criteriaQuery =
                     criteriaBuilder.createQuery(MovieSession.class);
             Root<MovieSession> root = criteriaQuery.from(MovieSession.class);
-            Predicate moviePredicate = criteriaBuilder.equal(root.get("movie"), movieId);
+            //Probably this should be fixed in original task repo
+            Predicate moviePredicate = criteriaBuilder.equal(root.get("movie").get("id"), movieId);
             Predicate datePredicate = criteriaBuilder.between(root.get("showTime"),
                     date.atStartOfDay(), date.atTime(END_OF_DAY));
             Predicate allConditions = criteriaBuilder.and(moviePredicate, datePredicate);
