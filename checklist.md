@@ -19,6 +19,7 @@ The reason is that `ShoppingCart` object will have the `transient` state before 
 `persist()` method throws `PersistenceException` if working with detached entities, when `save()` returns it to managed state.
 * Use method `registerNewShoppingCart()` in `AuthenticationServiceImpl` class in `register()` method.
 * Try to think what should be called first `userService.add(user)` or `registerNewShoppingCart()`.
+* //Probably this should be fixed in original task repo:
 * Try to think what should you do first in method `addSession`: 
-`ticketDao.add(ticket);` or `shoppingCartService.update()`
+`ticketDao.add(ticket);` or `shoppingCartDao.update(shoppingCart)` 
 * Remember to add `catch` blocks for operations of all types on DAO layer.   
