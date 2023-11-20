@@ -17,7 +17,7 @@ import mate.academy.service.ShoppingCartService;
 public class Main {
     private static final String TEST_VALID_PASSWORD = "password";
     private static final Injector injector = Injector.getInstance("mate.academy");
-    private static final String TEST_VALID_EMAIL = "email.valid+1@gmail.com";
+    private static final String TEST_VALID_EMAIL = "email.valid@gmail.com";
     private static final String CANT_REGISTER_USER_WITH_EMAIL_EXCEPTION_MESSAGE =
             "Can't register user with email: ";
 
