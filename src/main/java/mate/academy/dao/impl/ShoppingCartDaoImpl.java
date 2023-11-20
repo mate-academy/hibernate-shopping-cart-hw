@@ -24,7 +24,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
         try {
             session = factory.openSession();
             transaction = session.beginTransaction();
-            session.persist(shoppingCart);
+            session.save(shoppingCart);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
