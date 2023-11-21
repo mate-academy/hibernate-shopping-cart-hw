@@ -1,19 +1,23 @@
 package mate.academy.service.impl;
 
 import jakarta.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
+import mate.academy.lib.Inject;
+import mate.academy.lib.Service;
 import mate.academy.model.MovieSession;
 import mate.academy.model.ShoppingCart;
 import mate.academy.model.Ticket;
 import mate.academy.model.User;
 import mate.academy.service.ShoppingCartService;
 
-import java.util.ArrayList;
-
+@Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
-    TicketDao ticketDao;
-    ShoppingCartDao shoppingCartDao;
+    @Inject
+    private TicketDao ticketDao;
+    @Inject
+    private ShoppingCartDao shoppingCartDao;
 
     @Override
     public void addSession(MovieSession movieSession, User user) {
@@ -21,7 +25,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         newTicket.setUser(user);
         newTicket.setMovieSession(movieSession);
         ShoppingCart shoppingCart = shoppingCartDao.getByUser(user).orElseThrow();
-        shoppingCart.getTicketList().add(ticketDao.add(newTicket));
+        shoppingCart.getTickets().add(ticketDao.add(newTicket));
         shoppingCartDao.update(shoppingCart);
     }
 
@@ -35,12 +39,12 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public void registerNewShoppingCart(User user) {
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setUser(user);
-        shoppingCartDao.add(shoppingCart);
+        shoppingCartDao.save(shoppingCart);
     }
 
     @Override
     public void clear(ShoppingCart shoppingCart) {
-        shoppingCart.setTicketList(new ArrayList<>());
+        shoppingCart.setTickets(new ArrayList<>());
         shoppingCartDao.update(shoppingCart);
     }
 }
