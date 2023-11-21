@@ -32,7 +32,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public ShoppingCart getByUser(User user) {
         return shoppingCartDao.getByUser(user).orElseThrow(() ->
-                new RuntimeException("Can't get user: " + user.getEmail()));
+                new RuntimeException("Could not found user with email: " + user.getEmail()));
     }
 
     @Override
