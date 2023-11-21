@@ -14,14 +14,15 @@ import org.hibernate.query.Query;
 
 @Dao
 public class ShoppingCartDaoImpl implements ShoppingCartDao {
-    private static final String GET_SHOPPING_CART_BY_USER_QUERY = "FROM ShoppingCart sc"
-            + " LEFT JOIN FETCH sc.tickets t "
-            + "LEFT JOIN FETCH  sc.user "
-            + "LEFT JOIN t.movieSession ms "
-            + "LEFT JOIN t.user u "
-            + "LEFT JOIN ms.movie "
-            + "LEFT JOIN ms.cinemaHall "
-            + "WHERE sc.user =:user";
+    private static final String GET_SHOPPING_CART_BY_USER_QUERY = """
+                                                FROM ShoppingCart sc 
+                                                LEFT JOIN FETCH sc.tickets t 
+                                                LEFT JOIN FETCH  sc.user 
+                                                LEFT JOIN t.movieSession ms 
+                                                LEFT JOIN t.user u 
+                                                LEFT JOIN ms.movie 
+                                                LEFT JOIN ms.cinemaHall 
+                                                WHERE sc.user = :user""";
     private static final String CANT_ADD_SHOPPING_CART_EXCEPTION_MESSAGE =
             "Can't add ShoppingCart to DB: ";
 
@@ -56,10 +57,10 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
     @Override
     public Optional<ShoppingCart> getByUser(User user) {
         try (Session session = factory.openSession()) {
-            Query<ShoppingCart> getShoppingCartByUser = session.createQuery(
+            Query<ShoppingCart> userShoppingCart = session.createQuery(
                     GET_SHOPPING_CART_BY_USER_QUERY, ShoppingCart.class);
-            getShoppingCartByUser.setParameter(USER_PARAMETER, user);
-            return getShoppingCartByUser.uniqueResultOptional();
+            userShoppingCart.setParameter(USER_PARAMETER, user);
+            return userShoppingCart.uniqueResultOptional();
         }
     }
 
