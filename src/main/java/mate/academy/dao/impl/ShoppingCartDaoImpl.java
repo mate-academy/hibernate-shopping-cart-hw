@@ -23,7 +23,9 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
         try {
             session = factory.openSession();
             transaction = session.beginTransaction();
-            session.save(shoppingCart);
+            User user = session.merge(shoppingCart.getUser());
+            shoppingCart.setUser(user);
+            session.persist(shoppingCart);
             transaction.commit();
             return shoppingCart;
         } catch (Exception e) {
@@ -42,8 +44,10 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
     @Override
     public Optional<ShoppingCart> getByUser(User user) {
         try (Session session = factory.openSession()) {
-            Query<ShoppingCart> query = session.createQuery("FROM ShoppingCart sc "
-                    + "WHERE sc.user = :user", ShoppingCart.class);
+            Query<ShoppingCart> query = session.createQuery(
+                    "FROM ShoppingCart sc "
+                        + "LEFT JOIN FETCH sc.tickets "
+                        + "WHERE sc.user = :user", ShoppingCart.class);
             query.setParameter("user", user);
             return query.uniqueResultOptional();
         } catch (Exception e) {
@@ -59,7 +63,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
         try {
             session = factory.openSession();
             transaction = session.beginTransaction();
-            session.merge(shoppingCart);
+            session.update(shoppingCart);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {

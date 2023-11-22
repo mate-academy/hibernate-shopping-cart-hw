@@ -12,7 +12,7 @@ import mate.academy.model.User;
 import mate.academy.service.ShoppingCartService;
 
 @Service
-public class ShoppingCarsServiceImpl implements ShoppingCartService {
+public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Inject
     private ShoppingCartDao shoppingCartDao;
     @Inject
