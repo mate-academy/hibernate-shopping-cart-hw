@@ -27,13 +27,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         newTicket.setMovieSession(movieSession);
 
         ShoppingCart shoppingCart = getByUser(user);
-
-        if (shoppingCart != null) {
-            shoppingCart.getTickets().add(ticketDao.add(newTicket));
-            shoppingCartDao.update(shoppingCart);
-        } else {
-            throw new RuntimeException("ShoppingCart is empty");
-        }
+        shoppingCart.getTickets().add(ticketDao.add(newTicket));
+        shoppingCartDao.update(shoppingCart);
     }
 
     @Override
