@@ -1,9 +1,5 @@
 package mate.academy.dao.impl;
 
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -46,21 +42,16 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
     @Override
     public List<MovieSession> findAvailableSessions(Long movieId, LocalDate date) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-            CriteriaQuery<MovieSession> criteriaQuery =
-                    criteriaBuilder.createQuery(MovieSession.class);
-            Root<MovieSession> root = criteriaQuery.from(MovieSession.class);
-            Predicate moviePredicate = criteriaBuilder.equal(root.get("movie"), movieId);
-            Predicate datePredicate = criteriaBuilder.between(root.get("showTime"),
-                    date.atStartOfDay(), date.atTime(END_OF_DAY));
-            Predicate allConditions = criteriaBuilder.and(moviePredicate, datePredicate);
-            criteriaQuery.select(root).where(allConditions);
-            root.fetch("movie");
-            root.fetch("cinemaHall");
-            return session.createQuery(criteriaQuery).getResultList();
-        } catch (Exception e) {
-            throw new DataProcessingException("Can't get available sessions for movie with id: "
-                    + movieId + " for date: " + date, e);
+            Query<MovieSession> getAllSessionsByDateAndId =
+                    session.createQuery("FROM MovieSession s "
+                                    + "WHERE s.movie.id = :id AND DATE(s.showTime) = DATE(:date)",
+                            MovieSession.class);
+            getAllSessionsByDateAndId.setParameter("id", movieId);
+            getAllSessionsByDateAndId.setParameter("date", date);
+            return getAllSessionsByDateAndId.getResultList();
+        } catch (RuntimeException e) {
+            throw new RuntimeException("Something went wrong, check id: " + movieId
+                    + " or date " + date, e);
         }
     }
 
