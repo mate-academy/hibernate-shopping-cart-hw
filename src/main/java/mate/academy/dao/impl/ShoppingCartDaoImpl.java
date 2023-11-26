@@ -23,9 +23,9 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
         try {
             session = factory.openSession();
             transaction = session.beginTransaction();
+            session.save(shoppingCart);
             User user = session.merge(shoppingCart.getUser());
             shoppingCart.setUser(user);
-            session.persist(shoppingCart);
             transaction.commit();
             return shoppingCart;
         } catch (Exception e) {
@@ -46,8 +46,12 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
         try (Session session = factory.openSession()) {
             Query<ShoppingCart> query = session.createQuery(
                     "FROM ShoppingCart sc "
-                        + "LEFT JOIN FETCH sc.tickets "
-                        + "WHERE sc.user = :user", ShoppingCart.class);
+                        + "LEFT JOIN FETCH sc.tickets tk "
+                        + "LEFT JOIN FETCH tk.movieSession ms "
+                        + "LEFT JOIN FETCH ms.movie mv "
+                        + "LEFT JOIN FETCH ms.cinemaHall "
+                        + "WHERE sc.user = :user",
+                    ShoppingCart.class);
             query.setParameter("user", user);
             return query.uniqueResultOptional();
         } catch (Exception e) {

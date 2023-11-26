@@ -1,7 +1,7 @@
 package mate.academy;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
@@ -60,24 +60,24 @@ public class Main {
 
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
 
-        AuthenticationService authenticationService =
-                (AuthenticationService) injector.getInstance(AuthenticationService.class);
         User bob = new User();
         bob.setEmail("bob@java.com");
         bob.setPassword("default");
-        User addedUser;
+        AuthenticationService authenticationService =
+                (AuthenticationService) injector.getInstance(AuthenticationService.class);
+        User authenticatedBob;
         try {
-            addedUser = authenticationService.register(bob.getEmail(), bob.getPassword());
-        } catch (RegistrationException e) {
+            authenticationService.register(bob.getEmail(), bob.getPassword());
+            authenticatedBob = authenticationService.login(bob.getEmail(), bob.getPassword());
+        } catch (RegistrationException | AuthenticationException e) {
             throw new RuntimeException(e);
         }
 
         ShoppingCartService shoppingCartService =
                 (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
-        shoppingCartService.addSession(tomorrowMovieSession, addedUser);
-        ShoppingCart shoppingCartByUser = shoppingCartService.getByUser(bob);
+        shoppingCartService.addSession(yesterdayMovieSession, authenticatedBob);
+        ShoppingCart shoppingCartByUser = shoppingCartService.getByUser(authenticatedBob);
         System.out.println(shoppingCartByUser);
         shoppingCartService.clear(shoppingCartByUser);
-        System.out.println(shoppingCartByUser);
     }
 }
