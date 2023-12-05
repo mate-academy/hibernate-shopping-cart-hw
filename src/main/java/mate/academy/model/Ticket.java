@@ -35,6 +35,8 @@ public class Ticket {
         return "Ticket{"
                 + "id="
                 + id
+                + ", user="
+                + user
                 + '}';
     }
 

@@ -1,6 +1,8 @@
 package mate.academy;
 
 import java.time.LocalDateTime;
+import mate.academy.dao.TicketDao;
+import mate.academy.dao.impl.TicketDaoImpl;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
@@ -8,6 +10,7 @@ import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
 import mate.academy.model.ShoppingCart;
+import mate.academy.model.Ticket;
 import mate.academy.model.User;
 import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
@@ -64,18 +67,35 @@ public class Main {
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
         try {
             auth.register("globaroman@gmail.com", "qwerty");
+            auth.register("test@gmail.com", "test123");
         } catch (RegistrationException e) {
             throw new RuntimeException(e);
         }
         User user1 = auth.login("globaroman@gmail.com", "qwerty");
+        User user2 = auth.login("test@gmail.com", "test123");
 
         ShoppingCartService shopCartService =
                 (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
         shopCartService.addSession(tomorrowMovieSession, user1);
-        ShoppingCart cartFromDB = shopCartService.getByUser(user1);
+        shopCartService.addSession(tomorrowMovieSession, user2);
+        ShoppingCart cartFromDB1 = shopCartService.getByUser(user1);
+        System.out.println();
+        System.out.println(cartFromDB1);
+        shopCartService.clear(cartFromDB1);
+        System.out.println(cartFromDB1);
+        ShoppingCart cartFromDB2 = shopCartService.getByUser(user2);
+        System.out.println(cartFromDB2);
+        shopCartService.clear(cartFromDB2);
+        System.out.println(cartFromDB2);
+        System.out.println();
 
-        System.out.println(cartFromDB);
-        shopCartService.clear(cartFromDB);
-        System.out.println(cartFromDB);
+        TicketDao ticketDao = new TicketDaoImpl();
+        Ticket ticket1 = new Ticket(yesterdayMovieSession, user1);
+        Ticket ticket2 = new Ticket(tomorrowMovieSession, user2);
+        ticketDao.add(ticket1);
+        ticketDao.add(ticket2);
+        System.out.println(ticket1);
+        System.out.println(ticket2);
+
     }
 }
