@@ -2,14 +2,18 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.model.User;
 import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
+import mate.academy.service.ShoppingCartService;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.academy");
@@ -66,7 +70,34 @@ public class Main {
         System.out.println(movieSessionService.findAvailableSessions(
                 fastAndFurious.getId(), now));
 
+        //LOGIN BOB
         AuthenticationService authenticationService
                 = (AuthenticationService) injector.getInstance(AuthenticationService.class);
+
+        User bob;
+        try {
+            authenticationService.register("BOBMAIL@GMAIL.COM", "BOBPASSWORD");
+            bob = authenticationService.login("BOBMAIL@GMAIL.COM", "BOBPASSWORD");
+        } catch (RegistrationException e) {
+            throw new RuntimeException("Can't register", e);
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("Cant login", e);
+        }
+
+        ShoppingCartService shoppingCartService
+                = (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
+
+        //ADD SESSION TO CARTS
+        shoppingCartService.addSession(todayMovieSession, bob);
+        shoppingCartService.addSession(tomorrowMovieSession, bob);
+        shoppingCartService.addSession(yesterdayMovieSession, bob);
+
+        System.out.println("########");
+        System.out.println(shoppingCartService.getByUser(bob));
+
+        System.out.println("########");
+        shoppingCartService.clear(shoppingCartService.getByUser(bob));
+        System.out.println(shoppingCartService.getByUser(bob));
+
     }
 }
