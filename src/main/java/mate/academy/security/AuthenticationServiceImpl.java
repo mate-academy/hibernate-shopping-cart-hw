@@ -35,7 +35,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             User userFromDB = userService.add(user);
             shoppingCartService.registerNewShoppingCart(userFromDB);
 
-            return;
         }
         throw new RegistrationException("This email " + email + " is already registered.");
     }

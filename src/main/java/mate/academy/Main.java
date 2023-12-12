@@ -65,8 +65,8 @@ public class Main {
 
         AuthenticationService authenticationService = (AuthenticationService) injector
                 .getInstance(AuthenticationService.class);
-        authenticationService.register("Alis11", "123");
-        authenticationService.register("Bob11", "12345");
+        authenticationService.register("Alis", "123");
+        authenticationService.register("Bob", "12345");
         User userFromDb = authenticationService.login("Bob", "12345");
         System.out.println(userFromDb);
         System.out.println(authenticationService.login("Alis", "123"));

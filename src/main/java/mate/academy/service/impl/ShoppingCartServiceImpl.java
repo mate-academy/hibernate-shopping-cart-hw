@@ -2,6 +2,7 @@ package mate.academy.service.impl;
 
 import jakarta.persistence.EntityNotFoundException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import mate.academy.dao.ShoppingCartDao;
@@ -27,11 +28,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         ticket.setMovieSession(movieSession);
         ticket.setUser(user);
         ticketDao.add(ticket);
-        Optional<ShoppingCart> cartFromDbOptional = shoppingCartDao.getByUser(user);
-        if (cartFromDbOptional.isEmpty()) {
-            throw new EntityNotFoundException("User " + user + " is not registered");
-        }
-        ShoppingCart cartFromDb = cartFromDbOptional.get();
+        ShoppingCart cartFromDb = getByUser(user);
         cartFromDb.getTickets().add(ticket);
         shoppingCartDao.update(cartFromDb);
     }
@@ -55,10 +52,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void clear(ShoppingCart shoppingCart) {
-        ShoppingCart cartFromDb = shoppingCartDao.getByUser(shoppingCart.getUser())
-                .orElseThrow(() ->
-                        new EntityNotFoundException("Cart " + shoppingCart + " no exist."));
-        cartFromDb.setTickets(new ArrayList<>());
+        ShoppingCart cartFromDb = getByUser(shoppingCart.getUser());
+        cartFromDb.setTickets(Collections.emptyList());
         shoppingCartDao.update(cartFromDb);
     }
 }
