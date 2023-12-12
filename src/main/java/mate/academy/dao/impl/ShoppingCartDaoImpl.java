@@ -38,9 +38,9 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
     @Override
     public Optional<ShoppingCart> getByUser(User user) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Query<ShoppingCart> getCartQuery = session.createQuery("from ShoppingCart s "
-                    + "left join fetch s.tickets "
-                    + "where s.user = :user", ShoppingCart.class);
+            Query<ShoppingCart> getCartQuery = session.createQuery("FROM ShoppingCart s "
+                    + "LEFT JOIN FETCH s.tickets "
+                    + "WHERE s.user = :user", ShoppingCart.class);
             getCartQuery.setParameter("user", user);
             return Optional.of(getCartQuery.getSingleResult());
         } catch (Exception e) {
@@ -55,9 +55,9 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
-            Query<ShoppingCart> getCartQuery = session.createQuery("update ShoppingCart set "
+            Query<ShoppingCart> getCartQuery = session.createQuery("UPDATE ShoppingCart set "
                     + "tickets = :tickets "
-                    + "where id = :shoppingCart_id");
+                    + "WHERE id = :shoppingCart_id");
             getCartQuery.setParameter("tickets", shoppingCart.getTickets());
             getCartQuery.setParameter("shoppingCart_id", shoppingCart.getId());
             transaction.commit();
