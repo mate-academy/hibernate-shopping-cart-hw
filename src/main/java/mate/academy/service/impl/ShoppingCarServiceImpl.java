@@ -34,7 +34,7 @@ public class ShoppingCarServiceImpl implements ShoppingCartService {
         if (optionalShoppingCart.isEmpty()) {
             registerNewShoppingCart(user);
         }
-        return optionalShoppingCart.get();
+        return optionalShoppingCart.orElseThrow();
     }
 
     @Override
