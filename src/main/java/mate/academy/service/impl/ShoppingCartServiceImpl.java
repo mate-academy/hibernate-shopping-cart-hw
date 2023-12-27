@@ -1,8 +1,5 @@
 package mate.academy.service.impl;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
 import mate.academy.dao.UserDao;
@@ -25,26 +22,19 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     
     @Override
     public void addSession(MovieSession movieSession, User user) {
-        if (!Objects.equals(user, userDao.findByEmail(user.getEmail()).orElse(null))) {
-            throw new RuntimeException("User: " + user
-                    + " does not exist. Please register before.");
-        }
         Ticket ticket = new Ticket();
         ticket.setMovieSession(movieSession);
         ticket.setUser(user);
         ticketDao.add(ticket);
-        Optional<ShoppingCart> optionalShoppingCart = shoppingCartDao.getByUser(user);
-        if (optionalShoppingCart.isPresent()) {
-            ShoppingCart shoppingCart = optionalShoppingCart.get();
-            List<Ticket> ticketsList = shoppingCart.getTicketList();
-            ticketsList.add(ticket);
-            shoppingCartDao.update(shoppingCart);
-        }
+        ShoppingCart shoppingCart = shoppingCartDao.getByUser(user)
+                .orElseThrow();
+        shoppingCart.getTicketList().add(ticket);
+        shoppingCartDao.update(shoppingCart);
     }
 
     @Override
     public ShoppingCart getByUser(User user) {
-        return shoppingCartDao.getByUser(user).orElse(null);
+        return shoppingCartDao.getByUser(user).orElseThrow();
     }
 
     @Override
@@ -57,8 +47,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public void clear(ShoppingCart shoppingCart) {
         if (shoppingCart != null) {
-            List<Ticket> ticketsList = shoppingCart.getTicketList();
-            ticketsList.clear();
+            shoppingCart.getTicketList().clear();
             shoppingCartDao.update(shoppingCart);
         }
     }
