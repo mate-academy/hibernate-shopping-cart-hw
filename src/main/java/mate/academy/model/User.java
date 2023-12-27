@@ -6,6 +6,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.util.Arrays;
+import java.util.Objects;
 
 @Entity
 @Table(name = "users")
@@ -13,8 +15,9 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String email;
+    @Column(nullable = false)
     private String password;
     private byte[] salt;
 
@@ -56,5 +59,27 @@ public class User {
                 + "id=" + id
                 + ", email='" + email + '\''
                 + '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        User user = (User) o;
+        return Objects.equals(id, user.id)
+                && Objects.equals(email, user.email)
+                && Objects.equals(password, user.password)
+                && Arrays.equals(salt, user.salt);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(id, email, password);
+        result = 31 * result + Arrays.hashCode(salt);
+        return result;
     }
 }
