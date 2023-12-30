@@ -17,6 +17,7 @@ import mate.academy.service.ShoppingCartService;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.academy");
+
     public static void main(String[] args) {
         MovieService movieService
                 = (MovieService) injector.getInstance(MovieService.class);
@@ -43,6 +44,11 @@ public class Main {
         System.out.println(cinemaHallService.getAll());
         System.out.println(cinemaHallService.get(firstCinemaHall.getId()));
 
+        MovieSession todayMovieSession = new MovieSession();
+        todayMovieSession.setCinemaHall(firstCinemaHall);
+        todayMovieSession.setMovie(fastAndFurious);
+        todayMovieSession.setShowTime(LocalDateTime.now());
+
         MovieSession tomorrowMovieSession = new MovieSession();
         tomorrowMovieSession.setCinemaHall(firstCinemaHall);
         tomorrowMovieSession.setMovie(fastAndFurious);
@@ -55,35 +61,39 @@ public class Main {
 
         MovieSessionService movieSessionService
                 = (MovieSessionService) injector.getInstance(MovieSessionService.class);
+        movieSessionService.add(todayMovieSession);
         movieSessionService.add(tomorrowMovieSession);
         movieSessionService.add(yesterdayMovieSession);
+        LocalDate now = LocalDate.now();
 
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(
-                fastAndFurious.getId(), LocalDate.now()));
+                fastAndFurious.getId(), now));
 
         AuthenticationService authenticationService
                 = (AuthenticationService) injector.getInstance(AuthenticationService.class);
 
         User alina;
         try {
-            authenticationService.register("AlinaS@gmail.com", "142738ds");
-            alina = authenticationService.login("AlinaS@gmail.com", "142738ds");
+            authenticationService.register("alina@gmail.com", "alinaPassword");
+            alina = authenticationService.login("alina@gmail.com", "alinaPassword");
         } catch (RegistrationException e) {
-            throw new RuntimeException("Can`t register ", e);
+            throw new RuntimeException("Can't register", e);
         } catch (AuthenticationException e) {
-            throw new RuntimeException("Can`t login ", e);
+            throw new RuntimeException("Cant login", e);
         }
 
         ShoppingCartService shoppingCartService
                 = (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
 
+        shoppingCartService.addSession(todayMovieSession, alina);
         shoppingCartService.addSession(tomorrowMovieSession, alina);
         shoppingCartService.addSession(yesterdayMovieSession, alina);
-        System.out.println("------------");
+
+        System.out.println("----------");
         System.out.println(shoppingCartService.getByUser(alina));
 
-        System.out.println("------------");
+        System.out.println("----------");
         shoppingCartService.clear(shoppingCartService.getByUser(alina));
         System.out.println(shoppingCartService.getByUser(alina));
     }
