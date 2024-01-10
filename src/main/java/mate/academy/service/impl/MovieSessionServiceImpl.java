@@ -3,6 +3,7 @@ package mate.academy.service.impl;
 import java.time.LocalDate;
 import java.util.List;
 import mate.academy.dao.MovieSessionDao;
+import mate.academy.exception.EntityNotFoundException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.MovieSession;
@@ -19,8 +20,9 @@ public class MovieSessionServiceImpl implements MovieSessionService {
     }
 
     @Override
-    public MovieSession get(Long id) {
-        return sessionDao.get(id).get();
+    public MovieSession get(Long id) throws EntityNotFoundException {
+        return sessionDao.get(id).orElseThrow(() ->
+                new EntityNotFoundException("Cannot find movie session by id: " + id));
     }
 
     @Override
