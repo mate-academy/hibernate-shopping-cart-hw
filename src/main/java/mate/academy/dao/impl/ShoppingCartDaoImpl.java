@@ -7,7 +7,6 @@ import mate.academy.lib.Dao;
 import mate.academy.model.ShoppingCart;
 import mate.academy.model.User;
 import mate.academy.util.HibernateUtil;
-import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -21,7 +20,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
-            session.save(shoppingCart);
+            session.persist(shoppingCart);
             transaction.commit();
             return shoppingCart;
         } catch (Exception e) {
@@ -55,9 +54,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
     @Override
     public void update(ShoppingCart shoppingCart) {
         Transaction transaction = null;
-        Session session = null;
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             session.merge(shoppingCart);
             transaction.commit();
@@ -67,10 +64,6 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             }
             throw new DataProcessingException("Can't rewrite shopping cart: "
                     + shoppingCart, e);
-        } finally {
-            if (session != null) {
-                session.close();
-            }
         }
     }
 }
