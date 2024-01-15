@@ -1,6 +1,7 @@
 package mate.academy.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToMany;
@@ -13,7 +14,7 @@ import java.util.List;
 public class ShoppingCart {
     @Id
     private Long id;
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Ticket> tickets;
     @OneToOne
     @MapsId
