@@ -23,8 +23,6 @@
         <mapping class="mate.academy.model.ShoppingCart"/>
         <mapping class="mate.academy.model.Ticket"/>
         <mapping class="mate.academy.model.User"/>
-        <mapping class="mate.academy.security.AuthenticationService"/>
-        <mapping class="mate.academy.service.ShoppingCartService"/>
 
     </session-factory>
 </hibernate-configuration>
