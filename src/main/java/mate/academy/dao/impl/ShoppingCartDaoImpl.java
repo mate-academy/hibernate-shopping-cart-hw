@@ -1,33 +1,32 @@
 package mate.academy.dao.impl;
 
 import java.util.Optional;
-import mate.academy.dao.UserDao;
+import mate.academy.dao.ShoppingCartDao;
 import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Dao;
+import mate.academy.model.ShoppingCart;
 import mate.academy.model.User;
 import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 
 @Dao
-public class UserDaoImpl implements UserDao {
+public class ShoppingCartDaoImpl implements ShoppingCartDao {
     @Override
-    public User add(User user) {
+    public ShoppingCart add(ShoppingCart shoppingCart) {
         Session session = null;
         Transaction transaction = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
-            session.persist(user);
+            session.save(shoppingCart);
             transaction.commit();
-            return user;
+            return shoppingCart;
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Can't insert to DB user: "
-                    + user, e);
+            throw new DataProcessingException("Can't insert shoppingCart: " + shoppingCart, e);
         } finally {
             if (session != null) {
                 session.close();
@@ -36,37 +35,32 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User update(User user) {
-        Session session = null;
-        Transaction transaction = null;
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            transaction = session.beginTransaction();
-            session.merge(user);
-            transaction.commit();
-            return user;
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            throw new DataProcessingException("Can't insert to DB user: "
-                    + user, e);
-        } finally {
-            if (session != null) {
-                session.close();
-            }
-        }
-    }
-
-    @Override
-    public Optional<User> findByEmail(String email) {
+    public Optional<ShoppingCart> getByUser(User user) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Query<User> query = session.createQuery("FROM User u "
-                    + "WHERE u.email = :email", User.class);
-            query.setParameter("email", email);
-            return query.uniqueResultOptional();
+            return Optional.ofNullable(session.get(ShoppingCart.class, user.getId()));
         } catch (Exception e) {
-            throw new DataProcessingException("Can't find user by email: " + email, e);
+            throw new DataProcessingException("Can't get a shopping cart by user: ", e);
+        }
+    }
+
+    @Override
+    public void update(ShoppingCart shoppingCart) {
+        Session session = null;
+        Transaction transaction = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            transaction = session.beginTransaction();
+            session.merge(shoppingCart);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            throw new DataProcessingException("Can't update shopping cart: " + shoppingCart, e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
         }
     }
 }
