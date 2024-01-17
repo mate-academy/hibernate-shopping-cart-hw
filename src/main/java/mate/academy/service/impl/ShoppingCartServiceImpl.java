@@ -1,5 +1,6 @@
 package mate.academy.service.impl;
 
+import jakarta.persistence.EntityNotFoundException;
 import java.util.Collections;
 import mate.academy.dao.MovieSessionDao;
 import mate.academy.dao.ShoppingCartDao;
@@ -38,7 +39,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public ShoppingCart getByUser(User user) {
-        return shoppingCartDao.getByUser(user).get();
+        return shoppingCartDao.getByUser(user)
+                .orElseThrow(() -> new EntityNotFoundException("ShoppingCart not found for user: "
+                        + user.getId()));
     }
 
     @Override
