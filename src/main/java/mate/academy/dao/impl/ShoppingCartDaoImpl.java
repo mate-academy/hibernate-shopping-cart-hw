@@ -2,6 +2,7 @@ package mate.academy.dao.impl;
 
 import java.util.Optional;
 import mate.academy.dao.ShoppingCartDao;
+import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Dao;
 import mate.academy.model.ShoppingCart;
 import mate.academy.model.User;
@@ -22,11 +23,11 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             session.save(shoppingCart);
             transaction.commit();
             return shoppingCart;
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new RuntimeException("Can't add to DB shopping cart " + shoppingCart, e);
+            throw new DataProcessingException("Can't add to DB shopping cart " + shoppingCart, e);
         } finally {
             if (session != null) {
                 session.close();
@@ -45,8 +46,8 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
                     ShoppingCart.class);
             query.setParameter("user", user);
             return query.uniqueResultOptional();
-        } catch (RuntimeException e) {
-            throw new RuntimeException("Can't get shopping cart by user " + user, e);
+        } catch (Exception e) {
+            throw new DataProcessingException("Can't get shopping cart by user " + user, e);
         }
     }
 
@@ -57,11 +58,11 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             transaction = session.beginTransaction();
             session.merge(shoppingCart);
             transaction.commit();
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new RuntimeException("Can't update shopping cart " + shoppingCart, e);
+            throw new DataProcessingException("Can't update shopping cart " + shoppingCart, e);
         }
     }
 }
