@@ -1,5 +1,6 @@
 package mate.academy.service.impl;
 
+import jakarta.persistence.EntityNotFoundException;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
 import mate.academy.lib.Inject;
@@ -9,6 +10,8 @@ import mate.academy.model.ShoppingCart;
 import mate.academy.model.Ticket;
 import mate.academy.model.User;
 import mate.academy.service.ShoppingCartService;
+
+import java.util.NoSuchElementException;
 
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
@@ -36,7 +39,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public ShoppingCart getByUser(User user) {
-        return shoppingCartDao.getByUser(user).orElse(null);
+        return shoppingCartDao.getByUser(user).orElseThrow(()-> new NoSuchElementException("Can't get shopping cart by user: " + user));
     }
 
     @Override
