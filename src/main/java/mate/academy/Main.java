@@ -2,16 +2,24 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.exception.RegistrationException;
+import mate.academy.exception.ShoppingCartException;
+import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.model.User;
+import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
+import mate.academy.service.ShoppingCartService;
 
 public class Main {
+    private static final Injector INJECTOR = Injector.getInstance("mate.academy");
+
     public static void main(String[] args) {
-        MovieService movieService = null;
+        MovieService movieService = (MovieService) INJECTOR.getInstance(MovieService.class);
 
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
@@ -27,7 +35,8 @@ public class Main {
         secondCinemaHall.setCapacity(200);
         secondCinemaHall.setDescription("second hall with capacity 200");
 
-        CinemaHallService cinemaHallService = null;
+        CinemaHallService cinemaHallService = (CinemaHallService) INJECTOR
+                .getInstance(CinemaHallService.class);
         cinemaHallService.add(firstCinemaHall);
         cinemaHallService.add(secondCinemaHall);
 
@@ -44,12 +53,41 @@ public class Main {
         yesterdayMovieSession.setMovie(fastAndFurious);
         yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(1L));
 
-        MovieSessionService movieSessionService = null;
+        MovieSessionService movieSessionService = (MovieSessionService) INJECTOR
+                .getInstance(MovieSessionService.class);
+
         movieSessionService.add(tomorrowMovieSession);
         movieSessionService.add(yesterdayMovieSession);
 
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(
                 fastAndFurious.getId(), LocalDate.now()));
+
+        ShoppingCartService shoppingCartService = (ShoppingCartService) INJECTOR
+                .getInstance(ShoppingCartService.class);
+        AuthenticationService authenticationService = (AuthenticationService) INJECTOR
+                .getInstance(AuthenticationService.class);
+        User user;
+        try {
+            user = authenticationService.register("bob@gmail.com", "qwerty");
+        } catch (RegistrationException e) {
+            throw new RuntimeException("Registration failed", e);
+        }
+        try {
+            System.out.println(shoppingCartService.getByUser(user));
+        } catch (ShoppingCartException e) {
+            throw new RuntimeException(e);
+        }
+        shoppingCartService.addSession(tomorrowMovieSession,user);
+        try {
+            System.out.println(shoppingCartService.getByUser(user));
+        } catch (ShoppingCartException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            shoppingCartService.clear(shoppingCartService.getByUser(user));
+        } catch (ShoppingCartException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
