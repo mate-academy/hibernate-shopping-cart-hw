@@ -68,6 +68,7 @@ public class Main {
                 .getInstance(ShoppingCartService.class);
         shoppingCartService.registerNewShoppingCart(bob);
         shoppingCartService.addSession(tomorrowMovieSession, bob);
+        shoppingCartService.addSession(yesterdayMovieSession,bob);
         shoppingCartService.clear(shoppingCartService.getByUser(bob));
     }
 }
