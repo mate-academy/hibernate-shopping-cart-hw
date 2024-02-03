@@ -1,8 +1,8 @@
 package mate.academy.service.impl;
 
-import java.util.List;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
+import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.MovieSession;
@@ -26,9 +26,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         ticketDao.add(ticket);
 
         ShoppingCart shoppingCart = shoppingCartDao.getByUser(user).get();
-        List<Ticket> tickets = shoppingCart.getTickets();
-        tickets.add(ticket);
-        shoppingCart.setTickets(tickets);
+        shoppingCart.getTickets().add(ticket);
         shoppingCartDao.update(shoppingCart);
     }
 
@@ -40,8 +38,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public void registerNewShoppingCart(User user) {
         if (shoppingCartDao.getByUser(user).isPresent()) {
-            System.out.println("Can't register new shopping cart. User " + user
-                    + " already has a shoppping cart");
+            throw new DataProcessingException("Can't register new shopping cart. User " + user
+                    + " already has a shoppping cart", new Exception());
         }
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setUser(user);
