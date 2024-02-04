@@ -34,7 +34,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public ShoppingCart getByUser(User user) {
-        return shoppingCartDao.getByUser(user).get();
+        return shoppingCartDao.getByUser(user).orElseThrow(() ->
+                new DataProcessingException("Can't get user: " + user + " from DB",
+                        new Exception()));
     }
 
     @Override
