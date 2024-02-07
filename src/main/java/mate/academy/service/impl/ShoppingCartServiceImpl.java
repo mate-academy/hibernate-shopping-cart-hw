@@ -29,11 +29,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         Ticket ticket = new Ticket();
         ticket.setMovieSession(movieSession);
         ticket.setUser(user);
-        tickets.add(ticket);
-        ticketDao.add(ticket);
         ShoppingCart shoppingCart = shoppingCartDao.getByUser(user).orElseThrow(() ->
                 new NoSuchElementException("ShoppingCart not found for user: " + user));
-        shoppingCart.setTickets(tickets);
+        shoppingCart.getTickets().add(ticketDao.add(ticket));
         shoppingCartDao.update(shoppingCart);
     }
 
