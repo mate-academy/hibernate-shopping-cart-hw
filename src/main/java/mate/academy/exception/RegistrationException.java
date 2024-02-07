@@ -5,3 +5,4 @@ public class RegistrationException extends Exception {
         super(message);
     }
 }
+
