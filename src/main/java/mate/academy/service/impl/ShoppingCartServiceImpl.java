@@ -48,4 +48,3 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         shoppingCartDao.update(shoppingCart);
     }
 }
-

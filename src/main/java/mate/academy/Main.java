@@ -76,4 +76,3 @@ public class Main {
         System.out.println(shoppingCartService.getByUser(user));
     }
 }
-
