@@ -1,5 +1,7 @@
 package mate.academy.service.impl;
 
+import java.util.ArrayList;
+import java.util.NoSuchElementException;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
 import mate.academy.exception.DataProcessingException;
@@ -13,10 +15,6 @@ import mate.academy.service.ShoppingCartService;
 import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
