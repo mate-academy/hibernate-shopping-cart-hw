@@ -19,7 +19,7 @@ public class Main {
 
         //CREATE NEW USER AND ADD TO DB
         User user = new User();
-        user.setEmail("bobAlison2024@gmail.com");
+        user.setEmail("bobAlison2023@gmail.com");
         user.setPassword("superbob");
         UserService userService = (UserService) injector.getInstance(UserService.class);
         userService.add(user);
