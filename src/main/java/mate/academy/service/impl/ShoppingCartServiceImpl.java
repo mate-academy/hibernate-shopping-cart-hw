@@ -47,12 +47,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void clear(ShoppingCart shoppingCart) {
-        List<Ticket> ticketsToBeRemoved = shoppingCart.getTickets();
         shoppingCart.getTickets().clear();
         shoppingCartDao.update(shoppingCart);
-
-        for (Ticket t : ticketsToBeRemoved) {
-            ticketDao.remove(t);
-        }
     }
 }
