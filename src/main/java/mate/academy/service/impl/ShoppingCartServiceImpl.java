@@ -21,7 +21,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void addTicket(MovieSession movieSession, User user) {
-        // Check if passed session and user are not transient?
         Ticket ticket = new Ticket();
         ticket.setUser(user);
         ticket.setMovieSession(movieSession);
@@ -41,7 +40,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void registerNewShoppingCart(User user) {
-        // Maybe we should check if passed user is not transient?
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setOwner(user);
         shoppingCartDao.add(shoppingCart);
