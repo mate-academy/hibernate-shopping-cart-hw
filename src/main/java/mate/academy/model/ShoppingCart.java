@@ -20,10 +20,7 @@ public class ShoppingCart {
     @MapsId
     private User owner;
 
-    // When we add something to this list and then update entity in DB
-    // Changes won't appear in DB, because tickets are not OWNING side here
-    // We need to explicitly add tickets to db (but before we need to set cart in ticket entity)
-    @OneToMany(mappedBy = "cart")
+    @OneToMany
     private List<Ticket> tickets;
 
     public Long getId() {

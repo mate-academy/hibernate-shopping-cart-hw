@@ -67,7 +67,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new RuntimeException("ShoppingCart wasn't saved, rollback" + shoppingCart, e);
+            throw new RuntimeException("ShoppingCart wasn't updated, rollback" + shoppingCart, e);
         } finally {
             if (session != null) {
                 session.close();
