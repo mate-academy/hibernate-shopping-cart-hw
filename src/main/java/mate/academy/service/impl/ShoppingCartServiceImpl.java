@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
+import mate.academy.exception.EntityNotFoundException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.MovieSession;
@@ -26,8 +27,14 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         ticket.setUser(user);
         ticketDao.add(ticket);
 
-        ShoppingCart shoppingCart = new ShoppingCart();
-        shoppingCart.setTickets(List.of(ticket));
+        ShoppingCart shoppingCart = shoppingCartDao.getByUser(user)
+                .orElseThrow(()
+                        -> new EntityNotFoundException("Can't get a shopping cart by user: "
+                        + user));
+
+        List<Ticket> tickets = shoppingCart.getTickets();
+        tickets.add(ticket);
+        shoppingCart.setTickets(tickets);
         shoppingCartDao.update(shoppingCart);
     }
 
@@ -35,7 +42,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public ShoppingCart getByUser(User user) {
         return shoppingCartDao.getByUser(user)
                 .orElseThrow(()
-                        -> new RuntimeException("Can't get a shopping cart by user"));
+                        -> new EntityNotFoundException("Can't get a shopping cart by user: "
+                        + user));
     }
 
     @Override
