@@ -91,8 +91,11 @@ public class Main {
 
         ShoppingCartService shoppingCartService = (ShoppingCartService) injector
                 .getInstance(ShoppingCartService.class);
+
         shoppingCartService.addSession(addedMovieSession, addedUser);
+
         shoppingCartService.registerNewShoppingCart(addedUser);
+
         shoppingCartService.getByUser(addedUser);
         shoppingCartService.clear(shoppingCart);
     }
