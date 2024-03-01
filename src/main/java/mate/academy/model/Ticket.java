@@ -47,7 +47,6 @@ public class Ticket {
         return "Ticket{"
                 + "id=" + id
                 + ", movieSession=" + movieSession
-                + ", user=" + user
                 + '}';
     }
 }
