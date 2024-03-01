@@ -15,7 +15,7 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    @JoinColumn(name = "movieSession_id")
+    @JoinColumn(name = "movie_session_id")
     private MovieSession movieSession;
     @ManyToOne
     @JoinColumn(name = "user_id")
