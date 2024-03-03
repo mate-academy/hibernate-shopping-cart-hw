@@ -26,7 +26,8 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Can not save shopping card to DB. Shopping card: " + shoppingCart, e);
+            throw new DataProcessingException(
+                    "Can not save shopping card to DB. Shopping card: " + shoppingCart, e);
         } finally {
             if (session != null) {
                 session.close();
@@ -47,7 +48,8 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             query.setParameter("user", user);
             return query.uniqueResultOptional();
         } catch (Exception e) {
-            throw new DataProcessingException("Can not get shopping cart from DB by user: " + user, e);
+            throw new DataProcessingException("Can not get shopping cart from DB by user: "
+                    + user, e);
         }
     }
 
