@@ -1,8 +1,6 @@
 package mate.academy;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.impl.ShoppingCartDaoImpl;
 import mate.academy.exception.RegistrationException;
@@ -12,7 +10,11 @@ import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
 import mate.academy.model.User;
 import mate.academy.security.AuthenticationService;
-import mate.academy.service.*;
+import mate.academy.service.CinemaHallService;
+import mate.academy.service.MovieService;
+import mate.academy.service.MovieSessionService;
+import mate.academy.service.ShoppingCartService;
+import mate.academy.service.UserService;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.academy");

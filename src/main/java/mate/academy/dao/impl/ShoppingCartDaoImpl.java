@@ -1,10 +1,9 @@
 package mate.academy.dao.impl;
 
-import java.util.Optional;
-
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
+import java.util.Optional;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Dao;
@@ -12,9 +11,7 @@ import mate.academy.model.ShoppingCart;
 import mate.academy.model.User;
 import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 
 @Dao
 public class ShoppingCartDaoImpl implements ShoppingCartDao {
@@ -51,7 +48,8 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             criteria.select(root).where(builder.equal(root.get("user"), user));
             return Optional.ofNullable(session.createQuery(criteria).getSingleResult());
         } catch (Exception e) {
-            throw new DataProcessingException("Error retrieving shopping cart for user: " + user, e);
+            throw new DataProcessingException("Error retrieving shopping cart for user: "
+                    + user, e);
         }
     }
 
