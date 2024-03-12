@@ -44,4 +44,13 @@ public class Ticket {
     public void setMovieSession(MovieSession movieSession) {
         this.movieSession = movieSession;
     }
+
+    @Override
+    public String toString() {
+        return "Ticket{"
+                + "id=" + id
+                + ", movieSession="
+                + movieSession
+                + ", user=" + user + '}';
+    }
 }
