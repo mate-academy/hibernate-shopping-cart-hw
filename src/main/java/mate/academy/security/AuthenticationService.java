@@ -2,6 +2,7 @@ package mate.academy.security;
 
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
+import mate.academy.model.ShoppingCart;
 import mate.academy.model.User;
 
 public interface AuthenticationService {
