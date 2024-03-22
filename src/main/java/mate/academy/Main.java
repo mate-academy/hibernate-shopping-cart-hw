@@ -71,7 +71,8 @@ public class Main {
                 INJECTOR.getInstance(AuthenticationService.class);
         ShoppingCartService shoppingCartService = (ShoppingCartService)
                 INJECTOR.getInstance(ShoppingCartService.class);
-        registeredSomeUser = authenticationService.register(someUser.getEmail(), someUser.getPassword());
+        registeredSomeUser = authenticationService
+                .register(someUser.getEmail(), someUser.getPassword());
         shoppingCartService.addSession(tomorrowMovieSession, registeredSomeUser);
         shoppingCartService.clear(shoppingCartService.getByUser(registeredSomeUser));
     }
