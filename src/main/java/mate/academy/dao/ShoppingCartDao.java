@@ -7,7 +7,7 @@ import mate.academy.model.User;
 public interface ShoppingCartDao {
     ShoppingCart add(ShoppingCart shoppingCart);
 
-    Optional<ShoppingCart> getByUser(User user);
+    Optional<ShoppingCart> findByUser(User user);
 
     void update(ShoppingCart shoppingCart);
 }

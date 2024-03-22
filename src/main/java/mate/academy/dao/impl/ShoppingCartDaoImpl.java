@@ -15,10 +15,8 @@ import org.hibernate.query.Query;
 public class ShoppingCartDaoImpl implements ShoppingCartDao {
     @Override
     public ShoppingCart add(ShoppingCart shoppingCart) {
-        Session session = null;
         Transaction transaction = null;
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             session.save(shoppingCart);
             transaction.commit();
@@ -29,15 +27,11 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             }
             throw new DataProcessingException("Can`t add shopping cart "
                     + shoppingCart + " to the DB", e);
-        } finally {
-            if (session != null) {
-                session.close();
-            }
         }
     }
 
     @Override
-    public Optional<ShoppingCart> getByUser(User user) {
+    public Optional<ShoppingCart> findByUser(User user) {
         String query = " FROM ShoppingCart sc "
                 + " LEFT JOIN FETCH sc.tickets t "
                 + "LEFT JOIN FETCH t.movieSession m "
@@ -57,13 +51,9 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
     public void update(ShoppingCart shoppingCart) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            ShoppingCart shoppingCartFromDb = getByUser(shoppingCart.getUser()).orElse(null);
-            if (shoppingCartFromDb != null) {
-                shoppingCartFromDb.setTickets(shoppingCart.getTickets());
-                transaction = session.beginTransaction();
-                session.update(shoppingCartFromDb);
-                transaction.commit();
-            }
+            transaction = session.beginTransaction();
+            session.update(shoppingCart);
+            transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
