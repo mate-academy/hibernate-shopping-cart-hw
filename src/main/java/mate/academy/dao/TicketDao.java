@@ -8,4 +8,6 @@ public interface TicketDao {
     Ticket add(Ticket ticket);
 
     List<Ticket> getAllTicketsByUser(User user);
+
+    void remove(Ticket ticket);
 }

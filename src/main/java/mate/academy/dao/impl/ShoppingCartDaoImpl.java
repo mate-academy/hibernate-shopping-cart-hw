@@ -2,6 +2,7 @@ package mate.academy.dao.impl;
 
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import java.util.Optional;
@@ -47,8 +48,9 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             Root<ShoppingCart> root = criteriaQuery.from(ShoppingCart.class);
             Predicate userPredicate = criteriaBuilder.equal(root.get("user").get("id"),
                     user.getId());
-            criteriaQuery.select(root).where(userPredicate);
             root.fetch("user");
+            root.fetch("tickets", JoinType.LEFT);
+            criteriaQuery.select(root).where(userPredicate);
             return session.createQuery(criteriaQuery).uniqueResultOptional();
         } catch (Exception e) {
             throw new DataProcessingException("Can't get a shopping cart by user: " + user, e);

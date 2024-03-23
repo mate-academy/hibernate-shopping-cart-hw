@@ -10,4 +10,5 @@ public interface ShoppingCartDao {
     Optional<ShoppingCart> getByUser(User user);
 
     void update(ShoppingCart shoppingCart);
+
 }

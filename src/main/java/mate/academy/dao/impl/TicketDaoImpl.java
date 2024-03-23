@@ -56,4 +56,25 @@ public class TicketDaoImpl implements TicketDao {
             throw new DataProcessingException("Can't get all tickets by user: " + user, e);
         }
     }
+
+    @Override
+    public void remove(Ticket ticket) {
+        Transaction transaction = null;
+        Session session = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            transaction = session.beginTransaction();
+            session.remove(ticket);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            throw new DataProcessingException("Can't remove ticket" + ticket, e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
 }
