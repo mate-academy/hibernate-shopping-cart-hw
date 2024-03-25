@@ -1,5 +1,6 @@
 package mate.academy.service;
 
+import java.util.Optional;
 import mate.academy.model.MovieSession;
 import mate.academy.model.ShoppingCart;
 import mate.academy.model.User;
@@ -7,7 +8,7 @@ import mate.academy.model.User;
 public interface ShoppingCartService {
     void addSession(MovieSession movieSession, User user);
 
-    ShoppingCart getByUser(User user);
+    Optional<ShoppingCart> getByUser(User user);
 
     void registerNewShoppingCart(User user);
 
