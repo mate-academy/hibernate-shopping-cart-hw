@@ -1,8 +1,6 @@
 package mate.academy.service.impl;
 
 import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
 import mate.academy.exception.DataProcessingException;
@@ -27,18 +25,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         ticket.setMovieSession(movieSession);
         ticket.setUser(user);
         Ticket ticketFromDb = ticketDao.add(ticket);
-        Optional<ShoppingCart> shoppingCartFromDb = shoppingCartDao.getByUser(user);
-        if (shoppingCartFromDb.isPresent()) {
-            ShoppingCart shoppingCart = shoppingCartFromDb.get();
-            List<Ticket> tickets = shoppingCart.getTickets();
-            tickets.add(ticketFromDb);
-            shoppingCart.setTickets(tickets);
-            shoppingCartDao.update(shoppingCart);
-        } else {
-            throw new DataProcessingException("Can not add session to DB");
-        }
         ShoppingCart shoppingCart = getByUser(user);
-        shoppingCart.getTickets().add(ticket);
+        shoppingCart.getTickets().add(ticketFromDb);
         shoppingCartDao.update(shoppingCart);
     }
 
