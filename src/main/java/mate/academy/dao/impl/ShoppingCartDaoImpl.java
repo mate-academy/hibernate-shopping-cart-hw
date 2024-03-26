@@ -63,7 +63,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
     }
 
     @Override
-    public ShoppingCart upDate(ShoppingCart shoppingCart) {
+    public ShoppingCart update(ShoppingCart shoppingCart) {
         Long id = shoppingCart.getId();
         List<Ticket> tickets = shoppingCart.getTickets();
         User userUpdated = shoppingCart.getUser();

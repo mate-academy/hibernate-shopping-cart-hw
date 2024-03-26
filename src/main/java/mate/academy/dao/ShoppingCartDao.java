@@ -9,5 +9,5 @@ public interface ShoppingCartDao {
 
     Optional<ShoppingCart> getByUser(User user);
 
-    ShoppingCart upDate(ShoppingCart shoppingCart);
+    ShoppingCart update(ShoppingCart shoppingCart);
 }
