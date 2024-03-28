@@ -20,6 +20,8 @@ import org.hibernate.query.Query;
 @Dao
 public class MovieSessionDaoImpl implements MovieSessionDao {
     private static final LocalTime END_OF_DAY = LocalTime.of(23, 59, 59);
+    private static final String MOVIE_ATTRIBUTE_NAME = "movie";
+    private static final String SHOW_TIME_ATTRIBUTE_NAME = "showTime";
 
     @Override
     public MovieSession add(MovieSession movieSession) {
@@ -50,8 +52,9 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
             CriteriaQuery<MovieSession> criteriaQuery =
                     criteriaBuilder.createQuery(MovieSession.class);
             Root<MovieSession> root = criteriaQuery.from(MovieSession.class);
-            Predicate moviePredicate = criteriaBuilder.equal(root.get("movie"), movieId);
-            Predicate datePredicate = criteriaBuilder.between(root.get("showTime"),
+            Predicate moviePredicate = criteriaBuilder.equal(root.get(MOVIE_ATTRIBUTE_NAME)
+                    .get("id"), movieId);
+            Predicate datePredicate = criteriaBuilder.between(root.get(SHOW_TIME_ATTRIBUTE_NAME),
                     date.atStartOfDay(), date.atTime(END_OF_DAY));
             Predicate allConditions = criteriaBuilder.and(moviePredicate, datePredicate);
             criteriaQuery.select(root).where(allConditions);
