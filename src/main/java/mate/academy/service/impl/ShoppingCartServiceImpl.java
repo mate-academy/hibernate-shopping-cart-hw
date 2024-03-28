@@ -1,7 +1,7 @@
 package mate.academy.service.impl;
 
-import java.util.ArrayList;
-import java.util.Optional;
+import jakarta.transaction.Transactional;
+import java.util.Collections;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
 import mate.academy.lib.Inject;
@@ -20,19 +20,23 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private TicketDao ticketDao;
 
     @Override
+    @Transactional
     public void addSession(MovieSession movieSession, User user) {
         Ticket newTicket = new Ticket();
         newTicket.setUser(user);
         newTicket.setMovieSession(movieSession);
 
-        Optional<ShoppingCart> shoppingCart = shoppingCartDao.getByUser(user);
-        shoppingCart.get().getTickets().add(ticketDao.add(newTicket));
-        shoppingCartDao.update(shoppingCart.get());
+        ShoppingCart shoppingCart = shoppingCartDao.getByUser(user).orElseThrow(() ->
+                new RuntimeException("Shopping cart not found for user: " + user));
+        shoppingCart.getTickets().add(ticketDao.add(newTicket));
+        shoppingCartDao.update(shoppingCart);
     }
 
     @Override
-    public Optional<ShoppingCart> getByUser(User user) {
-        return shoppingCartDao.getByUser(user);
+    public ShoppingCart getByUser(User user) {
+        return shoppingCartDao.getByUser(user)
+                .orElseThrow(() -> new RuntimeException(
+                        "Shopping cart not found for user: " + user));
     }
 
     @Override
@@ -44,7 +48,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void clearShoppingCart(ShoppingCart cart) {
-        cart.setTickets(new ArrayList<>());
+        cart.setTickets(Collections.emptyList());
         shoppingCartDao.update(cart);
     }
 }
