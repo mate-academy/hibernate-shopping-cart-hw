@@ -64,7 +64,7 @@ public class Main {
         AuthenticationService authenticationService
                 = (AuthenticationService) injector.getInstance(AuthenticationService.class);
 
-        User user = null;
+        User user;
 
         try {
             user = authenticationService.register("email", "password");
@@ -77,6 +77,7 @@ public class Main {
 
         shoppingCartService.addSession(yesterdayMovieSession, user);
         shoppingCartService.addSession(tomorrowMovieSession, user);
+        System.out.println("/////////////////////////////");
         System.out.println(shoppingCartService.getByUser(user));
         shoppingCartService.clear(shoppingCartService.getByUser(user));
         System.out.println(shoppingCartService.getByUser(user));
