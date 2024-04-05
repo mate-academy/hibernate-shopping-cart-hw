@@ -1,6 +1,5 @@
 package mate.academy.dao.impl;
 
-import java.util.logging.StreamHandler;
 import mate.academy.dao.TicketDao;
 import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Dao;
