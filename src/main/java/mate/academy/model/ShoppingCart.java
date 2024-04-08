@@ -13,7 +13,7 @@ public class ShoppingCart {
     @Id
     private Long id;
     @OneToMany
-    @JoinColumn(name = "shoppingCart_id")
+    @JoinColumn(name = "shopping_cart_id")
     private List<Ticket> tickets;
     @MapsId
     @OneToOne

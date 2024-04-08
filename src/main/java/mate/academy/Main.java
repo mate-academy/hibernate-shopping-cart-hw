@@ -63,13 +63,12 @@ public class Main {
 
         AuthenticationService authenticationService =
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
-        User user = authenticationService
-                .register("someNiceEmail@mail.com", "superPassword");
-
         ShoppingCartService shoppingCartService =
                 (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
-        shoppingCartService.registerNewShoppingCart(user);
+        User user = authenticationService
+                .register("someNiceEmail@mail.com", "superPassword");
         shoppingCartService.addSession(tomorrowMovieSession, user);
+        System.out.println(shoppingCartService.getByUser(user));
         shoppingCartService.clear(shoppingCartService.getByUser(user));
         System.out.println(shoppingCartService.getByUser(user));
     }
