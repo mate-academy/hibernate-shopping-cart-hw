@@ -19,7 +19,7 @@ public class ShoppingCart {
     @MapsId
     private User user;
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tickets_id")
+    @JoinColumn(name = "ticket_id")
     private List<Ticket> tickets;
 
     public ShoppingCart() {
