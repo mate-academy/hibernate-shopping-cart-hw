@@ -42,13 +42,10 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
     public Optional<ShoppingCart> getByUser(User user) {
         try (Session session = sessionFactory.openSession()) {
             String getByUserQuery =
-                    "SELECT sc FROM ShoppingCart sc " +
-                            "LEFT JOIN FETCH sc.tickets AS t " +
-                            "LEFT JOIN FETCH t.movieSession AS ms " +
-                            "LEFT JOIN FETCH ms.movie " +
-                            "LEFT JOIN FETCH ms.cinemaHall " +
-                            "LEFT JOIN FETCH sc.user " +
-                            "WHERE sc.user = :user";
+                    "SELECT sc FROM ShoppingCart sc " + "LEFT JOIN FETCH sc.tickets AS t "
+                            + "LEFT JOIN FETCH t.movieSession AS ms " + "LEFT JOIN FETCH ms.movie "
+                            + "LEFT JOIN FETCH ms.cinemaHall " + "LEFT JOIN FETCH sc.user "
+                            + "WHERE sc.user = :user";
             Query<ShoppingCart> query = session.createQuery(getByUserQuery, ShoppingCart.class);
             query.setParameter("user", user);
             return query.uniqueResultOptional();
@@ -56,8 +53,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             throw new DataProcessingException("Could not get shopping cart for user: " + user, e);
         }
     }
-
-
+    
     @Override
     public void update(ShoppingCart shoppingCart) {
         Session session = null;
