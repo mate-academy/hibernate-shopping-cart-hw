@@ -6,6 +6,7 @@
         <property name="connection.password">password3452</property>
         <property name="hibernate.show_sql ">true</property>
         <property name="hbm2ddl.auto">create-drop</property>
+        <property name="dialect">org.hibernate.dialect.MySQL8Dialect</property>
 
         <mapping class="mate.academy.model.MovieSession"/>
         <mapping class="mate.academy.model.Movie"/>

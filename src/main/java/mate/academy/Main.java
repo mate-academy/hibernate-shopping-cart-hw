@@ -2,6 +2,8 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
@@ -18,7 +20,7 @@ public class Main {
     private static Injector injector =
             Injector.getInstance("mate.academy");
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws AuthenticationException, RegistrationException {
         MovieService movieService =
                 (MovieService) injector.getInstance(MovieService.class);
 
@@ -67,14 +69,16 @@ public class Main {
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
 
         User newUser;
-        try {
-            newUser = authenticationService.register("email", "password");
-        } catch (Exception e) {
-            throw new RuntimeException("Can't register user in main method ", e);
-        }
+        newUser = authenticationService.register("email", "password");
+        authenticationService.login("email", "password");
 
         ShoppingCartService shoppingCartService =
                 (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
+        try {
+            authenticationService.login("email", "password");
+        } catch (AuthenticationException e) {
+            throw new RuntimeException(e);
+        }
         ShoppingCart shoppingCart = shoppingCartService.getByUser(newUser);
         System.out.println(shoppingCart);
         shoppingCartService.addSession(yesterdayMovieSession, newUser);
