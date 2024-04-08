@@ -1,5 +1,6 @@
 package mate.academy.service.impl;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 import mate.academy.dao.ShoppingCartDao;
@@ -47,7 +48,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void clear(ShoppingCart shoppingCart) {
-        shoppingCart.setTickets(List.of());
+        shoppingCart.setTickets(Collections.emptyList());
         shoppingCartDao.update(shoppingCart);
     }
 }
