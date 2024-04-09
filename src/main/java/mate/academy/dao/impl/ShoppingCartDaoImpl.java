@@ -17,8 +17,10 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
 
     @Override
     public ShoppingCart add(ShoppingCart shoppingCart) {
+        Session session = null;
         Transaction transaction = null;
-        try (Session session = sessionFactory.openSession()) {
+        try {
+            session = sessionFactory.openSession();
             transaction = session.beginTransaction();
             session.save(shoppingCart);
             transaction.commit();
@@ -29,6 +31,10 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             }
             throw new DataProcessingException(
                     String.format("Can`t add a shopping cart %s to the DB", shoppingCart), ex);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
         }
     }
 
@@ -52,8 +58,10 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
 
     @Override
     public void update(ShoppingCart shoppingCart) {
+        Session session = null;
         Transaction transaction = null;
-        try (Session session = sessionFactory.openSession()) {
+        try {
+            session = sessionFactory.openSession();
             transaction = session.beginTransaction();
             session.merge(shoppingCart);
             transaction.commit();
@@ -63,6 +71,10 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             }
             throw new DataProcessingException(
                     String.format("Can`t update a shopping cart %s", shoppingCart), ex);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
         }
     }
 }

@@ -15,8 +15,10 @@ public class TicketDaoImpl implements TicketDao {
 
     @Override
     public Ticket add(Ticket ticket) {
+        Session session = null;
         Transaction transaction = null;
-        try (Session session = sessionFactory.openSession()) {
+        try {
+            session = sessionFactory.openSession();
             transaction = session.beginTransaction();
             session.persist(ticket);
             transaction.commit();
@@ -27,6 +29,10 @@ public class TicketDaoImpl implements TicketDao {
             }
             throw new DataProcessingException(
                     String.format("Can`t add a ticket %s to the DB", ticket), ex);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
         }
     }
 }
