@@ -46,7 +46,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
                     .setParameter("user", user)
                     .getSingleResult());
         } catch (Exception e) {
-            throw new DataProcessingException("Can't find user " + user, e);
+            throw new DataProcessingException("Can't shopping card by user " + user, e);
         }
     }
 
