@@ -1,6 +1,7 @@
 package mate.academy.dao.impl;
 
 import mate.academy.dao.TicketDao;
+import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Dao;
 import mate.academy.model.Ticket;
 import mate.academy.util.HibernateUtil;
@@ -24,7 +25,7 @@ public class TicketDaoImpl implements TicketDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new RuntimeException("Can't insert ticket " + ticket, e);
+            throw new DataProcessingException("Can't insert ticket " + ticket, e);
         } finally {
             if (session != null) {
                 session.close();
