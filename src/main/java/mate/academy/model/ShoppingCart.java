@@ -18,6 +18,7 @@ public class ShoppingCart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @OneToMany
+    @JoinColumn(name = "shopping_cart_id")
     private List<Ticket> tickets;
     @OneToOne
     @MapsId
