@@ -44,7 +44,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.merge(shoppingCart);  // Hibernate takes care of the SQL update query
+            session.merge(shoppingCart);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
