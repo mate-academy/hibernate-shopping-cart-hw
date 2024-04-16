@@ -1,6 +1,5 @@
 package mate.academy.dao.impl;
 
-import java.sql.PreparedStatement;
 import java.util.Optional;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.exception.DataProcessingException;
@@ -31,9 +30,12 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
     @Override
     public Optional<ShoppingCart> getByUser(User user) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return Optional.ofNullable(session.get(ShoppingCart.class, user.getId()));
+            Query<ShoppingCart> query = session.createQuery(
+                    "SELECT sc FROM ShoppingCart sc WHERE sc.user = :user", ShoppingCart.class);
+            query.setParameter("user", user);
+            return Optional.ofNullable(query.getSingleResult());
         } catch (Exception e) {
-            throw new DataProcessingException("Failed to get ShoppingCart by user " + user, e);
+            throw new DataProcessingException("Failed to get ShoppingCart by User " + user, e);
         }
     }
 
@@ -42,12 +44,8 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            Query<ShoppingCart> query = session.createNativeQuery(
-                    "UPDATE shopping_carts  SET tickets = :tickets, user = :user WHERE id= :id", ShoppingCart.class);
-            query.setParameter("tickets", shoppingCart.getTickets());
-            query.setParameter("user", shoppingCart.getUser());
-            query.setParameter("id", shoppingCart.getId());
-            query.executeUpdate();
+            session.merge(shoppingCart);  // Hibernate takes care of the SQL update query
+            transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
