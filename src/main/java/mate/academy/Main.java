@@ -2,15 +2,12 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
-import mate.academy.dao.TicketDao;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
-import mate.academy.model.Ticket;
 import mate.academy.model.User;
 import mate.academy.security.AuthenticationService;
 import mate.academy.security.AuthenticationServiceImpl;
@@ -39,8 +36,7 @@ public class Main {
             injector.getInstance(AuthenticationService.class);
     private static final ShoppingCartService shoppingCartService = (ShoppingCartServiceImpl)
             injector.getInstance(ShoppingCartService.class);
-    private static final TicketDao ticketDao = (TicketDao)
-            injector.getInstance(TicketDao.class);
+
     public static void main(String[] args) throws RegistrationException, AuthenticationException {
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
@@ -88,8 +84,6 @@ public class Main {
 
         User registeredUser = userService.findByEmail("some@mail.com").get();
 
-        ShoppingCartService shoppingCartService = (ShoppingCartService) injector
-                .getInstance(ShoppingCartService.class);
         shoppingCartService.registerNewShoppingCart(registeredUser);
         shoppingCartService.addSession(tomorrowMovieSession, registeredUser);
         System.out.println(shoppingCartService.getByUser(registeredUser));
