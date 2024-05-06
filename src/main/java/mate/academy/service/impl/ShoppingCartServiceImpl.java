@@ -26,23 +26,14 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Inject
     private UserDao userDao = new UserDaoImpl();
 
-    /**
-     * This method is responsible for adding a Ticket to the ShoppingCart
-     * @param movieSession contains the information required for the ticket
-     * @param user - the User who wants to buy the ticket for a specific movieSession
-     */
-
     @Override
     public void addSession(MovieSession movieSession, User user) {
-        // create ticket
         Ticket ticket = new Ticket();
         ticket.setUser(user);
         ticket.setMovieSession(movieSession);
         ticketDao.add(ticket);
-        // add ticket to list (take out of the method ?)
         List<Ticket> ticketList = new ArrayList<>();
         ticketList.add(ticket);
-        //create cart
         ShoppingCart shoppingCart = user.getShoppingCart();
         shoppingCart.setUser(user);
         shoppingCart.setTickets(ticketList);
