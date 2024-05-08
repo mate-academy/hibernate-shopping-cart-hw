@@ -1,10 +1,9 @@
 package mate.academy.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
+import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.MovieSession;
@@ -22,26 +21,24 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void addSession(MovieSession movieSession, User user) {
-        Optional<ShoppingCart> foundUser = shoppingCartDao.getByUser(user);
-        if (foundUser.isEmpty()) {
-            throw new RuntimeException("User can't found");
-        }
-
         Ticket ticket = new Ticket();
         ticket.setUser(user);
         ticket.setMovieSession(movieSession);
         ticketDao.add(ticket);
 
-        ShoppingCart shoppingCart = foundUser.get();
-        List<Ticket> userTickets = shoppingCart.getTickets();
+        ShoppingCart userShCart = getByUser(user);
+        List<Ticket> userTickets = userShCart.getTickets();
         userTickets.add(ticket);
-        shoppingCartDao.update(shoppingCart);
+        shoppingCartDao.update(userShCart);
     }
 
     @Override
     public ShoppingCart getByUser(User user) {
-        Optional<ShoppingCart> foundUser = shoppingCartDao.getByUser(user);
-        return foundUser.orElseThrow(() -> new RuntimeException("User can't found"));
+        return shoppingCartDao
+                .getByUser(user)
+                .orElseThrow(() ->
+                        new DataProcessingException("No registered"
+                                + " shoppingCart for User: " + user));
     }
 
     @Override
@@ -53,7 +50,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void clear(ShoppingCart shoppingCart) {
-        shoppingCart.setTickets(new ArrayList<>());
+        shoppingCart.getTickets().clear();
         shoppingCartDao.update(shoppingCart);
     }
 }
