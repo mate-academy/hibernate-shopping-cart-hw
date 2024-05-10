@@ -1,14 +1,10 @@
 package mate.academy.service.impl;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
 import mate.academy.dao.UserDao;
-import mate.academy.dao.impl.ShoppingCartDaoImpl;
-import mate.academy.dao.impl.TicketDaoImpl;
-import mate.academy.dao.impl.UserDaoImpl;
+import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.MovieSession;
@@ -20,11 +16,11 @@ import mate.academy.service.ShoppingCartService;
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Inject
-    private TicketDao ticketDao = new TicketDaoImpl();
+    private TicketDao ticketDao;
     @Inject
-    private ShoppingCartDao shoppingCartDao = new ShoppingCartDaoImpl();
+    private ShoppingCartDao shoppingCartDao;
     @Inject
-    private UserDao userDao = new UserDaoImpl();
+    private UserDao userDao;
 
     @Override
     public void addSession(MovieSession movieSession, User user) {
@@ -32,17 +28,16 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         ticket.setUser(user);
         ticket.setMovieSession(movieSession);
         ticketDao.add(ticket);
-        List<Ticket> ticketList = new ArrayList<>();
-        ticketList.add(ticket);
-        ShoppingCart shoppingCart = user.getShoppingCart();
-        shoppingCart.setUser(user);
-        shoppingCart.setTickets(ticketList);
-        shoppingCartDao.update(shoppingCart);
+        ShoppingCart usersShoppingCart = getByUser(user);
+        usersShoppingCart.getTickets().add(ticket);
+        shoppingCartDao.update(usersShoppingCart);
     }
 
     @Override
     public ShoppingCart getByUser(User user) {
-        return shoppingCartDao.getByUser(user).get();
+        return shoppingCartDao.getByUser(user)
+                .orElseThrow(() -> new DataProcessingException("No registered shoppingCart"
+                        + " for User " + user, new Exception().getCause()));
     }
 
     @Override
@@ -53,16 +48,13 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             shoppingCart.setTickets(Collections.emptyList());
             shoppingCartDao.add(shoppingCart);
         }
-        user.setShoppingCart(shoppingCart);
     }
 
     @Override
     public void clear(ShoppingCart shoppingCart) {
-        if (shoppingCartDao.getByUser(shoppingCart.getUser()).isPresent()) {
-            shoppingCart.setId(shoppingCart.getUser().getId());
-            shoppingCart.setUser(shoppingCart.getUser());
-            shoppingCart.setTickets(Collections.emptyList());
-            shoppingCartDao.update(shoppingCart);
-        }
+        shoppingCart.setId(shoppingCart.getUser().getId());
+        shoppingCart.setUser(shoppingCart.getUser());
+        shoppingCart.setTickets(Collections.emptyList());
+        shoppingCartDao.update(shoppingCart);
     }
 }
