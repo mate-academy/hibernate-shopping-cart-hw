@@ -25,9 +25,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         ticket.setUser(user);
         ticket.setMovieSession(movieSession);
 
-        ShoppingCart shoppingCart = shoppingCartDao.getByUser(user).orElseThrow(
-                () -> new EntityNotFoundException("Can't add session by user: " + user
-                + " and movieSession: " + movieSession));
+        ShoppingCart shoppingCart = getByUser(user);
         shoppingCart.getTickets().add(ticketDao.add(ticket));
         shoppingCartDao.update(shoppingCart);
     }
