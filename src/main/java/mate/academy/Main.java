@@ -2,14 +2,13 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
-import mate.academy.model.ShoppingCart;
-import mate.academy.model.Ticket;
 import mate.academy.model.User;
+import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
@@ -37,8 +36,8 @@ public class Main {
         secondCinemaHall.setCapacity(200);
         secondCinemaHall.setDescription("second hall with capacity 200");
 
-        CinemaHallService cinemaHallService = (CinemaHallService) INJECTOR
-                .getInstance(CinemaHallService.class);
+        CinemaHallService cinemaHallService =
+                (CinemaHallService) INJECTOR.getInstance(CinemaHallService.class);
         cinemaHallService.add(firstCinemaHall);
         cinemaHallService.add(secondCinemaHall);
 
@@ -55,8 +54,8 @@ public class Main {
         yesterdayMovieSession.setMovie(fastAndFurious);
         yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(1L));
 
-        MovieSessionService movieSessionService = (MovieSessionService) INJECTOR
-                .getInstance(MovieSessionService.class);
+        MovieSessionService movieSessionService =
+                (MovieSessionService) INJECTOR.getInstance(MovieSessionService.class);
         movieSessionService.add(tomorrowMovieSession);
         movieSessionService.add(yesterdayMovieSession);
 
@@ -64,31 +63,23 @@ public class Main {
         System.out.println(movieSessionService.findAvailableSessions(
                 fastAndFurious.getId(), LocalDate.now()));
 
-        User bobUser = new User();
-        bobUser.setEmail("bobUser@gmail.com");
-        bobUser.setPassword("potato787");
+        AuthenticationService authenticationService =
+                (AuthenticationService) INJECTOR.getInstance(AuthenticationService.class);
+        User bobUser;
+        try {
+            bobUser = authenticationService.register("bobUser@gmail.com", "potato787");
+        } catch (RegistrationException e) {
+            throw new RuntimeException("Unable to register user ", e);
+        }
 
-        Ticket yesterdaySessionTicket = new Ticket();
-        yesterdaySessionTicket.setUser(bobUser);
-        yesterdaySessionTicket.setMovieSession(yesterdayMovieSession);
-        Ticket tomorrowSessionTicket = new Ticket();
-        tomorrowSessionTicket.setUser(bobUser);
-        tomorrowSessionTicket.setMovieSession(tomorrowMovieSession);
-
-        ShoppingCart shoppingCart = new ShoppingCart();
-        shoppingCart.setUser(bobUser);
-        shoppingCart.setTickets(List.of(yesterdaySessionTicket, tomorrowSessionTicket));
         UserService userService = new UserServiceImpl();
-        userService.add(bobUser);
         System.out.println(userService.findByEmail(bobUser.getEmail()));
 
-        ShoppingCartService shoppingCartService = (ShoppingCartService) INJECTOR
-                .getInstance(ShoppingCartService.class);
-        shoppingCartService.registerNewShoppingCart(bobUser);
-
+        ShoppingCartService shoppingCartService =
+                (ShoppingCartService) INJECTOR.getInstance(ShoppingCartService.class);
         shoppingCartService.addSession(yesterdayMovieSession, bobUser);
         shoppingCartService.addSession(tomorrowMovieSession, bobUser);
         System.out.println(shoppingCartService.getByUser(bobUser));
-        shoppingCartService.clear(shoppingCart);
+        shoppingCartService.clear(shoppingCartService.getByUser(bobUser));
     }
 }

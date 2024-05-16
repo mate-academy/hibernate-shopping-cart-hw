@@ -43,11 +43,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public void registerNewShoppingCart(User user) {
         ShoppingCart shoppingCart = new ShoppingCart();
-        if (userDao.findByEmail(user.getEmail()).isPresent()) {
-            shoppingCart.setUser(user);
-            shoppingCart.setTickets(Collections.emptyList());
-            shoppingCartDao.add(shoppingCart);
-        }
+        shoppingCart.setUser(user);
+        shoppingCartDao.add(shoppingCart);
     }
 
     @Override
