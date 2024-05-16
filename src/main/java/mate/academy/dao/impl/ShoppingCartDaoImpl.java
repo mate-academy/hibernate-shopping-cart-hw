@@ -9,6 +9,7 @@ import mate.academy.model.User;
 import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 @Dao
 public class ShoppingCartDaoImpl implements ShoppingCartDao {
@@ -38,10 +39,15 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
     @Override
     public Optional<ShoppingCart> getByUser(User user) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session
-                    .createQuery("FROM ShoppingCart sc WHERE sc.user =:user", ShoppingCart.class)
-                    .setParameter("user", user)
-                    .uniqueResultOptional();
+            Query<ShoppingCart> query = session.createQuery("FROM ShoppingCart sc "
+                    + "LEFT JOIN FETCH sc.tickets t "
+                    + "LEFT JOIN FETCH t.movieSession ms "
+                    + "LEFT JOIN FETCH ms.movie "
+                    + "LEFT JOIN FETCH ms.cinemaHall "
+                    + "JOIN FETCH sc.user "
+                    + " WHERE sc.user = :user", ShoppingCart.class)
+                    .setParameter("user", user);
+            return Optional.ofNullable(query.getSingleResult());
         } catch (Exception e) {
             throw new DataProcessingException("Can`t find shoppingCat by this user: "
                     + user, e);
