@@ -14,7 +14,6 @@ import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
 import mate.academy.service.ShoppingCartService;
 import mate.academy.service.UserService;
-import mate.academy.service.impl.UserServiceImpl;
 
 public class Main {
     private static final Injector INJECTOR = Injector.getInstance("mate.academy");
