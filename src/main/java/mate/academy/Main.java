@@ -72,7 +72,7 @@ public class Main {
             throw new RuntimeException("Unable to register user ", e);
         }
 
-        UserService userService = new UserServiceImpl();
+        UserService userService = (UserService) INJECTOR.getInstance(UserService.class);
         System.out.println(userService.findByEmail(bobUser.getEmail()));
 
         ShoppingCartService shoppingCartService =
