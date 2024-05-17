@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
+import mate.academy.exception.EntityNotFoundException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.MovieSession;
@@ -25,17 +26,16 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         Ticket ticket = new Ticket(movieSession, user);
         Ticket ticketFromDB = ticketDao.add(ticket);
         Optional<ShoppingCart> optionalShoppingCart = shoppingCartDao.getByUser(user);
-        if (optionalShoppingCart.isEmpty()) {
-            throw new RuntimeException("Shopping сart for user: " + user + " - don`t exist");
-        }
-        ShoppingCart shoppingCart = optionalShoppingCart.get();
+        ShoppingCart shoppingCart = getShoppingCart(optionalShoppingCart);
         shoppingCart.setTickets(List.of(ticketFromDB));
         shoppingCartDao.update(shoppingCart);
     }
 
     @Override
     public ShoppingCart getByUser(User user) {
-        return shoppingCartDao.getByUser(user).get();
+        return shoppingCartDao.getByUser(user).orElseThrow(
+                () -> new EntityNotFoundException("Entity not found by id: " + user.getId())
+        );
     }
 
     @Override
@@ -49,5 +49,12 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public void clear(ShoppingCart shoppingCart) {
         shoppingCart.setTickets(List.of());
         shoppingCartDao.update(shoppingCart);
+    }
+
+    private ShoppingCart getShoppingCart(Optional<ShoppingCart> optionalShoppingCart) {
+        if (optionalShoppingCart.isEmpty()) {
+            throw new RuntimeException("Shopping cart doesn't exist");
+        }
+        return optionalShoppingCart.get();
     }
 }
