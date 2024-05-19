@@ -2,8 +2,8 @@ package mate.academy.service.impl;
 
 import java.util.List;
 import mate.academy.dao.ShoppingCartDao;
-import mate.academy.dao.TicketDao;
 import java.util.NoSuchElementException;
+import mate.academy.dao.TicketDao;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.MovieSession;
@@ -22,11 +22,12 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void addSession(MovieSession movieSession, User user) {
-        ShoppingCart shoppingCart = shoppingCartDao.getByUser(user).orElseThrow(
-                () -> new NoSuchElementException("Not found shopping card with user:" + user.toString()));
         Ticket ticket = new Ticket();
         ticket.setUser(user);
         ticket.setMovieSession(movieSession);
+        ShoppingCart shoppingCart = shoppingCartDao.getByUser(user).orElseThrow(
+                () -> new NoSuchElementException("Not found shopping card with user:"
+                        + user.toString()));
         ticketDao.add(ticket);
         shoppingCart.getTickets().add(ticket);
         shoppingCartDao.update(shoppingCart);
@@ -35,7 +36,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public ShoppingCart getByUser(User user) {
         return shoppingCartDao.getByUser(user).orElseThrow(
-                () -> new NoSuchElementException("Not found shopping card with user:" + user.toString())
+                () -> new NoSuchElementException("Not found shopping card with user:"
+                        + user.toString())
         );
     }
 
