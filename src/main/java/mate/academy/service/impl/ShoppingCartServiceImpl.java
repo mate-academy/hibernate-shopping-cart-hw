@@ -54,11 +54,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         try {
             userFromDB = authenticationService.register(user.getEmail(), user.getPassword());
         } catch (RegistrationException e) {
-            try {
-                userFromDB = authenticationService.login(user.getEmail(), user.getPassword());
-            } catch (AuthenticationException ex) {
-                throw new DataProcessingException("Can`t register user " + user, ex);
-            }
+            throw new DataProcessingException("This user has shopping cart " + user);
         }
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setUser(userFromDB);
