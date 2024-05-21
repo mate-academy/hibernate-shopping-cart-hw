@@ -1,9 +1,10 @@
 package mate.academy.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
 import mate.academy.dao.UserDao;
-import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.DataProcessingException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
@@ -14,9 +15,6 @@ import mate.academy.model.Ticket;
 import mate.academy.model.User;
 import mate.academy.security.AuthenticationService;
 import mate.academy.service.ShoppingCartService;
-import java.util.ArrayList;
-import java.util.List;
-
 
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
