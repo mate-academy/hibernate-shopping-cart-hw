@@ -25,10 +25,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         newTicket.setMovieSession(movieSession);
         ticketDao.add(newTicket);
 
-        ShoppingCart shoppingCart = shoppingCartDao.getByUser(user)
-                .orElseThrow(() -> new EntityNotFoundException("Can't get user: "
-                        + user.toString() + "from DB", new Exception()));
-
+        ShoppingCart shoppingCart = getByUser(user);
         shoppingCart.getTickets().add(newTicket);
         shoppingCartDao.update(shoppingCart);
     }
@@ -36,8 +33,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public ShoppingCart getByUser(User user) {
         return shoppingCartDao.getByUser(user)
-                .orElseThrow(() -> new EntityNotFoundException("Can't get user: "
-                        + user.toString() + "from DB", new Exception()));
+                .orElseThrow(() -> new EntityNotFoundException("Can't get shopping cart for user: "
+                        + user + " from DB", new Exception()));
     }
 
     @Override
