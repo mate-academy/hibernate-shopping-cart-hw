@@ -20,9 +20,10 @@ import org.hibernate.query.Query;
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Inject
-    TicketDao ticketDao = new TicketDaoImpl();
+    private TicketDao ticketDao = new TicketDaoImpl();
     @Inject
-    ShoppingCartDao shoppingCartDao = new ShoppingCartDaoImpl();
+    private ShoppingCartDao shoppingCartDao = new ShoppingCartDaoImpl();
+
     @Override
     public void addSession(MovieSession movieSession, User user) {
         Ticket ticket = new Ticket();
