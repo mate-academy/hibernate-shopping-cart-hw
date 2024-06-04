@@ -1,6 +1,6 @@
 package mate.academy.service.impl;
 
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Optional;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
@@ -16,7 +16,6 @@ import mate.academy.model.User;
 import mate.academy.service.ShoppingCartService;
 import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
-import org.hibernate.query.Query;
 
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
@@ -32,6 +31,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         ticket.setMovieSession(movieSession);
         ticketDao.add(ticket);
         Optional<ShoppingCart> shoppingCartOptional = shoppingCartDao.getByUser(user);
+        if (shoppingCartOptional.isEmpty()) {
+            throw new DataProcessingException("There is not shopping cart in this user");
+        }
         ShoppingCart shoppingCart = shoppingCartOptional.get();
         shoppingCart.getTickets().add(ticket);
         shoppingCartDao.update(shoppingCart);
@@ -47,16 +49,14 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public void registerNewShoppingCart(User user) {
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setUser(user);
-        shoppingCart.setTickets(List.of());
+        shoppingCart.setTickets(new ArrayList<>());
         shoppingCartDao.add(shoppingCart);
     }
 
     @Override
     public void clear(ShoppingCart shoppingCart) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Query<ShoppingCart> query = session.createQuery("DELETE FROM ShoppingCart sc "
-                    + "WHERE sc.user = :user", ShoppingCart.class);
-            query.setParameter("user", shoppingCart.getUser());
+            session.remove(shoppingCart);
         } catch (Exception e) {
             throw new DataProcessingException("Can't delete shopping cart: " + shoppingCart, e);
         }

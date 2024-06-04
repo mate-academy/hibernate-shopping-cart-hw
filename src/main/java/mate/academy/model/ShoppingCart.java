@@ -1,5 +1,6 @@
 package mate.academy.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -16,7 +17,8 @@ import java.util.List;
 public class ShoppingCart {
     @Id
     private long id;
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL)
     @Column(name = "tickets")
     private List<Ticket> tickets;
     @OneToOne
