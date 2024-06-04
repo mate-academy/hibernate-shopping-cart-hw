@@ -40,7 +40,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query<ShoppingCart> query = session.createQuery("FROM ShoppingCart sc "
                     + "WHERE sc.user = :id", ShoppingCart.class);
-            query.setParameter("id", user.getId());
+            query.setParameter("id", user);
             return Optional.ofNullable(query.getSingleResult());
         } catch (Exception e) {
             throw new DataProcessingException("Can't find shopping cart by user : " + user, e);
@@ -60,9 +60,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
                     + "WHERE sc.user = :user");
             query.setParameter("tickets", shoppingCart.getTickets());
             query.setParameter("user", shoppingCart.getUser());
-
             query.executeUpdate();
-
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {

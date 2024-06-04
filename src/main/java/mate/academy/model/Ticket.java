@@ -19,7 +19,7 @@ public class Ticket {
     @OneToOne
     @MapsId
     private MovieSession movieSession;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private User user;
 
     public MovieSession getMovieSession() {

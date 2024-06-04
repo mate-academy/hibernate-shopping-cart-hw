@@ -84,7 +84,7 @@ public class Main {
         }
 
         User user = new User();
-        user.setEmail("gergfer");
+        user.setEmail("newUser");
         user.setPassword("password");
         userService.add(user);
 

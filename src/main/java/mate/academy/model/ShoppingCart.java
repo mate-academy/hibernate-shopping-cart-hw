@@ -16,7 +16,7 @@ import java.util.List;
 public class ShoppingCart {
     @Id
     private long id;
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.EAGER)
     @Column(name = "tickets")
     private List<Ticket> tickets;
     @OneToOne
