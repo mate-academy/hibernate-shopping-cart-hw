@@ -39,6 +39,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
     public Optional<ShoppingCart> getByUser(User user) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query<ShoppingCart> query = session.createQuery("FROM ShoppingCart sc "
+                    + "left join fetch sc.tickets "
                     + "WHERE sc.user = :id", ShoppingCart.class);
             query.setParameter("id", user);
             return Optional.ofNullable(query.getSingleResult());
@@ -65,6 +66,15 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             if (session != null) {
                 session.close();
             }
+        }
+    }
+
+    @Override
+    public void clear(ShoppingCart shoppingCart) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            session.remove(shoppingCart);
+        } catch (Exception e) {
+            throw new DataProcessingException("Can't delete shopping cart: " + shoppingCart, e);
         }
     }
 }
