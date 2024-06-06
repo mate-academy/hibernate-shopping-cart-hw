@@ -5,14 +5,28 @@ import java.time.LocalDateTime;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.model.User;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
+import mate.academy.service.ShoppingCartService;
+import mate.academy.service.impl.ShoppingCartServiceImpl;
 
 public class Main {
     public static void main(String[] args) {
-        MovieService movieService = null;
+        ShoppingCartService shoppingCartService = new ShoppingCartServiceImpl();
 
+        User user = new User();
+        user.setEmail("test@example.com");
+        user.setPassword("password");
+
+        shoppingCartService.registerNewShoppingCart(user);
+        MovieSession movieSession = new MovieSession();
+        shoppingCartService.addSession(movieSession, user);
+        System.out.println(shoppingCartService.getByUser(user));
+        shoppingCartService.clear(shoppingCartService.getByUser(user));
+
+        MovieService movieService = null;
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
         movieService.add(fastAndFurious);
