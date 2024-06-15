@@ -20,7 +20,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
-            session.saveOrUpdate(shoppingCart);
+            session.saveOrUpdate(shoppingCart); //checkList allows it
             transaction.commit();
             return shoppingCart;
         } catch (Exception e) {
@@ -42,9 +42,6 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
                     session.createQuery("SELECT DISTINCT sc "
                             + "FROM ShoppingCart sc "
                             + "LEFT JOIN FETCH sc.tickets t "
-                            + "LEFT JOIN FETCH t.movieSession ms "
-                            + "LEFT JOIN FETCH ms.movie "
-                            + "LEFT JOIN FETCH ms.cinemaHall "
                             + "LEFT JOIN FETCH sc.user "
                             + "WHERE sc.user = :user ", ShoppingCart.class);
             getShoppingCartByUserQuery.setParameter("user", user);

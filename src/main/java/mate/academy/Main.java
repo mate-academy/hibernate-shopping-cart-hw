@@ -66,7 +66,7 @@ public class Main {
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
         User user = null;
         try {
-            user = authenticationService.register("lol@gmail", "321");
+            user = authenticationService.register("kaadf@gmail", "321");
         } catch (RegistrationException e) {
             throw new RuntimeException(e);
         }
