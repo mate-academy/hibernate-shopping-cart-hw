@@ -3,6 +3,7 @@ package mate.academy.service.impl;
 import java.util.ArrayList;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
+import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.MovieSession;
@@ -22,7 +23,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public void addSession(MovieSession movieSession, User user) {
         Ticket ticket = ticketDao.add(new Ticket(movieSession, user));
         ShoppingCart shoppingCart = shoppingCartDao.getByUser(user)
-                .orElseThrow(() -> new RuntimeException("there is no user " + user));
+                .orElseThrow(() -> new DataProcessingException("there is no user " + user));
         shoppingCart.getTickets().add(ticket);
         shoppingCartDao.update(shoppingCart);
     }
@@ -30,7 +31,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public ShoppingCart getByUser(User user) {
         return shoppingCartDao.getByUser(user)
-                .orElseThrow(() -> new RuntimeException("there is no user " + user));
+                .orElseThrow(() -> new DataProcessingException("there is no user " + user));
     }
 
     @Override
