@@ -12,16 +12,17 @@ import jakarta.persistence.Table;
 import java.util.List;
 
 @Entity
-@Table(name = "shoppingcarts")
+@Table(name = "shopping_carts")
 public class ShoppingCart {
     @Id
     private Long id;
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "shoppingcarts_tickets",
-            joinColumns = @JoinColumn(name = "shoppingcart_id"),
+    @OneToMany
+    @JoinTable(name = "shopping_carts_tickets",
+            joinColumns = @JoinColumn(name = "shopping_cart_id"),
             inverseJoinColumns = @JoinColumn(name = "ticket_id"))
     private List<Ticket> tickets;
     @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     @MapsId
     private User user;
 

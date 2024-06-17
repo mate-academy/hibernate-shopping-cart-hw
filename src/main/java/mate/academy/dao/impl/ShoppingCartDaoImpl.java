@@ -13,7 +13,6 @@ import org.hibernate.query.Query;
 
 @Dao
 public class ShoppingCartDaoImpl implements ShoppingCartDao {
-
     @Override
     public ShoppingCart add(ShoppingCart shoppingCart) {
         Session session = null;
@@ -21,7 +20,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
-            session.merge(shoppingCart);
+            session.save(shoppingCart);
             transaction.commit();
             return shoppingCart;
         } catch (Exception e) {
@@ -50,7 +49,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
                     ShoppingCart.class
             );
             shoppingCartQuery.setParameter("id", user.getId());
-            return Optional.ofNullable(shoppingCartQuery.getSingleResult());
+            return shoppingCartQuery.uniqueResultOptional();
         } catch (Exception e) {
             throw new DataProcessingException("Can't get a ShoppingCart for user: " + user, e);
         }
