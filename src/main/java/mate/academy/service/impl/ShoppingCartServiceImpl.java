@@ -2,7 +2,6 @@ package mate.academy.service.impl;
 
 import jakarta.persistence.EntityNotFoundException;
 import java.util.Collections;
-import java.util.Optional;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
 import mate.academy.lib.Inject;
@@ -26,9 +25,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         newTicket.setUser(user);
         newTicket.setMovieSession(movieSession);
         ticketDao.add(newTicket);
-        Optional<ShoppingCart> optionalFromDB = shoppingCartDao.getByUser(user);
-        ShoppingCart shoppingCartFromDB = optionalFromDB.orElseThrow(() ->
-                new EntityNotFoundException("Couldn't get shopping cart by user " + user));
+        ShoppingCart shoppingCartFromDB = getByUser(user);
         shoppingCartFromDB.getTickets().add(newTicket);
         shoppingCartDao.update(shoppingCartFromDB);
     }
