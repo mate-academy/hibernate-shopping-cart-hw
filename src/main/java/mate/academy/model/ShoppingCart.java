@@ -17,9 +17,9 @@ public class ShoppingCart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     private List<Ticket> tickets;
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @MapsId
     private User user;
 
@@ -50,5 +50,4 @@ public class ShoppingCart {
     public void setUser(User user) {
         this.user = user;
     }
-
 }
