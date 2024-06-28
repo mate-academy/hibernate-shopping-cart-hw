@@ -3,6 +3,7 @@ package mate.academy.service.impl;
 import java.util.List;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
+import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.MovieSession;
@@ -10,6 +11,7 @@ import mate.academy.model.ShoppingCart;
 import mate.academy.model.Ticket;
 import mate.academy.model.User;
 import mate.academy.service.ShoppingCartService;
+import org.hibernate.HibernateException;
 
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
@@ -24,16 +26,18 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         ticket.setMovieSession(movieSession);
         ticket.setUser(user);
         Ticket newTicket = ticketDao.add(ticket);
-        ShoppingCart shoppingCart = getByUser(user);
-        List<Ticket> tickets = shoppingCart.getTickets();
+        ShoppingCart cart = getByUser(user);
+        List<Ticket> tickets = cart.getTickets();
         tickets.add(newTicket);
-        shoppingCart.setTickets(tickets);
-        shoppingCartDao.update(shoppingCart);
+        cart.setTickets(tickets);
+        shoppingCartDao.update(cart);
     }
 
     @Override
     public ShoppingCart getByUser(User user) {
-        return shoppingCartDao.getByUser(user).get();
+        return shoppingCartDao.getByUser(user).orElseThrow(()
+                -> new DataProcessingException("Can't get a shopping cart by user: " + user,
+                new HibernateException("")));
     }
 
     @Override
@@ -45,9 +49,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void clear(ShoppingCart shoppingCart) {
-        List<Ticket> tickets = shoppingCart.getTickets();
-        tickets.clear();
-        shoppingCart.setTickets(tickets);
+        shoppingCart.getTickets().clear();
         shoppingCartDao.update(shoppingCart);
     }
 }

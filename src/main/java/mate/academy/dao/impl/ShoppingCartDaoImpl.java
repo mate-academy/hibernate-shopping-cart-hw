@@ -20,7 +20,8 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
-            session.save(shoppingCart);
+            session.refresh(shoppingCart.getUser());
+            session.persist(shoppingCart);
             transaction.commit();
             return shoppingCart;
         } catch (Exception e) {
@@ -39,10 +40,12 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
     @Override
     public Optional<ShoppingCart> getByUser(User user) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Query<ShoppingCart> query = session.createQuery("FROM ShoppingCart sc "
-                    + "WHERE sp.user = :user", ShoppingCart.class);
-            query.setParameter("user", user);
-            return Optional.ofNullable(query.getSingleResult());
+            return session.createQuery("FROM ShoppingCart sc "
+            + "JOIN FETCH sc.user u "
+            + "LEFT JOIN FETCH sc.tickets t "
+            + "WHERE sc.user = :user", ShoppingCart.class)
+                    .setParameter("user", user)
+                    .uniqueResultOptional();
         } catch (Exception e) {
             throw new DataProcessingException("Can't find shoppingCart by user: " + user, e);
         }
