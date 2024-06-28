@@ -1,38 +1,39 @@
 package mate.academy.service.impl;
 
-import mate.academy.dao.*;
-import mate.academy.exception.*;
-import mate.academy.lib.*;
-import mate.academy.model.*;
-import mate.academy.service.*;
-
-import java.util.*;
+import java.util.List;
+import mate.academy.dao.ShoppingCartDao;
+import mate.academy.dao.TicketDao;
+import mate.academy.exception.DataProcessingException;
+import mate.academy.lib.Inject;
+import mate.academy.lib.Service;
+import mate.academy.model.MovieSession;
+import mate.academy.model.ShoppingCart;
+import mate.academy.model.Ticket;
+import mate.academy.model.User;
+import mate.academy.service.ShoppingCartService;
 
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
-    /**
-     * This method is responsible for adding a Ticket to the ShoppingCart
-     * @param movieSession contains the information required for the ticket
-     * @param user - the User who wants to buy the ticket for a specific movieSession
-     */
     @Inject
-    ShoppingCartDao shoppingCartDao;
+    private ShoppingCartDao shoppingCartDao;
     @Inject
-    TicketDao ticketDao;
+    private TicketDao ticketDao;
+
     @Override
     public void addSession(MovieSession movieSession, User user) {
-        ShoppingCart shoppingCart = shoppingCartDao.getByUser(user)
-                .orElseThrow(() -> new DataProcessingException("Shopping cart is empty! (add session method)"));
+        var shoppingCart = shoppingCartDao.getByUser(user).orElseThrow(()
+                -> new DataProcessingException("Shopping cart is empty! (add session method)"));
 
         Ticket ticket = new Ticket(movieSession, user);
+        ticketDao.add(ticket);
         shoppingCart.getTickets().add(ticket);
         shoppingCartDao.update(shoppingCart);
     }
 
     @Override
     public ShoppingCart getByUser(User user) {
-        return shoppingCartDao.getByUser(user)
-                .orElseThrow(() -> new DataProcessingException("TODO"));
+        return shoppingCartDao.getByUser(user).orElseThrow(()
+                -> new DataProcessingException("Can't find shopping cart by user"));
     }
 
     @Override

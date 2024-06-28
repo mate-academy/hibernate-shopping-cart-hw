@@ -1,11 +1,12 @@
 package mate.academy.dao.impl;
 
-import mate.academy.dao.*;
-import mate.academy.exception.*;
-import mate.academy.lib.*;
-import mate.academy.model.*;
-import mate.academy.util.*;
-import org.hibernate.*;
+import mate.academy.dao.TicketDao;
+import mate.academy.exception.DataProcessingException;
+import mate.academy.lib.Dao;
+import mate.academy.model.Ticket;
+import mate.academy.util.HibernateUtil;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 @Dao
 public class TicketDaoImpl implements TicketDao {
