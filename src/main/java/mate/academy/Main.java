@@ -17,7 +17,6 @@ import mate.academy.service.ShoppingCartService;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.academy");
-    private static final LocalDateTime time = LocalDateTime.now();
 
     public static void main(String[] args) throws RegistrationException, AuthenticationException {
         MovieService movieService = (MovieService) injector.getInstance(MovieService.class);
