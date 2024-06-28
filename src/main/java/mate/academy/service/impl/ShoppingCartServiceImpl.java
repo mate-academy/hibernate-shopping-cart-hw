@@ -1,6 +1,5 @@
 package mate.academy.service.impl;
 
-import java.util.List;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
 import mate.academy.exception.DataProcessingException;
@@ -27,9 +26,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         ticket.setUser(user);
         Ticket newTicket = ticketDao.add(ticket);
         ShoppingCart cart = getByUser(user);
-        List<Ticket> tickets = cart.getTickets();
-        tickets.add(newTicket);
-        cart.setTickets(tickets);
+        cart.getTickets().add(newTicket);
         shoppingCartDao.update(cart);
     }
 
@@ -37,7 +34,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public ShoppingCart getByUser(User user) {
         return shoppingCartDao.getByUser(user).orElseThrow(()
                 -> new DataProcessingException("Can't get a shopping cart by user: " + user,
-                new HibernateException("")));
+                        new HibernateException("")));
     }
 
     @Override
