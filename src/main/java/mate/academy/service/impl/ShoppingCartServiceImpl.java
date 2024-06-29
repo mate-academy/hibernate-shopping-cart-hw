@@ -1,9 +1,9 @@
 package mate.academy.service.impl;
 
+import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
-import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.MovieSession;
@@ -21,8 +21,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void addSession(MovieSession movieSession, User user) {
-        var shoppingCart = shoppingCartDao.getByUser(user).orElseThrow(()
-                -> new DataProcessingException("Shopping cart is empty! (add session method)"));
+        var shoppingCart = getByUser(user);
 
         Ticket ticket = new Ticket(movieSession, user);
         ticketDao.add(ticket);
@@ -33,7 +32,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public ShoppingCart getByUser(User user) {
         return shoppingCartDao.getByUser(user).orElseThrow(()
-                -> new DataProcessingException("Can't find shopping cart by user"));
+                -> new EntityNotFoundException("Can't find shopping cart by user"));
     }
 
     @Override
