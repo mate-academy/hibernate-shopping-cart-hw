@@ -15,11 +15,14 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private ShoppingCart shoppingCart;
+
     @Column(unique = true)
     private String email;
     private String password;
-    @OneToOne(cascade = CascadeType.ALL)
-    private ShoppingCart shoppingCart;
+
     private byte[] salt;
 
     public Long getId() {
@@ -65,9 +68,9 @@ public class User {
     @Override
     public String toString() {
         return "User{"
-                + "id=" + id
-                + ", email='" + email + '\''
-                + '}';
+               + "id=" + id
+               + ", email='" + email + '\''
+               + '}';
     }
 
 }

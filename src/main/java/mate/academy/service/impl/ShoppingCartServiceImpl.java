@@ -75,11 +75,13 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
+
             ShoppingCart shoppingCart = new ShoppingCart();
             shoppingCart.setUser(user);
-            session.save(shoppingCart);
             user.setShoppingCart(shoppingCart);
-            session.update(user);
+
+            session.save(shoppingCart);
+
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {

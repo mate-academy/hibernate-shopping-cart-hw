@@ -65,13 +65,10 @@ public class Main {
         User user = new User();
         user.setEmail("email@mail.com");
         user.setPassword("777");
-        user = userService.add(user);
 
         ShoppingCartService shoppingCartService = (
                 ShoppingCartService) injector.getInstance(ShoppingCartService.class);
         shoppingCartService.registerNewShoppingCart(user);
-        ShoppingCart shoppingCart = shoppingCartService.getCartByUser(user);
-        user.setShoppingCart(shoppingCart);
 
         shoppingCartService.addSession(tomorrowMovieSession, user);
         shoppingCartService.addSession(yesterdayMovieSession, user);
