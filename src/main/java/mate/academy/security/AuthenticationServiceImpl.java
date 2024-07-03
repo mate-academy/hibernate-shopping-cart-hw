@@ -1,6 +1,7 @@
 package mate.academy.security;
 
 import java.util.Optional;
+import jakarta.transaction.Transactional;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
@@ -27,13 +28,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
+    @Transactional
     public User register(String email, String password) throws RegistrationException {
         if (userService.findByEmail(email).isEmpty()) {
             User user = new User();
             user.setEmail(email);
             user.setPassword(password);
-            shoppingCartService.registerNewShoppingCart(user);
             userService.add(user);
+            shoppingCartService.registerNewShoppingCart(user);
             return user;
         }
         throw new RegistrationException("This email is already registered.");
