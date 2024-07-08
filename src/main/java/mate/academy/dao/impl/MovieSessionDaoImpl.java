@@ -30,7 +30,7 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
-            session.persist(movieSession);
+            session.save(movieSession);
             transaction.commit();
             return movieSession;
         } catch (Exception e) {
@@ -60,6 +60,7 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
             criteriaQuery.select(root).where(allConditions);
             root.fetch("movie");
             root.fetch("cinemaHall");
+            criteriaQuery.distinct(true);
             return session.createQuery(criteriaQuery).getResultList();
         } catch (Exception e) {
             throw new DataProcessingException("Can't get available sessions for movie with id: "

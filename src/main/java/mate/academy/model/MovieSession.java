@@ -7,6 +7,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -16,8 +19,10 @@ public class MovieSession {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
+    @Fetch(FetchMode.SUBSELECT)
     private Movie movie;
     @ManyToOne(fetch = FetchType.LAZY)
+    @Fetch(FetchMode.SUBSELECT)
     private CinemaHall cinemaHall;
     private LocalDateTime showTime;
 

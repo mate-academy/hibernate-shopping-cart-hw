@@ -20,7 +20,7 @@ public class CinemaHallDaoImpl implements CinemaHallDao {
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
-            session.persist(cinemaHall);
+            session.save(cinemaHall);
             transaction.commit();
             return cinemaHall;
         } catch (Exception e) {
@@ -50,6 +50,7 @@ public class CinemaHallDaoImpl implements CinemaHallDao {
             CriteriaQuery<CinemaHall> criteriaQuery = session.getCriteriaBuilder()
                     .createQuery(CinemaHall.class);
             criteriaQuery.from(CinemaHall.class);
+            criteriaQuery.distinct(true);
             return session.createQuery(criteriaQuery).getResultList();
         } catch (Exception e) {
             throw new DataProcessingException("Can't get all cinema halls", e);
