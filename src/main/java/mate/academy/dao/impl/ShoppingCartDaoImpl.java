@@ -3,6 +3,7 @@ package mate.academy.dao.impl;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
+import java.util.Optional;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Dao;
@@ -13,9 +14,6 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.criteria.HibernateCriteriaBuilder;
-import org.hibernate.query.criteria.JpaPredicate;
-
-import java.util.Optional;
 
 @Dao
 public class ShoppingCartDaoImpl implements ShoppingCartDao {
@@ -52,7 +50,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             Predicate equalUser = criteriaBuilder.equal(root.get("user"), user);
             query.where(equalUser);
 
-            return  session.createQuery(query).uniqueResultOptional();
+            return session.createQuery(query).uniqueResultOptional();
         } catch (HibernateException e) {
             throw new DataProcessingException("We don't have this user: "
                     + user,e);
