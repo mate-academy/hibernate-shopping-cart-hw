@@ -1,5 +1,6 @@
 package mate.academy.service.impl;
 
+import java.util.Collections;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
 import mate.academy.exception.DataProcessingException;
@@ -11,8 +12,6 @@ import mate.academy.model.Ticket;
 import mate.academy.model.User;
 import mate.academy.service.MovieSessionService;
 import mate.academy.service.ShoppingCartService;
-
-import java.util.Collections;
 
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
