@@ -9,9 +9,8 @@ import mate.academy.model.MovieSession;
 import mate.academy.model.ShoppingCart;
 import mate.academy.model.Ticket;
 import mate.academy.model.User;
+import mate.academy.security.AuthenticationService;
 import mate.academy.service.ShoppingCartService;
-
-import java.util.List;
 
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
@@ -19,9 +18,17 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private ShoppingCartDao shoppingCartDao;
     @Inject
     private TicketDao ticketDao;
+    @Inject
+    private AuthenticationService authenticationService;
 
     @Override
     public void addSession(MovieSession movieSession, User user) {
+        Ticket ticket = new Ticket();
+        ticket.setUser(user);
+        ticket.setMovieSession(movieSession);
+        ticketDao.add(ticket);
+        ShoppingCart byUser = getByUser(user);
+        shoppingCartDao.update(byUser);
     }
 
     @Override
@@ -33,11 +40,16 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void registerNewShoppingCart(User user) {
-
+        ShoppingCart shoppingCart = new ShoppingCart();
+        shoppingCart.setUser(user);
     }
 
     @Override
     public void clear(ShoppingCart shoppingCart) {
-        shoppingCartDao.update(new ShoppingCart());
+        User user = shoppingCart.getUser();
+        ShoppingCart newShoppingCart = new ShoppingCart();
+        newShoppingCart.setUser(user);
+        newShoppingCart.setId(shoppingCart.getId())
+        shoppingCartDao.update(newShoppingCart);
     }
 }
