@@ -9,7 +9,6 @@ import mate.academy.model.MovieSession;
 import mate.academy.model.ShoppingCart;
 import mate.academy.model.Ticket;
 import mate.academy.model.User;
-import mate.academy.security.AuthenticationService;
 import mate.academy.service.ShoppingCartService;
 
 @Service
@@ -18,8 +17,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private ShoppingCartDao shoppingCartDao;
     @Inject
     private TicketDao ticketDao;
-    @Inject
-    private AuthenticationService authenticationService;
 
     @Override
     public void addSession(MovieSession movieSession, User user) {
@@ -42,6 +39,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public void registerNewShoppingCart(User user) {
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setUser(user);
+        shoppingCartDao.add(shoppingCart);
     }
 
     @Override
@@ -49,7 +47,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         User user = shoppingCart.getUser();
         ShoppingCart newShoppingCart = new ShoppingCart();
         newShoppingCart.setUser(user);
-        newShoppingCart.setId(shoppingCart.getId())
+        newShoppingCart.setId(shoppingCart.getId());
         shoppingCartDao.update(newShoppingCart);
     }
 }

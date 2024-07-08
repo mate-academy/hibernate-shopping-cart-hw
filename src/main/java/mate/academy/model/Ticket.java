@@ -11,10 +11,8 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    @Fetch(FetchMode.SUBSELECT)
     private MovieSession movieSession;
     @ManyToOne
-    @Fetch(FetchMode.SUBSELECT)
     private User user;
 
     public Long getId() {

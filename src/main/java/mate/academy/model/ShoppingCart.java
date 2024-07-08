@@ -13,7 +13,6 @@ public class ShoppingCart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @OneToMany
-    @Fetch(FetchMode.SUBSELECT)
     private List<Ticket> tickets;
     @OneToOne
     @MapsId

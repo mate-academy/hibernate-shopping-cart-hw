@@ -21,8 +21,8 @@ import java.util.Optional;
 public class ShoppingCartDaoImpl implements ShoppingCartDao {
     @Override
     public ShoppingCart add(ShoppingCart shoppingCart) {
-        Session session;
-        Transaction transaction;
+        Session session = null;
+        Transaction transaction = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
@@ -30,8 +30,15 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             transaction.commit();
             return shoppingCart;
         } catch (HibernateException e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
             throw new RuntimeException("Can't insert to DB shopping cart: "
                     + shoppingCart,e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
         }
     }
 

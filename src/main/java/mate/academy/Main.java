@@ -3,14 +3,11 @@ package mate.academy;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
-import mate.academy.model.CinemaHall;
-import mate.academy.model.Movie;
-import mate.academy.model.MovieSession;
-import mate.academy.service.CinemaHallService;
-import mate.academy.service.MovieService;
-import mate.academy.service.MovieSessionService;
-import mate.academy.service.ShoppingCartService;
+import mate.academy.model.*;
+import mate.academy.security.AuthenticationService;
+import mate.academy.service.*;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.academy");
@@ -61,5 +58,18 @@ public class Main {
 
         ShoppingCartService shoppingCartService =
                 (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
+        AuthenticationService authenticationService =
+                (AuthenticationService) injector.getInstance(AuthenticationService.class);
+        String email = "12345";
+        String password = "12345_password";
+        User register;
+        try {
+            register = authenticationService.register(email, password);
+        } catch (RegistrationException e) {
+            throw new RuntimeException(e);
+        }
+        shoppingCartService.addSession(tomorrowMovieSession, register);
+        ShoppingCart byUser = shoppingCartService.getByUser(register);
+        shoppingCartService.clear(byUser);
     }
 }

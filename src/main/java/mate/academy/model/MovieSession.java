@@ -19,10 +19,8 @@ public class MovieSession {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
-    @Fetch(FetchMode.SUBSELECT)
     private Movie movie;
     @ManyToOne(fetch = FetchType.LAZY)
-    @Fetch(FetchMode.SUBSELECT)
     private CinemaHall cinemaHall;
     private LocalDateTime showTime;
 
