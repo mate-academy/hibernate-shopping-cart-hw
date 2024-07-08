@@ -9,7 +9,10 @@ import mate.academy.model.MovieSession;
 import mate.academy.model.ShoppingCart;
 import mate.academy.model.Ticket;
 import mate.academy.model.User;
+import mate.academy.service.MovieSessionService;
 import mate.academy.service.ShoppingCartService;
+
+import java.util.Collections;
 
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
@@ -17,26 +20,33 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private ShoppingCartDao shoppingCartDao;
     @Inject
     private TicketDao ticketDao;
+    @Inject
+    private MovieSessionService movieSessionService;
 
     @Override
     public void addSession(MovieSession movieSession, User user) {
         Ticket ticket = new Ticket();
         ticket.setUser(user);
-        ticket.setMovieSession(movieSession);
+        ticket.setMovieSession(movieSessionService
+                .get(movieSession.getId()));
         ticketDao.add(ticket);
-        ShoppingCart byUser = getByUser(user);
-        shoppingCartDao.update(byUser);
+        ShoppingCart shoppingCart = getByUser(user);
+        shoppingCart.getTickets().add(ticket);
+        shoppingCartDao.update(shoppingCart);
     }
 
     @Override
     public ShoppingCart getByUser(User user) {
         return shoppingCartDao.getByUser(user).orElseThrow(
-                () -> new DataProcessingException("No shopping cart found")
+                () -> new DataProcessingException("No shopping cart found for user " + user)
         );
     }
 
     @Override
     public void registerNewShoppingCart(User user) {
+        if (shoppingCartDao.getByUser(user).isPresent()) {
+            throw new DataProcessingException("We already have a shopping cart with user " + user);
+        }
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setUser(user);
         shoppingCartDao.add(shoppingCart);
@@ -44,10 +54,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void clear(ShoppingCart shoppingCart) {
-        User user = shoppingCart.getUser();
-        ShoppingCart newShoppingCart = new ShoppingCart();
-        newShoppingCart.setUser(user);
-        newShoppingCart.setId(shoppingCart.getId());
-        shoppingCartDao.update(newShoppingCart);
+        shoppingCart.setTickets(Collections.emptyList());
+        shoppingCartDao.update(shoppingCart);
     }
 }

@@ -70,14 +70,15 @@ public class Main {
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
         String email = "12345";
         String password = "12345_password";
-        User register;
+        User user;
         try {
-            register = authenticationService.register(email, password);
+            user = authenticationService.register(email, password);
         } catch (RegistrationException e) {
             throw new RuntimeException(e);
         }
-        shoppingCartService.addSession(tomorrowMovieSession, register);
-        ShoppingCart byUser = shoppingCartService.getByUser(register);
-        shoppingCartService.clear(byUser);
+        shoppingCartService.addSession(tomorrowMovieSession, user);
+        System.out.println(shoppingCartService.getByUser(user));
+        shoppingCartService.clear(shoppingCartService.getByUser(user));
+        System.out.println(shoppingCartService.getByUser(user));
     }
 }

@@ -13,7 +13,6 @@ import mate.academy.util.HibernateUtil;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.query.criteria.HibernateCriteriaBuilder;
 
 @Dao
 public class ShoppingCartDaoImpl implements ShoppingCartDao {
@@ -43,14 +42,14 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
     @Override
     public Optional<ShoppingCart> getByUser(User user) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            HibernateCriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-            CriteriaQuery<ShoppingCart> query = criteriaBuilder.createQuery(ShoppingCart.class);
-            Root<ShoppingCart> root = query.from(ShoppingCart.class);
-
-            Predicate equalUser = criteriaBuilder.equal(root.get("user"), user);
-            query.where(equalUser);
-
-            return session.createQuery(query).uniqueResultOptional();
+            return session.createQuery("from ShoppingCart s "
+                            + "left join fetch s.tickets t "
+                            + "left join fetch t.movieSession m "
+                            + "left join fetch m.movie "
+                            + "left join fetch m.cinemaHall "
+                            + "where s.user = :user", ShoppingCart.class)
+                    .setParameter("user", user)
+                    .uniqueResultOptional();
         } catch (HibernateException e) {
             throw new DataProcessingException("We don't have this user: "
                     + user,e);
@@ -64,7 +63,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
-            session.update(shoppingCart);
+            session.merge(shoppingCart);
             transaction.commit();
         } catch (HibernateException e) {
             if (transaction != null) {
