@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "tickets")
-class Ticket {
+public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
