@@ -36,9 +36,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
     @Override
     public Optional<ShoppingCart> getByUser(User user) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("FROM ShoppingCart sc JOIN FETCH "
-                                       + "sc.tickets WHERE sc.user = "
-                                       + ":user",
+            return session.createQuery("FROM ShoppingCart sc WHERE sc.user = :user",
                             ShoppingCart.class)
                     .setParameter("user", user)
                     .uniqueResultOptional();
@@ -48,23 +46,28 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
     }
 
     @Override
-    public void update(ShoppingCart shoppingCart) {
-        Session session = null;
-        Transaction transaction = null;
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            transaction = session.beginTransaction();
-            session.update(shoppingCart);
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
+    public void update(Optional<ShoppingCart> shoppingCartOptional) {
+        if (shoppingCartOptional.isPresent()) {
+            Session session = null;
+            Transaction transaction = null;
+            try {
+                session = HibernateUtil.getSessionFactory().openSession();
+                transaction = session.beginTransaction();
+                ShoppingCart shoppingCart = shoppingCartOptional.get();
+                session.update(shoppingCart);
+                transaction.commit();
+            } catch (Exception e) {
+                if (transaction != null) {
+                    transaction.rollback();
+                }
+                throw new RuntimeException("Can't update shoppingCart: " + shoppingCartOptional, e);
+            } finally {
+                if (session != null) {
+                    session.close();
+                }
             }
-            throw new RuntimeException("Can't update shoppingCart: " + shoppingCart, e);
-        } finally {
-            if (session != null) {
-                session.close();
-            }
+        } else {
+            throw new IllegalArgumentException("Can't update because ShoppingCart is not present");
         }
     }
 }

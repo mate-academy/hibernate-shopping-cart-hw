@@ -65,6 +65,7 @@ public class Main {
         User user = new User();
         user.setEmail("email@mail.com");
         user.setPassword("777");
+        userService.add(user);
 
         ShoppingCartService shoppingCartService = (
                 ShoppingCartService) injector.getInstance(ShoppingCartService.class);
