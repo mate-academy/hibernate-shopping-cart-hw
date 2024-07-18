@@ -9,7 +9,7 @@ public interface ShoppingCartService {
 
     ShoppingCart getByUser(User user);
 
-    void registerNewShoppingCart(ShoppingCart shoppingCart);
+    void registerNewShoppingCart(User user);
 
     void clear(ShoppingCart shoppingCart);
 }

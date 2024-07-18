@@ -36,8 +36,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public void registerNewShoppingCart(ShoppingCart shoppingCart) {
-        shoppingCartDao.add(shoppingCart);
+    public void registerNewShoppingCart(User user) {
+        shoppingCartDao.add(new ShoppingCart(user));
     }
 
     @Override

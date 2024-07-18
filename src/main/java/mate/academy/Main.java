@@ -64,8 +64,8 @@ public class Main {
         System.out.println(movieSessionService.findAvailableSessions(
                 fastAndFurious.getId(), LocalDate.now()));
 
-        String email = "mate@gmail.com";
-        String password = "H1bern@te";
+        String email = "mate223@gmail.com";
+        String password = "Hibern@te";
         AuthenticationService authenticationService = (AuthenticationService) injector
                 .getInstance(AuthenticationService.class);
         User user;

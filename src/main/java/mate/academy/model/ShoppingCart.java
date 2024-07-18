@@ -12,19 +12,26 @@ import jakarta.persistence.Table;
 import java.util.List;
 
 @Entity
-@Table(name = "shoping_carts")
+@Table(name = "shopping_carts")
 public class ShoppingCart {
     @Id
     private Long id;
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "shoping_cart_ticket",
-            joinColumns = @JoinColumn(name = "shoping_cart_id"),
+    @OneToMany
+    @JoinTable(name = "shopping_cart_ticket",
+            joinColumns = @JoinColumn(name = "shopping_cart_id"),
             inverseJoinColumns = @JoinColumn(name = "ticket_id"))
     private List<Ticket> tickets;
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     @JoinColumn(name = "user_id")
     private User user;
+
+    public ShoppingCart() {
+    }
+
+    public ShoppingCart(User user) {
+        this.user = user;
+    }
 
     public Long getId() {
         return id;
