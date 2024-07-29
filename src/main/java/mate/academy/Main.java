@@ -7,6 +7,7 @@ import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.model.User;
 import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
@@ -64,24 +65,19 @@ public class Main {
         AuthenticationService autheticationService =
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
         UserService userService = (UserService) injector.getInstance(UserService.class);
+        User hardcodedUser = null;
         try {
-            autheticationService.register("testemail@domain", "testpass");
+            hardcodedUser = autheticationService.register("testemail@domain", "testpass");
         } catch (RegistrationException e) {
             throw new RuntimeException("Cannot register user", e);
         }
 
         ShoppingCartService shoppingCartService =
                 (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
-        shoppingCartService.addSession(yesterdayMovieSession, userService
-                .findByEmail("testemail@domain").get());
-        shoppingCartService.addSession(tomorrowMovieSession, userService
-                .findByEmail("testemail@domain").get());
-        System.out.println(shoppingCartService.getByUser(userService
-                .findByEmail("testemail@domain").get()).getTickets());
-        shoppingCartService.clear(shoppingCartService.getByUser(userService
-                .findByEmail("testemail@domain").get()));
-        System.out.println(shoppingCartService.getByUser(userService
-                .findByEmail("testemail@domain").get()).getTickets().size());
-
+        shoppingCartService.addSession(yesterdayMovieSession, hardcodedUser);
+        shoppingCartService.addSession(tomorrowMovieSession, hardcodedUser);
+        System.out.println(shoppingCartService.getByUser(hardcodedUser).getTickets());
+        shoppingCartService.clear(shoppingCartService.getByUser(hardcodedUser));
+        System.out.println(shoppingCartService.getByUser(hardcodedUser).getTickets().size());
     }
 }
