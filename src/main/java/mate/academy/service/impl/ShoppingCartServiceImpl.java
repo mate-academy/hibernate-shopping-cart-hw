@@ -24,15 +24,22 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         ticket.setMovieSession(movieSession);
         ticket.setUser(user);
 
-        ShoppingCart shoppingCart = getByUser(user);
+        ShoppingCart shoppingCart = shoppingCartDao.getByUser(user).orElseGet(() -> {
+            ShoppingCart newCart = new ShoppingCart();
+            newCart.setUser(user);
+            shoppingCartDao.add(newCart);
+            return newCart;
+        });
+
         shoppingCart.getTickets().add(ticket);
+        ticketDao.add(ticket);
         shoppingCartDao.update(shoppingCart);
     }
 
     @Override
     public ShoppingCart getByUser(User user) {
         return shoppingCartDao.getByUser(user).orElseThrow(
-                () -> new EntityNotFoundException("DB don't have shopping cart with such user_id = "
+                () -> new EntityNotFoundException("DB doesn't have a shopping cart with user_id = "
                         + user.getId()));
     }
 
