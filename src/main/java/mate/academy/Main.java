@@ -65,19 +65,19 @@ public class Main {
         AuthenticationService autheticationService =
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
         UserService userService = (UserService) injector.getInstance(UserService.class);
-        User hardcodedUser = null;
+        User testUser = null;
         try {
-            hardcodedUser = autheticationService.register("testemail@domain", "testpass");
+            testUser = autheticationService.register("testemail@domain", "testpass");
         } catch (RegistrationException e) {
             throw new RuntimeException("Cannot register user", e);
         }
 
         ShoppingCartService shoppingCartService =
                 (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
-        shoppingCartService.addSession(yesterdayMovieSession, hardcodedUser);
-        shoppingCartService.addSession(tomorrowMovieSession, hardcodedUser);
-        System.out.println(shoppingCartService.getByUser(hardcodedUser).getTickets());
-        shoppingCartService.clear(shoppingCartService.getByUser(hardcodedUser));
-        System.out.println(shoppingCartService.getByUser(hardcodedUser).getTickets().size());
+        shoppingCartService.addSession(yesterdayMovieSession, testUser);
+        shoppingCartService.addSession(tomorrowMovieSession, testUser);
+        System.out.println(shoppingCartService.getByUser(testUser).getTickets());
+        shoppingCartService.clear(shoppingCartService.getByUser(testUser));
+        System.out.println(shoppingCartService.getByUser(testUser).getTickets().size());
     }
 }
