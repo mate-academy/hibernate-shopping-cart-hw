@@ -10,7 +10,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "ticket")
+@Table(name = "tickets")
 public class Ticket {
 
     @Id
@@ -34,7 +34,7 @@ public class Ticket {
     public Ticket() {
     }
 
-    public Ticket(String cinemaName, int price) {
+    public Ticket(MovieSession movieSession, User user) {
     }
 
     public Long getId() {

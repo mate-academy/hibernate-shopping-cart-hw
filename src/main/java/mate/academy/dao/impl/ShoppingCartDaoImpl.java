@@ -1,72 +1,82 @@
 package mate.academy.dao.impl;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Optional;
 import mate.academy.dao.ShoppingCartDao;
+import mate.academy.exception.DataProcessingException;
+import mate.academy.lib.Dao;
 import mate.academy.model.ShoppingCart;
 import mate.academy.model.User;
+import mate.academy.util.HibernateUtil;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
+@Dao
 public class ShoppingCartDaoImpl implements ShoppingCartDao {
-
-    private final Connection connection;
-
-    public ShoppingCartDaoImpl(Connection connection) {
-        this.connection = connection;
-    }
 
     @Override
     public ShoppingCart add(ShoppingCart shoppingCart) {
-        try (PreparedStatement statement = connection.prepareStatement(
-                "INSERT INTO shopping_cart (user_id) VALUES (?)",
-                PreparedStatement.RETURN_GENERATED_KEYS)) {
-            statement.setLong(1, shoppingCart.getUser().getId());
-            int rowsAffected = statement.executeUpdate();
-            if (rowsAffected > 0) {
-                try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
-                    if (generatedKeys.next()) {
-                        shoppingCart.setId(generatedKeys.getLong(1));
-                    }
-                }
+        Session session = null;
+        Transaction transaction = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            transaction = session.beginTransaction();
+            session.refresh(shoppingCart.getUser());
+            session.persist(shoppingCart);
+            transaction.commit();
+            return shoppingCart;
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
             }
-        } catch (SQLException e) {
-            throw new RuntimeException("Failed to insert shopping cart", e);
+            throw new DataProcessingException("Can't add shopping cart: " + shoppingCart, e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
         }
-        return shoppingCart;
     }
 
     @Override
-    public Optional<ShoppingCart> getByUser(User user) {
-        try (PreparedStatement statement = connection.prepareStatement(
-                "SELECT * FROM shopping_cart WHERE user_id =?")) {
-            statement.setLong(1, user.getId());
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                ShoppingCart shoppingCart = new ShoppingCart();
-                shoppingCart.setId(resultSet.getLong("id"));
-                shoppingCart.setUser(user); // Assuming you have a setter for User
-                return Optional.of(shoppingCart);
+    public ShoppingCart getByUser(User user) {
+        Session session = null;
+        Transaction transaction = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            transaction = session.beginTransaction();
+            Query<User> query = session.createQuery("FROM User WHERE id = :userId", User.class);
+            query.setParameter("userId", user);
+            transaction.commit();
+            return user;
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
             }
-        } catch (SQLException e) {
-            throw new RuntimeException("Failed to find shopping cart by user", e);
+            throw new DataProcessingException("Failed to find user by ID", e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
         }
-        return Optional.empty();
     }
 
     @Override
     public void update(ShoppingCart shoppingCart) {
-        try (PreparedStatement statement = connection.prepareStatement(
-                "UPDATE shopping_cart SET user_id =? WHERE id =?")) {
-            statement.setLong(1, shoppingCart.getUser().getId());
-            statement.setLong(2, shoppingCart.getId());
-            int rowsAffected = statement.executeUpdate();
-            if (rowsAffected == 0) {
-                throw new RuntimeException("Failed to update shopping cart");
+        Session session = null;
+        Transaction transaction = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            transaction = session.beginTransaction();
+            session.update(shoppingCart);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
             }
-        } catch (SQLException e) {
             throw new RuntimeException("Failed to update shopping cart", e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
         }
     }
 }
