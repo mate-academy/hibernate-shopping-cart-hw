@@ -2,9 +2,6 @@ package mate.academy.service.impl;
 
 import jakarta.persistence.EntityNotFoundException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
 import mate.academy.lib.Inject;
@@ -24,31 +21,20 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void addSession(MovieSession movieSession, User user) {
-        Optional<ShoppingCart> shoppingCartByUserOptional = shoppingCartDao.getByUser(user);
-        if (shoppingCartByUserOptional.isPresent()) {
-            Ticket newTicket = new Ticket();
-            newTicket.setMovieSession(movieSession);
-            newTicket.setUser(user);
-            ticketDao.add(newTicket);
-            ShoppingCart shoppingCartByUser = shoppingCartByUserOptional.get();
-            List<Ticket> tickets = shoppingCartByUser.getTickets();
-            tickets.add(newTicket);
-            shoppingCartByUser.setTickets(tickets);
-            shoppingCartDao.update(shoppingCartByUser);
-        } else {
-            throw new EntityNotFoundException("No shopping cart was found by user: "
-                    + user);
-        }
+        Ticket newTicket = new Ticket();
+        newTicket.setMovieSession(movieSession);
+        newTicket.setUser(user);
+        ticketDao.add(newTicket);
+        ShoppingCart shoppingCart = getByUser(user);
+        shoppingCart.getTickets().add(newTicket);
+        shoppingCartDao.update(shoppingCart);
     }
 
     @Override
     public ShoppingCart getByUser(User user) {
-        Optional<ShoppingCart> shoppingCartByUserOptional = shoppingCartDao.getByUser(user);
-        if (shoppingCartByUserOptional.isPresent()) {
-            return shoppingCartByUserOptional.get();
-        }
-        throw new EntityNotFoundException("There is no shopping cart by user: "
-                                            + user);
+        return shoppingCartDao.getByUser(user)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "There is no shopping cart by user: " + user));
     }
 
     @Override
@@ -61,7 +47,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void clear(ShoppingCart shoppingCart) {
-        shoppingCart.setTickets(Collections.emptyList());
-        shoppingCartDao.update(shoppingCart);
+        shoppingCart.getTickets().clear();
     }
 }
