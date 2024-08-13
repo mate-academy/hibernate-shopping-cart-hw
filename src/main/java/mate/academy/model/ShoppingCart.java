@@ -25,6 +25,7 @@ public class ShoppingCart {
     private List<Ticket> tickets;
 
     @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     @MapsId
     private User user;
 

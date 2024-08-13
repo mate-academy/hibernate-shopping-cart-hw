@@ -21,9 +21,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void addSession(MovieSession movieSession, User user) {
-        final ShoppingCart shoppingCartFromDB = shoppingCartDao.getByUser(user).orElseThrow(()
-                -> new EntityNotFoundException("The shopping cart isn't exist in DB for this "
-                + "user: " + user));
+        final ShoppingCart shoppingCartFromDB = getByUser(user);
         Ticket ticket = new Ticket();
         ticket.setUser(user);
         ticket.setMovieSession(movieSession);
