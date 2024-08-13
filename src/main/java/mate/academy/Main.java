@@ -19,25 +19,20 @@ public class Main {
             (UserService) injector.getInstance(UserService.class);
 
     public static void main(String[] args) {
-        // Створюємо та зберігаємо користувача, якщо його ще немає в базі даних
         User user = new User();
         user.setEmail("test@example.com");
         user.setPassword("qwerty");
-        user = userService.add(user); // Зберігаємо користувача
+        user = userService.add(user);
 
         MovieSession movieSession = new MovieSession();
         movieSession.setShowTime(LocalDateTime.now());
 
-        // Зберігаємо MovieSession перед тим, як додати його до квитка
         movieSession = movieSessionService.add(movieSession);
 
-        // Реєструємо новий кошик для користувача
         shoppingCartService.registerNewShoppingCart(user);
 
-        // Додаємо сеанс до кошика покупок
         shoppingCartService.addSession(movieSession, user);
 
-        // Отримуємо оновлений кошик покупок користувача
         ShoppingCart shoppingCart = shoppingCartService.getByUser(user);
         System.out.println("Shopping Cart for user: " + user.getEmail());
         shoppingCart.getTickets().forEach(System.out::println);
