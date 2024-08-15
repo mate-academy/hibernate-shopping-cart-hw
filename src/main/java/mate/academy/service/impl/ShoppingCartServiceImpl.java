@@ -23,6 +23,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public void addSession(MovieSession movieSession, User user) {
         Ticket ticket = new Ticket(movieSession, user);
         ticketDao.add(ticket);
+        ShoppingCart userShCart = getByUser(user);
+        userShCart.getTickets().add(ticket);
+        shoppingCartDao.update(userShCart);
     }
 
     @Override
@@ -40,6 +43,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void clear(ShoppingCart shoppingCart) {
-        shoppingCart.setTickets(new ArrayList<>());
+        shoppingCart.getTickets().clear();
+        shoppingCartDao.update(shoppingCart);
     }
 }
