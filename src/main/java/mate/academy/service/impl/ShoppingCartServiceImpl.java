@@ -4,7 +4,6 @@ import jakarta.persistence.EntityNotFoundException;
 import java.util.Collections;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
-import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.MovieSession;
@@ -35,13 +34,12 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public ShoppingCart getByUser(User user) {
         return shoppingCartDao.getByUser(user).orElseThrow(()
                 -> new EntityNotFoundException("Can't found shopping cart by user: " + user));
-
     }
 
     @Override
     public void registerNewShoppingCart(User user) {
         if (shoppingCartDao.getByUser(user).isPresent()) {
-            throw new DataProcessingException("Shopping cart for user '"
+            throw new EntityNotFoundException("Shopping cart for user '"
                     + user + "' already exists");
         }
         ShoppingCart shoppingCart = new ShoppingCart();
