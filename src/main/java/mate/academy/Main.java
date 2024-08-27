@@ -7,7 +7,6 @@ import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
 import mate.academy.model.User;
-import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
@@ -65,27 +64,17 @@ public class Main {
         bob.setEmail("bob1234@gmail.com");
         bob.setPassword("qwerty");
 
-        AuthenticationService authenticationService =
-                (AuthenticationService) INJECTOR.getInstance(AuthenticationService.class);
-
-        User bobFromDb;
-        try {
-            bobFromDb = authenticationService.register(bob.getEmail(), bob.getPassword());
-        } catch (Exception e) {
-            throw new RuntimeException("Can't register user " + bob, e);
-        }
-
         ShoppingCartService shoppingCartService =
                 (ShoppingCartService) INJECTOR.getInstance(ShoppingCartService.class);
 
-        shoppingCartService.registerNewShoppingCart(bobFromDb);
+        shoppingCartService.registerNewShoppingCart(bob);
 
-        shoppingCartService.addSession(tomorrowMovieSession, bobFromDb);
+        shoppingCartService.addSession(tomorrowMovieSession, bob);
 
-        System.out.println(shoppingCartService.getByUser(bobFromDb));
+        System.out.println(shoppingCartService.getByUser(bob));
 
-        shoppingCartService.clear(shoppingCartService.getByUser(bobFromDb));
+        shoppingCartService.clear(shoppingCartService.getByUser(bob));
 
-        System.out.println(shoppingCartService.getByUser(bobFromDb));
+        System.out.println(shoppingCartService.getByUser(bob));
     }
 }
