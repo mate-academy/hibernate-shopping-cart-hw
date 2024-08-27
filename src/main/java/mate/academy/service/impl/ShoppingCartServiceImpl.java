@@ -1,7 +1,6 @@
 package mate.academy.service.impl;
 
 import jakarta.persistence.EntityNotFoundException;
-import java.util.List;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
 import mate.academy.dao.impl.ShoppingCartDaoImpl;
@@ -17,6 +16,8 @@ import mate.academy.service.ShoppingCartService;
 public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Inject
     private ShoppingCartDao shoppingCartDao;
+    @Inject
+    private TicketDao ticketDao;
 
     @Override
     public void addSession(MovieSession movieSession, User user) {
@@ -25,7 +26,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         ticket.setUser(user);
         ShoppingCart shoppingCart = getByUser(user);
         shoppingCart.getTickets()
-            .add(ticket);
+                .add(ticketDao.add(ticket));
         shoppingCartDao.update(shoppingCart);
     }
 
