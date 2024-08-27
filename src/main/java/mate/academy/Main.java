@@ -17,8 +17,8 @@ import mate.academy.service.ShoppingCartService;
 import mate.academy.service.UserService;
 
 public class Main {
+    private static final Injector injector = Injector.getInstance("mate.academy");
     public static void main(String[] args) {
-        Injector injector = Injector.getInstance("mate.academy");
 
         MovieService movieService = (MovieService)
                 injector.getInstance(MovieService.class);
@@ -64,21 +64,9 @@ public class Main {
         System.out.println(movieSessionService.findAvailableSessions(
                 fastAndFurious.getId(), LocalDate.now()));
 
-        User userAnton = new User();
-        userAnton.setEmail("anton@gmail.com");
-        userAnton.setPassword("password");
-
-        UserService userService = (UserService)
-                injector.getInstance(UserService.class);
-        userService.add(userAnton);
-
-        ShoppingCartService shoppingCartService = (ShoppingCartService)
-                injector.getInstance(ShoppingCartService.class);
-        shoppingCartService.registerNewShoppingCart(userAnton);
-
-        ShoppingCart shoppingCart = shoppingCartService.getByUser(userAnton);
-        shoppingCart.getTickets().forEach(System.out::println);
-        shoppingCartService.addSession(tomorrowMovieSession, userAnton);
+        User user = new User();
+        user.setEmail("anton@gmail.com");
+        user.setPassword("password");
 
         AuthenticationService authenticationService = (AuthenticationService)
                 injector.getInstance(AuthenticationService.class);
@@ -87,6 +75,13 @@ public class Main {
         } catch (RegistrationException e) {
             throw new RuntimeException("Can't register user", e);
         }
-        shoppingCartService.clear(shoppingCartService.getByUser(userAnton));
+
+        ShoppingCartService shoppingCartService = (ShoppingCartService)
+                injector.getInstance(ShoppingCartService.class);
+
+        shoppingCartService.addSession(tomorrowMovieSession, user);
+        ShoppingCart shoppingCart = shoppingCartService.getByUser(user);
+        shoppingCart.getTickets().forEach(System.out::println);
+        shoppingCartService.clear(shoppingCartService.getByUser(user));
     }
 }
