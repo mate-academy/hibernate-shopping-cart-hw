@@ -39,4 +39,11 @@ public class CinemaHall {
         this.description = description;
     }
 
+    @Override
+    public String toString() {
+        return "CinemaHall{"
+                + "capacity=" + capacity
+                + ", description='" + description + '\''
+                + '}';
+    }
 }

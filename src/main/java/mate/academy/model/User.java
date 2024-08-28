@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.util.Arrays;
 
 @Entity
 @Table(name = "users")
@@ -50,4 +51,12 @@ public class User {
         this.salt = salt;
     }
 
+    @Override
+    public String toString() {
+        return "User{"
+                + "email='" + email + '\''
+                + ", password='" + password + '\''
+                + ", salt=" + Arrays.toString(salt)
+                + '}';
+    }
 }
