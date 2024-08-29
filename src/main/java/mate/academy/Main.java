@@ -67,15 +67,15 @@ public class Main {
         AuthenticationService authService = (AuthenticationService) injector
                 .getInstance(AuthenticationService.class);
         authService.register("userTest@mail.com", "Test1234");
-        User logined = authService.login("userTest@mail.com", "Test1234");
-        System.out.println(logined);
+        User user = authService.login("userTest@mail.com", "Test1234");
+        System.out.println(user);
 
         ShoppingCartService cartService = (ShoppingCartService) injector
                 .getInstance(ShoppingCartService.class);
-        cartService.addSession(yesterdayMovieSession, logined);
-        cartService.addSession(tomorrowMovieSession, logined);
+        cartService.addSession(yesterdayMovieSession, user);
+        cartService.addSession(tomorrowMovieSession, user);
 
-        ShoppingCart shoppingCart = cartService.getByUser(logined);
+        ShoppingCart shoppingCart = cartService.getByUser(user);
         System.out.println(shoppingCart.getTickets());
 
         cartService.clear(shoppingCart);
