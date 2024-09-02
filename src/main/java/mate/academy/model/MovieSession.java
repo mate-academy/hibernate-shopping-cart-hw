@@ -21,6 +21,14 @@ public class MovieSession {
     private CinemaHall cinemaHall;
     private LocalDateTime showTime;
 
+    public MovieSession() {
+    }
+
+    public MovieSession(Movie movie, CinemaHall cinemaHall) {
+        this.movie = movie;
+        this.cinemaHall = cinemaHall;
+    }
+
     public Long getId() {
         return id;
     }
