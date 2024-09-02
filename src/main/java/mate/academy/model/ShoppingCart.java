@@ -13,5 +13,21 @@ public class ShoppingCart {
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "shopping_cart_id")
     private List<Ticket> tickets;
-    private User uses;
+    private User user;
+
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }
