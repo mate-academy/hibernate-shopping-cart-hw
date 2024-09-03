@@ -12,7 +12,7 @@ import jakarta.persistence.Table;
 import java.util.List;
 
 @Entity
-@Table(name = "shopping_cards")
+@Table(name = "shopping_carts")
 public class ShoppingCart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +24,10 @@ public class ShoppingCart {
     private List<Ticket> tickets;
 
     public ShoppingCart() {
+    }
+
+    public ShoppingCart(User user) {
+        this.user = user;
     }
 
     public ShoppingCart(User user, List<Ticket> tickets) {

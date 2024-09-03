@@ -1,12 +1,10 @@
 package mate.academy.security;
 
-import java.util.ArrayList;
 import java.util.Optional;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
-import mate.academy.model.ShoppingCart;
 import mate.academy.model.User;
 import mate.academy.service.ShoppingCartService;
 import mate.academy.service.UserService;
@@ -36,8 +34,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             user.setEmail(email);
             user.setPassword(password);
             userService.add(user);
-            ShoppingCart shoppingCart = new ShoppingCart(user, new ArrayList<>());
-            shoppingCartService.registerNewShoppingCart(shoppingCart);
+            shoppingCartService.registerNewShoppingCart(user);
             return user;
         }
         throw new RegistrationException("This email is already registered.");

@@ -2,93 +2,73 @@ package mate.academy.dao.impl;
 
 import java.util.Optional;
 import mate.academy.dao.ShoppingCartDao;
-import mate.academy.dao.TicketDao;
 import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Dao;
-import mate.academy.lib.Inject;
 import mate.academy.model.ShoppingCart;
-import mate.academy.model.Ticket;
 import mate.academy.model.User;
 import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 @Dao
 public class ShoppingCartDaoImpl implements ShoppingCartDao {
-    @Inject
-    private TicketDao ticketDao;
 
     @Override
-    public void addTicket(Ticket ticket) {
-        ticketDao.add(ticket);
-    }
-
-    @Override
-    public Optional<ShoppingCart> getByUser(User user) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("from ShoppingCart "
-                            + "where user = :user")
-                    .setParameter("user", user)
-                    .uniqueResultOptional();
-        } catch (Exception e) {
-            throw new DataProcessingException("Can't get shopping cart by user " + user, e);
-        }
-    }
-
-    @Override
-    public void update(ShoppingCart cart) {
-        Transaction transaction = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
-            ShoppingCart oldCart = getByUser(cart.getUser()).get();
-            oldCart.setUser(cart.getUser());
-            oldCart.setTickets(cart.getTickets());
-            session.merge(oldCart);
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            throw new DataProcessingException("Can't update shopping cart " + cart, e);
-        }
-    }
-
-    @Override
-    public void register(ShoppingCart cart) {
+    public ShoppingCart add(ShoppingCart shoppingCart) {
         Session session = null;
         Transaction transaction = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
-            session.save(cart);
+            session.save(shoppingCart);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Can't register new shopping cart " + cart, e);
+            throw new DataProcessingException("Can't add shopping cart " + shoppingCart, e);
         } finally {
             if (session != null) {
                 session.close();
             }
         }
+        return shoppingCart;
     }
 
     @Override
-    public void clear(ShoppingCart shoppingCart) {
-        Transaction transaction = null;
+    public Optional<ShoppingCart> getByUser(User user) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Query<ShoppingCart> shoppingCartQuery = session.createQuery(
+                    "from ShoppingCart s "
+                    + " left join fetch s.tickets t "
+                    + " left join fetch t.movieSession m "
+                    + " left join fetch m.movie "
+                    + " left join fetch m.cinemaHall "
+                    + " where s.user = :user", ShoppingCart.class);
+            shoppingCartQuery.setParameter("user", user);
+            return shoppingCartQuery.uniqueResultOptional();
+        }
+    }
+
+    @Override
+    public void update(ShoppingCart shoppingCart) {
+        Session session = null;
+        Transaction transaction = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
-            ShoppingCart oldCart = getByUser(shoppingCart.getUser()).get();
-            oldCart.setTickets(null);
-            oldCart.setUser(null);
-            session.merge(oldCart);
+            session.merge(shoppingCart);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Can't clear shopping cart " + shoppingCart, e);
+            throw new DataProcessingException("Can't update shopping cart " + shoppingCart, e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
         }
     }
 }
