@@ -18,16 +18,13 @@ public class Ticket {
     private MovieSession movieSession;
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
-    @ManyToOne(fetch = FetchType.LAZY)
-    private ShoppingCart shoppingCart;
 
     public Ticket() {
     }
 
-    public Ticket(MovieSession movieSession, User user, ShoppingCart shoppingCart) {
+    public Ticket(MovieSession movieSession, User user) {
         this.movieSession = movieSession;
         this.user = user;
-        this.shoppingCart = shoppingCart;
     }
 
     public Long getId() {
@@ -52,14 +49,6 @@ public class Ticket {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public ShoppingCart getShoppingCart() {
-        return shoppingCart;
-    }
-
-    public void setShoppingCart(ShoppingCart shoppingCart) {
-        this.shoppingCart = shoppingCart;
     }
 
     @Override

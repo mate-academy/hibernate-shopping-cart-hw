@@ -19,7 +19,7 @@ public class ShoppingCart {
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     private User user;
-    @OneToMany(mappedBy = "shoppingCart", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Ticket> tickets = new ArrayList<>();
 
     public ShoppingCart() {
