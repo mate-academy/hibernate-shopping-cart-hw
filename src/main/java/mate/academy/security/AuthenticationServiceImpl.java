@@ -1,6 +1,5 @@
 package mate.academy.security;
 
-import jakarta.persistence.EntityNotFoundException;
 import java.util.Optional;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
@@ -34,11 +33,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             user.setEmail(email);
             user.setPassword(password);
             userService.add(user);
-            shoppingCartService
-                    .registerNewShoppingCart(userService
-                            .findByEmail(user.getEmail())
-                            .orElseThrow(() -> new EntityNotFoundException(
-                                    "Can't find user for registration shopping cart")));
+            shoppingCartService.registerNewShoppingCart(user);
             return user;
         }
         throw new RegistrationException("This email is already registered.");
