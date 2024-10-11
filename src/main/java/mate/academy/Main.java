@@ -16,8 +16,6 @@ public class Main {
     private static final Injector injector = Injector.getInstance("mate.academy");
 
     public static void main(String[] args) {
-        //Please help I left comments where I have problems
-
         MovieService movieService = (MovieService) injector
                 .getInstance(MovieService.class);
 
@@ -68,19 +66,8 @@ public class Main {
         ShoppingCartService shoppingCartService = (ShoppingCartService) injector
                 .getInstance(ShoppingCartService.class);
         shoppingCartService.registerNewShoppingCart(bob);
-
-        // Getting by user gives me Transient Object Exception,
-        // object references an unsaved transient instance
-        // - save the transient instance before flushing
-        // mate.academy.model.User
         System.out.println(shoppingCartService.getByUser(bob));
-
-        //Adding session gives detached entity passed to persist:
-        // mate.academy.model.MovieSession
         shoppingCartService.addSession(tomorrowMovieSession, bob);
-
-        //I don't really know how clear method should work because
-        // there is no clear method in ShoppingCartDaoImpl, only Update
         shoppingCartService.clear(shoppingCartService.getByUser(bob));
     }
 }
