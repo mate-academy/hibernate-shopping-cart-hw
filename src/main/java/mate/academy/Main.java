@@ -1,8 +1,6 @@
 package mate.academy;
 
-import mate.academy.dao.MovieDao;
 import mate.academy.dao.MovieSessionDao;
-import mate.academy.dao.impl.MovieDaoImpl;
 import mate.academy.dao.impl.MovieSessionDaoImpl;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
