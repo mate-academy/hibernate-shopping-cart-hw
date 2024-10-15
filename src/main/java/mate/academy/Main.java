@@ -19,8 +19,6 @@ public class Main {
         ShoppingCartService shoppingCartService
                 = (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
         MovieSessionDao movieSessionDao = new MovieSessionDaoImpl();
-
-        MovieDao movieDao = new MovieDaoImpl();
         User register = authenticationService.register("bob228@gmail.com", "123456");
         shoppingCartService.addSession(movieSessionDao.get(1L).get(), register);
     }
