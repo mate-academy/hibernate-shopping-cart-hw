@@ -15,10 +15,10 @@ import mate.academy.service.UserService;
 import mate.academy.util.HashUtil;
 
 public class Main {
-    public static void main(String[] args) {
-        Injector injector = Injector
-                .getInstance("src/main/java/mate/academy/service");
+    private static final Injector injector = Injector
+            .getInstance("mate.academy");
 
+    public static void main(String[] args) {
         MovieService movieService = (MovieService) injector
                 .getInstance(MovieService.class);
 
