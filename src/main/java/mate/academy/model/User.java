@@ -18,10 +18,6 @@ public class User {
     @Column(unique = true)
     private String email;
     private String password;
-    @OneToOne(mappedBy = "user",
-            cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}
-    )
-    private ShoppingCart shoppingCart;
     private byte[] salt;
 
     public Long getId() {
@@ -56,14 +52,6 @@ public class User {
         this.salt = salt;
     }
 
-    public ShoppingCart getShoppingCart() {
-        return shoppingCart;
-    }
-
-    public void setShoppingCart(ShoppingCart shoppingCart) {
-        this.shoppingCart = shoppingCart;
-    }
-
     @Override
     public String toString() {
         return "User{"
@@ -72,8 +60,6 @@ public class User {
                 + ", email='"
                 + email
                 + '\''
-                + ", shoppingCart="
-                + shoppingCart
                 + '}';
     }
 }
