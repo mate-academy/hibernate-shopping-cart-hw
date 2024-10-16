@@ -73,13 +73,8 @@ public class User {
                 + ", email='"
                 + email
                 + '\''
-                + ", password='"
-                + password
-                + '\''
                 + ", shoppingCart="
                 + shoppingCart
-                + ", salt="
-                + Arrays.toString(salt)
                 + '}';
     }
 }
