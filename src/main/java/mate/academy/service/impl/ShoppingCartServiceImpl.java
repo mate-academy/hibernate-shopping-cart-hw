@@ -14,7 +14,7 @@ import mate.academy.service.ShoppingCartService;
 public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Inject
     private static ShoppingCartDao shoppingCartDao;
-    private ShoppingCart shoppingCart = new ShoppingCart();
+    //private ShoppingCart shoppingCart = new ShoppingCart();
 
     @Override
     public void addSession(MovieSession movieSession, User user) {
@@ -38,6 +38,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void registerNewShoppingCart(User user) {
+        ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setUser(user);
         shoppingCart.setTickets(new ArrayList<>());
         shoppingCartDao.add(shoppingCart);

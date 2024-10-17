@@ -1,10 +1,5 @@
 package mate.academy.dao.impl;
 
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.CriteriaUpdate;
-import jakarta.persistence.criteria.JoinType;
-import jakarta.persistence.criteria.Root;
 import java.util.Optional;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.exception.DataProcessingException;
@@ -14,6 +9,7 @@ import mate.academy.model.User;
 import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 @Dao
 public class ShoppingCartDaoImpl implements ShoppingCartDao {
@@ -24,7 +20,8 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
-            session.persist(shoppingCart);
+            session.merge(shoppingCart);
+            //session.persist(shoppingCart);
             transaction.commit();
             return shoppingCart;
         } catch (Exception e) {
@@ -42,23 +39,45 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
     @Override
     public Optional<ShoppingCart> getByUser(User user) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        /*CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
         CriteriaQuery<ShoppingCart> query = criteriaBuilder.createQuery(ShoppingCart.class);
         Root<ShoppingCart> scRoot = query.from(ShoppingCart.class);
         scRoot.fetch("tickets", JoinType.LEFT);
         query.distinct(true).select(scRoot).where(criteriaBuilder.equal(scRoot.get("user"), user));
-        return session.createQuery(query).getResultStream().findFirst();
+        return session.createQuery(query).getResultStream().findFirst();*/
+        Query<ShoppingCart> query = session.createQuery(("FROM ShoppingCart shc "
+                + "left join fetch shc.user u left join fetch  shc.tickets t "
+                + "WHERE u.id = :id").formatted(), ShoppingCart.class);
+        query.setParameter("id", user.getId());
+        return query.uniqueResultOptional();
     }
 
     @Override
     public void update(ShoppingCart shoppingCart) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        /*Session session = HibernateUtil.getSessionFactory().openSession();
         CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
         CriteriaUpdate<ShoppingCart> update
                 = criteriaBuilder.createCriteriaUpdate(ShoppingCart.class);
         Root<ShoppingCart> root = update.from(ShoppingCart.class);
         update.set("user", shoppingCart.getUser());
         update.set("tickets", shoppingCart.getTickets());
-        update.where(criteriaBuilder.equal(root.get("id"), shoppingCart.getId()));
+        update.where(criteriaBuilder.equal(root.get("id"), shoppingCart.getId()));*/
+        Transaction transaction = null;
+        Session session = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            transaction = session.beginTransaction();
+            session.merge(shoppingCart);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            throw new DataProcessingException("Can't update shoppingCart " + shoppingCart, e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
     }
 }
