@@ -23,10 +23,6 @@ public class Ticket {
     @JoinColumn(name = "owner_id")
     private User user;
 
-    public Ticket() {
-
-    }
-
     public Long getId() {
         return id;
     }

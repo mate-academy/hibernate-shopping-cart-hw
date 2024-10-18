@@ -20,8 +20,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
-            session.merge(shoppingCart);
-            //session.persist(shoppingCart);
+            session.save(shoppingCart);
             transaction.commit();
             return shoppingCart;
         } catch (Exception e) {
@@ -39,12 +38,6 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
     @Override
     public Optional<ShoppingCart> getByUser(User user) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        /*CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-        CriteriaQuery<ShoppingCart> query = criteriaBuilder.createQuery(ShoppingCart.class);
-        Root<ShoppingCart> scRoot = query.from(ShoppingCart.class);
-        scRoot.fetch("tickets", JoinType.LEFT);
-        query.distinct(true).select(scRoot).where(criteriaBuilder.equal(scRoot.get("user"), user));
-        return session.createQuery(query).getResultStream().findFirst();*/
         Query<ShoppingCart> query = session.createQuery(("FROM ShoppingCart shc "
                 + "left join fetch shc.user u left join fetch  shc.tickets t "
                 + "WHERE u.id = :id").formatted(), ShoppingCart.class);
@@ -54,14 +47,6 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
 
     @Override
     public void update(ShoppingCart shoppingCart) {
-        /*Session session = HibernateUtil.getSessionFactory().openSession();
-        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-        CriteriaUpdate<ShoppingCart> update
-                = criteriaBuilder.createCriteriaUpdate(ShoppingCart.class);
-        Root<ShoppingCart> root = update.from(ShoppingCart.class);
-        update.set("user", shoppingCart.getUser());
-        update.set("tickets", shoppingCart.getTickets());
-        update.where(criteriaBuilder.equal(root.get("id"), shoppingCart.getId()));*/
         Transaction transaction = null;
         Session session = null;
         try {
