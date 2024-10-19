@@ -64,16 +64,16 @@ public class Main {
         System.out.println(movieSessionService.findAvailableSessions(
                 fastAndFurious.getId(), LocalDate.now()));
 
-        User firstUser = new User();
-        firstUser.setEmail("bububu@gmail.com");
-        firstUser.setPassword("12345678");
-        userService.add(firstUser);
+        User seconduser = new User();
+        seconduser.setEmail("urulu@gmail.com");
+        seconduser.setPassword("12345678");
+        userService.add(seconduser);
 
-        cartService.registerNewShoppingCart(firstUser);
-        cartService.addSession(yesterdayMovieSession, firstUser);
-        ShoppingCart firstCard = cartService.getByUser(firstUser);
-        System.out.println(cartService.getByUser(firstUser));
-        cartService.clear(firstCard);
-        System.out.println(firstCard.toString());
+        cartService.registerNewShoppingCart(seconduser);
+        cartService.addSession(yesterdayMovieSession, seconduser);
+        ShoppingCart secondCard = cartService.getByUser(seconduser);
+        System.out.println(cartService.getByUser(seconduser));
+        cartService.clear(secondCard);
+        System.out.println(secondCard.toString());
     }
 }

@@ -6,6 +6,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "shoppingcarts")
+@Table(name = "shopping_carts")
 public class ShoppingCart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +24,7 @@ public class ShoppingCart {
     private List<Ticket> tickets;
     @MapsId
     @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private User user;
 
     public Long getId() {

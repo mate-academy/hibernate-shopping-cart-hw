@@ -8,6 +8,7 @@ import mate.academy.model.MovieSession;
 import mate.academy.model.ShoppingCart;
 import mate.academy.model.Ticket;
 import mate.academy.model.User;
+import mate.academy.security.EntityNotFoundException;
 import mate.academy.service.ShoppingCartService;
 
 @Service
@@ -18,7 +19,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public void addSession(MovieSession movieSession, User user) {
         ShoppingCart shoppingCart = shoppingCartDao.getByUser(user).orElseThrow(() ->
-                new RuntimeException("Shopping cart not found for user: " + user.getEmail()));
+                new EntityNotFoundException("Shopping cart not found for user: "
+                        + user.getEmail()));
 
         Ticket ticket = new Ticket();
         ticket.setMovieSession(movieSession);
