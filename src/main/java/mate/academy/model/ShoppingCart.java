@@ -8,6 +8,9 @@ import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import java.util.List;
 
 @Entity
@@ -17,6 +20,7 @@ public class ShoppingCart {
     private Long id;
 
     @OneToMany
+    @Fetch(FetchMode.SUBSELECT)
     private List<Ticket> tickets;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
