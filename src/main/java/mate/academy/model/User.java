@@ -27,8 +27,6 @@ public class User {
     private List<Ticket> tickets;
     private byte[] salt;
 
-
-
     public Long getId() {
         return id;
     }

@@ -47,7 +47,6 @@ public class Ticket {
         this.movieSession = movieSession;
     }
 
-
     @Override
     public String toString() {
         return "Ticket{"

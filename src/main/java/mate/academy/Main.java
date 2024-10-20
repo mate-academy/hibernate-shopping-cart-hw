@@ -2,8 +2,6 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
-import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
@@ -16,10 +14,12 @@ import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
 import mate.academy.service.ShoppingCartService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.academy");
-   // private static final Logger logger = LogManager.getLogger(AuthenticationService.class);
+    private static final Logger logger = LogManager.getLogger(Main.class);
 
     public static void main(String[] args) {
         MovieService movieService = (MovieService) injector.getInstance(MovieService.class);
@@ -68,8 +68,7 @@ public class Main {
         AuthenticationService authenticationService =
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
 
-        ShoppingCartService shoppingCartService =
-                (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
+        logger.info("--------------created new user + automatically their cart");
         User exampleUser = null;
         try {
             exampleUser = authenticationService.register("mateac@mateacademy.br", "newpass");
@@ -77,19 +76,23 @@ public class Main {
             System.out.println("Regstr exception: " + e);
         }
 
-        //shoppingCartService.registerNewShoppingCart(exampleUser);unnecessaryu-duplicate
+        ShoppingCartService shoppingCartService =
+                (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
+        logger.info("--------------fetching the user's empty cart");
         ShoppingCart exampleShoppingCart = shoppingCartService.getByUser(exampleUser);
         System.out.println(exampleShoppingCart);
 
+        logger.info("--------------adding tickets to the empty cart");
         shoppingCartService.addSession(yesterdayMovieSession, exampleUser);
+
+        logger.info("-------------fetching a filled cart");
         exampleShoppingCart = shoppingCartService.getByUser(exampleUser);
         System.out.println(exampleShoppingCart); //line 86
 
+        logger.info("--------------clearing the cart");
         shoppingCartService.clear(exampleShoppingCart);
         System.out.println(shoppingCartService.getByUser(exampleUser));
+        logger.info("--------------should display 0");
         System.out.println(shoppingCartService.getByUser(exampleUser).getTickets());
-
-
-
     }
 }
