@@ -2,6 +2,7 @@ package mate.academy.service.impl;
 
 import java.util.ArrayList;
 import mate.academy.dao.ShoppingCartDao;
+import mate.academy.dao.TicketDao;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.MovieSession;
@@ -15,17 +16,16 @@ import mate.academy.service.ShoppingCartService;
 public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Inject
     private static ShoppingCartDao shoppingCartDao;
+    @Inject
+    private static TicketDao ticketDao;
 
     @Override
     public void addSession(MovieSession movieSession, User user) {
-        ShoppingCart shoppingCart = shoppingCartDao.getByUser(user).orElseThrow(() ->
-                new EntityNotFoundException("Shopping cart not found for user: "
-                        + user.getEmail()));
-
+        final ShoppingCart shoppingCart = getByUser(user);
         Ticket ticket = new Ticket();
         ticket.setMovieSession(movieSession);
         ticket.setUser(user);
-
+        ticketDao.add(ticket);
         shoppingCart.getTickets().add(ticket);
         shoppingCartDao.update(shoppingCart);
     }
@@ -33,7 +33,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public ShoppingCart getByUser(User user) {
         return shoppingCartDao.getByUser(user)
-                .orElseThrow(() -> new RuntimeException("Shopping cart not found for user: "
+                .orElseThrow(() -> new EntityNotFoundException("Shopping cart not found for user: "
                         + user.getEmail()));
     }
 

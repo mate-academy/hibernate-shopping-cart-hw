@@ -2,22 +2,23 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
 import mate.academy.model.ShoppingCart;
 import mate.academy.model.User;
+import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
 import mate.academy.service.ShoppingCartService;
-import mate.academy.service.UserService;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.academy");
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws RegistrationException {
         final MovieService movieService = (MovieService) injector.getInstance(MovieService.class);
         final CinemaHallService cinemaHallService
                 = (CinemaHallService) injector.getInstance(CinemaHallService.class);
@@ -25,7 +26,8 @@ public class Main {
                 = (MovieSessionService) injector.getInstance(MovieSessionService.class);
         final ShoppingCartService cartService
                 = (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
-        final UserService userService = (UserService) injector.getInstance(UserService.class);
+        final AuthenticationService authService = (AuthenticationService)
+                injector.getInstance(AuthenticationService.class);
 
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
@@ -64,13 +66,8 @@ public class Main {
         System.out.println(movieSessionService.findAvailableSessions(
                 fastAndFurious.getId(), LocalDate.now()));
 
-        User seconduser = new User();
-        seconduser.setEmail("urulu@gmail.com");
-        seconduser.setPassword("12345678");
-        userService.add(seconduser);
-
+        User seconduser = authService.register("urulu@gmail.com", "12345678");
         cartService.registerNewShoppingCart(seconduser);
-        cartService.addSession(yesterdayMovieSession, seconduser);
         ShoppingCart secondCard = cartService.getByUser(seconduser);
         System.out.println(cartService.getByUser(seconduser));
         cartService.clear(secondCard);
