@@ -1,6 +1,8 @@
 package mate.academy.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -15,16 +17,17 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @JoinColumn(name = "movie_session_id")
     private MovieSession movieSession;
 
-    @ManyToOne
-    @JoinColumn(name = "owner_id")
-    private User owner;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Ticket(MovieSession movieSession, User user) {
         this.movieSession = movieSession;
-        owner = user;
+        this.user = user;
     }
 
     public Ticket() {
@@ -35,12 +38,12 @@ public class Ticket {
         return movieSession;
     }
 
-    public User getOwner() {
-        return owner;
+    public User getUser() {
+        return user;
     }
 
-    public void setOwner(User user) {
-        owner = user;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public void setMovieSession(MovieSession movieSession) {
@@ -52,8 +55,8 @@ public class Ticket {
         return "Ticket{"
                 + "movieSession="
                 + movieSession
-                + ", owner="
-                + owner
+                + ", user="
+                + user
                 + '}';
     }
 }

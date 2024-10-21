@@ -2,12 +2,10 @@ package mate.academy.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.util.List;
 
@@ -20,10 +18,8 @@ public class User {
     @Column(unique = true)
     private String email;
     private String password;
-    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
-    private ShoppingCart shoppingCart;
 
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "user")
     private List<Ticket> tickets;
     private byte[] salt;
 
