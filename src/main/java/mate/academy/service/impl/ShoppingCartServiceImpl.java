@@ -1,6 +1,5 @@
 package mate.academy.service.impl;
 
-import java.util.ArrayList;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
 import mate.academy.exception.DataProcessingException;
@@ -21,7 +20,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void addSession(MovieSession movieSession, User user) {
-        shoppingCartDao.getByUser(user)
+        final ShoppingCart shoppingCart = shoppingCartDao.getByUser(user)
                 .orElseThrow(() -> new DataProcessingException("User "
                         + user + " does not have a shopping cart"));
 
@@ -31,7 +30,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
         ticketDao.add(ticket);
 
-        ShoppingCart shoppingCart = getByUser(user);
         shoppingCart.getTickets().add(ticket);
         shoppingCartDao.update(shoppingCart);
     }
@@ -45,7 +43,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public void registerNewShoppingCart(User user) {
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setUser(user);
-        shoppingCart.setTickets(new ArrayList<>());
 
         shoppingCartDao.add(shoppingCart);
     }
