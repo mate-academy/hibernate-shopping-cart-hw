@@ -23,7 +23,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
-            session.merge(shoppingCart);
+            session.persist(shoppingCart);
             transaction.commit();
             return shoppingCart;
         } catch (Exception e) {
@@ -52,14 +52,10 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             shoppingCartByUserQuery.setParameter("id", user.getId());
             Optional<ShoppingCart> optionalShoppingCart =
                     shoppingCartByUserQuery.uniqueResultOptional();
-            if (optionalShoppingCart.isPresent()) {
-                List<Ticket> tickets = optionalShoppingCart.get().getTickets();
-                if (!tickets.isEmpty()) {
-                    for (Ticket ticket : tickets) {
-                        Hibernate.initialize(ticket.getMovieSession().getMovie());
-                        Hibernate.initialize(ticket.getMovieSession().getCinemaHall());
-                    }
-                }
+            List<Ticket> tickets = optionalShoppingCart.get().getTickets();
+            for (Ticket ticket : tickets) {
+                Hibernate.initialize(ticket.getMovieSession().getMovie());
+                Hibernate.initialize(ticket.getMovieSession().getCinemaHall());
             }
             return optionalShoppingCart;
         } catch (Exception e) {
@@ -75,7 +71,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
             session.merge(shoppingCart);
-            transaction.rollback();
+            transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
