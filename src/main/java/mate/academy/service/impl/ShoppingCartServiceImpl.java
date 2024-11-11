@@ -30,8 +30,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         Optional<ShoppingCart> shoppingCartbyUserOptional = shoppingCartDao.getByUser(user);
         Ticket newTicket = new Ticket(movieSession,user);
         ticketDao.add(newTicket);
-        shoppingCartbyUserOptional.orElseThrow().getTickets().add(newTicket);
-        shoppingCartDao.update(shoppingCartbyUserOptional.orElseThrow());
+        ShoppingCart shoppingCartFromOptional = shoppingCartbyUserOptional.orElseThrow();
+        shoppingCartFromOptional.getTickets().add(newTicket);
+        shoppingCartDao.update(shoppingCartFromOptional);
     }
 
     @Override
@@ -47,8 +48,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public void clear(ShoppingCart shoppingCart) {
         User user = shoppingCart.getUser();
-        Optional<ShoppingCart> byUser = shoppingCartDao.getByUser(user);
-        List<Ticket> tickets = byUser.orElseThrow().getTickets();
+        ShoppingCart shoppingCartFromUser = shoppingCartDao.getByUser(user).orElseThrow();
+        List<Ticket> tickets = shoppingCartFromUser.getTickets();
         tickets.clear();
         shoppingCartDao.update(shoppingCart);
     }

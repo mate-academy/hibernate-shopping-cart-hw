@@ -6,7 +6,6 @@ import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
-import mate.academy.model.Ticket;
 import mate.academy.model.User;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
@@ -70,20 +69,20 @@ public class Main {
         User bob = new User();
         bob.setEmail("bob@mail.com");
         bob.setSalt(HashUtil.getSalt());
-        bob.setPassword("1234");
+        String bobHashedPassword = HashUtil.hashPassword("1234",bob.getSalt());
+        bob.setPassword(bobHashedPassword);
 
         User alice = new User();
         alice.setEmail("alice@mail.com");
-        alice.setPassword("456789");
+        alice.setSalt(HashUtil.getSalt());
+        String aliceHashedPassword = HashUtil.hashPassword("456789", alice.getSalt());
+        alice.setPassword(aliceHashedPassword);
 
         userService.add(bob);
         userService.add(alice);
 
-        Ticket ticket1 = new Ticket();
-
         shoppingCartService.registerNewShoppingCart(bob);
         shoppingCartService.addSession(tomorrowMovieSession, bob);
-        shoppingCartService.addSession(yesterdayMovieSession, bob);
         shoppingCartService.clear(shoppingCartService.getByUser(bob));
     }
 }
