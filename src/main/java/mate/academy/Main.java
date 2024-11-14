@@ -67,10 +67,9 @@ public class Main {
                 fastAndFurious.getId(), LocalDate.now()));
 
         User seconduser = authService.register("urulu@gmail.com", "12345678");
-        cartService.registerNewShoppingCart(seconduser);
-        ShoppingCart secondCard = cartService.getByUser(seconduser);
+        ShoppingCart shoppingCart = cartService.getByUser(seconduser);
         System.out.println(cartService.getByUser(seconduser));
-        cartService.clear(secondCard);
-        System.out.println(secondCard.toString());
+        cartService.clear(shoppingCart);
+        System.out.println(shoppingCart.toString());
     }
 }

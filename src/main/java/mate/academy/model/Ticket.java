@@ -8,7 +8,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import java.util.Objects;
 
 @Entity
 @Table(name = "tickets")
@@ -20,7 +19,7 @@ public class Ticket {
     @JoinColumn(name = "session_id")
     private MovieSession movieSession;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "owner_id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     public Long getId() {
@@ -45,23 +44,6 @@ public class Ticket {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Ticket ticket)) {
-            return false;
-        }
-        return Objects.equals(id, ticket.id) && Objects.equals(movieSession, ticket.movieSession)
-                && Objects.equals(user, ticket.user);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, movieSession, user);
     }
 
     @Override

@@ -12,7 +12,6 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "shopping_carts")
@@ -49,23 +48,6 @@ public class ShoppingCart {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof ShoppingCart that)) {
-            return false;
-        }
-        return Objects.equals(id, that.id) && Objects.equals(tickets, that.tickets)
-                && Objects.equals(user, that.user);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, tickets, user);
     }
 
     @Override
