@@ -11,29 +11,24 @@ import mate.academy.service.ShoppingCartService;
 
 public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Inject
-     private ShoppingCartDao shoppingCartDao;
+    private ShoppingCartDao shoppingCartDao;
+    @Inject
     private TicketDao ticketDao;
 
     @Override
     public void addSession(MovieSession movieSession, User user) {
-        ShoppingCart shoppingCart = getByUser(user);
-        if (shoppingCart == null) {
-            shoppingCart = new ShoppingCart();
-            shoppingCart.setUser(user);
-            shoppingCart = shoppingCartDao.add(shoppingCart);
-        }
-        Ticket ticket = new Ticket();
-        ticket.setMovieSession(movieSession);
-        ticket.setUser(user);
-        ticket = ticketDao.add(ticket);
-        shoppingCart.getTickets().add(ticket);
-        shoppingCartDao.update(shoppingCart);
+        Ticket newTicket = new Ticket();
+        newTicket.setUser(user);
+        newTicket.setMovieSession(movieSession);
 
+        ShoppingCart shoppingCart = shoppingCartDao.getByUser(user);
+        shoppingCart.getTickets().add(ticketDao.add(newTicket));
+        shoppingCartDao.update(shoppingCart);
     }
 
     @Override
     public ShoppingCart getByUser(User user) {
-        return shoppingCartDao.getByUser(user).orElse(null);
+        return shoppingCartDao.getByUser(user);
     }
 
     @Override
