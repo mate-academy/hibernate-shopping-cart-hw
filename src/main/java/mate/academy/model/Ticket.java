@@ -27,8 +27,8 @@ public class Ticket {
     public Ticket() {
     }
 
-    public Ticket(MovieSession session, User user) {
-        movieSession = session;
+    public Ticket(MovieSession movieSession, User user) {
+        this.movieSession = movieSession;
         this.user = user;
     }
 
