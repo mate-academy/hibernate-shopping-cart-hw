@@ -72,7 +72,12 @@ public class Main {
         AuthenticationService authenticationService =
                 (AuthenticationService) INJECTOR.getInstance(
                         AuthenticationService.class);
-        authenticationService.register(EMAIL, PASSWORD);
+        try {
+            authenticationService.register(EMAIL, PASSWORD);
+        } catch (RegistrationException registrationException) {
+            System.err.println("Registration failed. This email: " + EMAIL + " already exists.");
+        }
+
         User bob = userService.findByEmail(EMAIL).get();
         System.out.println(bob);
 
