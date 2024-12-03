@@ -2,6 +2,7 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import lombok.SneakyThrows;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
@@ -12,13 +13,24 @@ import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
-import mate.academy.service.ShoppingCartService;
 
 public class Main {
     private static final Injector INJECTOR = Injector.getInstance("mate.academy");
 
-    public static void main(String[] args) throws RegistrationException {
-        MovieService movieService = (MovieService) INJECTOR.getInstance(MovieService.class);
+    @SneakyThrows
+    public static void main(String[] args) {
+        AuthenticationService authenticationService =
+                (AuthenticationService) INJECTOR.getInstance(AuthenticationService.class);
+
+        try {
+            User user = authenticationService.register("test22@email.ua", "test22");
+            System.out.println("User registered successfully: " + user.getEmail());
+        } catch (RegistrationException e) {
+            System.err.println("Registration failed: " + e.getMessage());
+        }
+
+        MovieService movieService =
+                (MovieService) INJECTOR.getInstance(MovieService.class);
 
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
@@ -60,15 +72,5 @@ public class Main {
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(
                 fastAndFurious.getId(), LocalDate.now()));
-
-        AuthenticationService authenticationService = (AuthenticationService)
-                INJECTOR.getInstance(AuthenticationService.class);
-
-        User user = authenticationService.register("test01@email.ua", "test01");
-
-        ShoppingCartService shoppingCartService =
-                (ShoppingCartService) INJECTOR.getInstance(ShoppingCartService.class);
-        shoppingCartService.addSession(tomorrowMovieSession, user);
-        shoppingCartService.clear(shoppingCartService.getByUser(user));
     }
 }
