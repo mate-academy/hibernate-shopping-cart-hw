@@ -1,5 +1,6 @@
 package mate.academy;
 
+import java.time.LocalDateTime;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
@@ -59,17 +60,20 @@ public class Main {
         MovieSession movieSession1 = new MovieSession();
         movieSession1.setMovie(movie1);
         movieSession1.setCinemaHall(cinemaHall1);
-        movieSession1.setShowTime(2024, 12,1,10, 15);
+        LocalDateTime showTime1 = LocalDateTime.of(2024, 12,1,10, 15);
+        movieSession1.setShowTime(showTime1);
 
         MovieSession movieSession2 = new MovieSession();
         movieSession2.setMovie(movie2);
         movieSession2.setCinemaHall(cinemaHall2);
-        movieSession2.setShowTime(2024, 12,2,10, 15);
+        LocalDateTime showTime2 = LocalDateTime.of(2024, 12,2,10, 15);
+        movieSession2.setShowTime(showTime2);
 
         MovieSession movieSession3 = new MovieSession();
         movieSession3.setMovie(movie3);
         movieSession3.setCinemaHall(cinemaHall3);
-        movieSession3.setShowTime(2024, 12,2,23, 15);
+        LocalDateTime showTime3 = LocalDateTime.of(2024, 12,2,23, 15);
+        movieSession3.setShowTime(showTime3);
 
         // 2. ADDING
         // Movies

@@ -48,6 +48,8 @@ public class MovieDaoImpl implements MovieDao {
     public List<Movie> getAll() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             return session.createQuery("from Movie").list();
+        } catch (Exception e) {
+            throw new DataProcessingException("Can't get Movies", e);
         }
     }
 
@@ -86,7 +88,7 @@ public class MovieDaoImpl implements MovieDao {
             session = sessionFactory.openSession();
             transaction = session.beginTransaction();
             session.delete(get(id)
-                    .orElseThrow(() -> new RuntimeException("no object with id " + id)));
+                    .orElseThrow(() -> new RuntimeException("no object with id: " + id)));
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {

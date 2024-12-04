@@ -62,6 +62,8 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
             movieSessionQuery.setParameter("start", start);
             movieSessionQuery.setParameter("end", end);
             return movieSessionQuery.getResultList();
+        } catch (Exception e) {
+            throw new DataProcessingException("Can't get availableSessions", e);
         }
     }
 
