@@ -35,8 +35,8 @@ public class Main {
         secondCinemaHall.setCapacity(200);
         secondCinemaHall.setDescription("second hall with capacity 200");
 
-        CinemaHallService cinemaHallService = (CinemaHallService) injector.getInstance(
-                CinemaHallService.class);
+        CinemaHallService cinemaHallService = (CinemaHallService) injector
+                .getInstance(CinemaHallService.class);
         cinemaHallService.add(firstCinemaHall);
         cinemaHallService.add(secondCinemaHall);
 
@@ -53,15 +53,17 @@ public class Main {
         yesterdayMovieSession.setMovie(fastAndFurious);
         yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(1L));
 
-        MovieSessionService movieSessionService = null;
+        MovieSessionService movieSessionService = (MovieSessionService) injector
+                .getInstance(MovieSessionService.class);
         movieSessionService.add(tomorrowMovieSession);
         movieSessionService.add(yesterdayMovieSession);
 
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
-        System.out.println(movieSessionService.findAvailableSessions(
-                fastAndFurious.getId(), LocalDate.now()));
-        AuthenticationService authenticationService = (AuthenticationService) injector.getInstance(
-                AuthenticationService.class);
+        System.out.println(movieSessionService.findAvailableSessions(fastAndFurious.getId(),
+                LocalDate.now()));
+
+        AuthenticationService authenticationService = (AuthenticationService) injector
+                .getInstance(AuthenticationService.class);
         User bob;
         User alice;
         try {
@@ -71,11 +73,12 @@ public class Main {
             throw new RuntimeException("Can't register user", e);
         }
 
-        ShoppingCartService shoppingCartService = (ShoppingCartService) injector.getInstance(
-                ShoppingCartService.class);
+        ShoppingCartService shoppingCartService = (ShoppingCartService) injector
+                .getInstance(ShoppingCartService.class);
         shoppingCartService.addSession(tomorrowMovieSession, alice);
         shoppingCartService.addSession(tomorrowMovieSession, bob);
         shoppingCartService.addSession(tomorrowMovieSession, bob);
+
         ShoppingCart aliceShoppingCart = shoppingCartService.getByUser(alice);
         shoppingCartService.clear(aliceShoppingCart);
     }
