@@ -87,24 +87,26 @@ public class Main {
             System.out.println("Authentication failed: " + e.getMessage());
         }
 
-        // Test ShoppingCartService methods
-        ShoppingCartService shoppingCartService =
-                (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
+        if (user != null) {
+            // Test ShoppingCartService methods
+            ShoppingCartService shoppingCartService =
+                    (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
 
-        // Add a movie session to the shopping cart
-        shoppingCartService.addSession(tomorrowMovieSession, user);
-        System.out.println("Shopping cart after adding a session:");
-        System.out.println(shoppingCartService.getByUser(user));
+            // Add a movie session to the shopping cart
+            shoppingCartService.addSession(tomorrowMovieSession, user);
+            System.out.println("Shopping cart after adding a session:");
+            System.out.println(shoppingCartService.getByUser(user));
 
-        // Add another session to ensure multiple tickets can be added
-        shoppingCartService.addSession(yesterdayMovieSession, user);
-        System.out.println("Shopping cart after adding another session:");
-        System.out.println(shoppingCartService.getByUser(user));
+            // Add another session to ensure multiple tickets can be added
+            shoppingCartService.addSession(yesterdayMovieSession, user);
+            System.out.println("Shopping cart after adding another session:");
+            System.out.println(shoppingCartService.getByUser(user));
 
-        // Clear the shopping cart
-        ShoppingCart shoppingCart = shoppingCartService.getByUser(user);
-        shoppingCartService.clear(shoppingCart);
-        System.out.println("Shopping cart after clearing:");
-        System.out.println(shoppingCartService.getByUser(user));
+            // Clear the shopping cart
+            ShoppingCart shoppingCart = shoppingCartService.getByUser(user);
+            shoppingCartService.clear(shoppingCart);
+            System.out.println("Shopping cart after clearing:");
+            System.out.println(shoppingCartService.getByUser(user));
+        }
     }
 }
