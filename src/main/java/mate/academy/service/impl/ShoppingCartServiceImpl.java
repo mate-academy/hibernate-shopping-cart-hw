@@ -31,9 +31,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         ticket.setMovieSession(movieSession);
         ticket.setUser(user);
         ticketDao.add(ticket);
-        ShoppingCart shoppingCart = shoppingCartDao.getByUser(user)
-                .orElseThrow(() -> new EntityNotFoundException("Can`t find shopping cart by"
-                        + "user " + user));
+        ShoppingCart shoppingCart = getByUser(user);
         List<Ticket> tickets = shoppingCart.getTickets();
         tickets.add(ticket);
         shoppingCartDao.update(shoppingCart);
@@ -49,9 +47,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public void registerNewShoppingCart(User user) {
         if (user == null) {
             throw new RuntimeException("User can`t be null");
-        }
-        if (shoppingCartDao.getByUser(user).isPresent()) {
-            throw new RuntimeException("User " + user + " is already have shopping cart");
         }
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setUser(user);

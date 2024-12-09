@@ -27,7 +27,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Can't insert to DB user: "
+            throw new DataProcessingException("Can't add sopping cart to DB : "
                     + shoppingCart, e);
         } finally {
             if (session != null) {
@@ -51,7 +51,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             getByUserQuery.setParameter("user", user);
             return getByUserQuery.uniqueResultOptional();
         } catch (Exception e) {
-            throw new DataProcessingException("Can`t get shopping  cart by user = " + user, e);
+            throw new DataProcessingException("Can`t get shopping cart by user = " + user, e);
         }
     }
 
