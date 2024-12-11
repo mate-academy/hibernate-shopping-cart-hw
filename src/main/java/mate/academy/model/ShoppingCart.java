@@ -31,11 +31,11 @@ public class ShoppingCart {
         this.id = id;
     }
 
-    public List<Ticket> getTicket() {
+    public List<Ticket> getTickets() {
         return ticket;
     }
 
-    public void setTicket(List<Ticket> ticket) {
+    public void setTickets(List<Ticket> ticket) {
         this.ticket = ticket;
     }
 

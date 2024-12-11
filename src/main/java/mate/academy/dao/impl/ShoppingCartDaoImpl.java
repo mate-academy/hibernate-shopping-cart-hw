@@ -43,7 +43,8 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
                     .uniqueResult();
             return Optional.ofNullable(shoppingCart);
         } catch (Exception e) {
-            throw new DataProcessingException("Failed to retrieve shopping cart for user:", e);
+            throw new DataProcessingException(
+                    "Failed to retrieve shopping cart for user: " + user, e);
         }
     }
 
