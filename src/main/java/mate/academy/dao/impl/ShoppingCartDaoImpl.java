@@ -24,7 +24,8 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Can't ins to DB shoppingCart" + shoppingCart, e);
+            throw new DataProcessingException("Can't insert to DB shoppingCart"
+                    + shoppingCart, e);
         } finally {
             if (session != null) {
                 session.close();
@@ -36,17 +37,13 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
     public Optional<ShoppingCart> getByUser(User user) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             return session.createQuery(
-                    "FROM ShoppingCart sc "
-                    + "LEFT JOIN FETCH sc.user u "
-                    + "LEFT JOIN FETCH t.tickets t "
-                    + "LEFT JOIN FETCH t.movieSession ms "
-                    + "LEFT JOIN FETCH ms.movie "
-                    + "LEFT JOIN FETCH ms.cinemaHall "
-                    + "WHERE u.id = id:", ShoppingCart.class)
+                    "FROM ShoppingCart shc "
+                    + "LEFT JOIN FETCH shc.tickets "
+                    + "WHERE shc.id = :id", ShoppingCart.class)
                     .setParameter("id", user.getId())
                     .uniqueResultOptional();
         } catch (Exception e) {
-            throw new DataProcessingException("can't get shopping cart by user :" + user, e);
+            throw new DataProcessingException("Can't get shopping cart by user :" + user, e);
         }
     }
 
@@ -63,7 +60,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("can't update shoppingCart" + shoppingCart, e);
+            throw new DataProcessingException("Can't update shoppingCart" + shoppingCart, e);
         } finally {
             if (session != null) {
                 session.close();
