@@ -1,6 +1,8 @@
 package mate.academy.service.impl;
 
 import jakarta.persistence.EntityNotFoundException;
+
+import java.time.LocalDateTime;
 import java.util.Collections;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.lib.Inject;
@@ -21,6 +23,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         Ticket ticket = new Ticket();
         ticket.setUser(user);
         ticket.setMovieSession(movieSession);
+        if (ticket.getMovieSession().getShowTime().isBefore(LocalDateTime.now())) {
+            throw new RuntimeException("Movie cannot be before today's date");
+        }
         ShoppingCart shoppingCart = shoppingCartDao.getByUser(user).get();
         shoppingCart.getTickets().add(ticket);
         shoppingCartDao.update(shoppingCart);
