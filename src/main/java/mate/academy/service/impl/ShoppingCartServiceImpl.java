@@ -1,7 +1,6 @@
 package mate.academy.service.impl;
 
 import jakarta.persistence.EntityNotFoundException;
-
 import java.time.LocalDateTime;
 import java.util.Collections;
 import mate.academy.dao.ShoppingCartDao;
