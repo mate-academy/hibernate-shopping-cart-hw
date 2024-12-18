@@ -22,10 +22,11 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         Ticket ticket = new Ticket();
         ticket.setUser(user);
         ticket.setMovieSession(movieSession);
-        if (ticket.getMovieSession().getShowTime().isBefore(LocalDateTime.now())) {
-            throw new RuntimeException("Movie cannot be before today's date");
+        LocalDateTime movieDateTime = ticket.getMovieSession().getShowTime();
+        if (movieDateTime.isBefore(LocalDateTime.now())) {
+            throw new RuntimeException("Movie cannot be before today's date" + movieDateTime);
         }
-        ShoppingCart shoppingCart = shoppingCartDao.getByUser(user).get();
+        ShoppingCart shoppingCart = getByUser(user);
         shoppingCart.getTickets().add(ticket);
         shoppingCartDao.update(shoppingCart);
     }
