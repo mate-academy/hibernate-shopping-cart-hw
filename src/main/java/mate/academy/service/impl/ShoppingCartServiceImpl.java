@@ -4,6 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import mate.academy.dao.ShoppingCartDao;
+import mate.academy.dao.TicketDao;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.MovieSession;
@@ -16,6 +17,8 @@ import mate.academy.service.ShoppingCartService;
 public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Inject
     private ShoppingCartDao shoppingCartDao;
+    @Inject
+    private TicketDao ticketDao;
 
     @Override
     public void addSession(MovieSession movieSession, User user) {
@@ -26,6 +29,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         if (movieDateTime.isBefore(LocalDateTime.now())) {
             throw new RuntimeException("Movie cannot be before today's date" + movieDateTime);
         }
+        ticketDao.add(ticket);
         ShoppingCart shoppingCart = getByUser(user);
         shoppingCart.getTickets().add(ticket);
         shoppingCartDao.update(shoppingCart);
