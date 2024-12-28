@@ -26,7 +26,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         ticket.setMovieSession(movieSession);
         ticketDao.add(ticket);
         ShoppingCart shoppingCart = shoppingCartDao.getByUser(user).orElseThrow(() ->
-                new ShoppingCartNotFoundException("Shopping cart not found for user: " + user));
+                new ShoppingCartNotFoundException("Shopping cart not found for user with email: "
+                        + user.getEmail()));
         shoppingCart.getTickets().add(ticket);
         shoppingCartDao.update(shoppingCart);
     }
@@ -34,13 +35,15 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public ShoppingCart getByUser(User user) {
         return shoppingCartDao.getByUser(user).orElseThrow(() ->
-                new ShoppingCartNotFoundException("Shopping cart not found for user: " + user));
+                new ShoppingCartNotFoundException("Shopping cart not found for user with email: "
+                        + user.getEmail()));
     }
 
     @Override
     public void registerNewShoppingCart(User user) throws RegistrationException {
         if (shoppingCartDao.getByUser(user).isPresent()) {
-            throw new RegistrationException("User " + user + " already have shopping cart.");
+            throw new RegistrationException("User with email: " + user.getEmail()
+                    + " already have shopping cart.");
         }
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setUser(user);
