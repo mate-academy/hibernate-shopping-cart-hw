@@ -11,7 +11,7 @@ import org.hibernate.Transaction;
 
 @Dao
 public class TicketDaoImpl implements TicketDao {
-    private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+    private static final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
     @Override
     public Ticket add(Ticket ticket) {
