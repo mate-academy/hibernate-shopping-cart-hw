@@ -64,7 +64,7 @@ public class Main {
         AuthenticationService authenticationService =
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
 
-        User exampleUser = null;
+        User exampleUser = new User();
         try {
             exampleUser = authenticationService.register("mateac@mateacademy.br", "newpass");
         } catch (RegistrationException e) {

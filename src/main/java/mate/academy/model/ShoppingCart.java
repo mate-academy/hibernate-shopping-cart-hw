@@ -51,7 +51,7 @@ public class ShoppingCart {
 
     @Override
     public String toString() {
-        return "ShoppingCartDao{"
+        return "ShoppingCart{"
                 + "id=" + id
                 + ", tickets=" + tickets
                 + ", user=" + user

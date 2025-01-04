@@ -20,32 +20,27 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void addSession(MovieSession movieSession, User user) {
-        Ticket ticket = new Ticket();
-        ticket.setMovieSession(movieSession);
-        ticket.setUser(user);
+        Ticket ticket = new Ticket(movieSession, user);
         ticketDao.add(ticket);
-        ShoppingCart shoppingCart = shoppingCartDao.getByUser(user).orElseThrow(() ->
-                new DataProcessingException("Can't find shopping cart for user: " + user));
-        shoppingCart.getTickets().add(ticket);
-        shoppingCartDao.update((ShoppingCartDao) shoppingCart);
+        ShoppingCart userShCart = getByUser(user);
+        userShCart.getTickets().add(ticket);
+        shoppingCartDao.update(userShCart);
     }
 
     @Override
     public ShoppingCart getByUser(User user) {
         return shoppingCartDao.getByUser(user).orElseThrow(() ->
-                new DataProcessingException("Can't find shopping cart for user: " + user));
+                new DataProcessingException("No shopping cart found for user " + user));
     }
 
     @Override
     public void registerNewShoppingCart(User user) {
-        ShoppingCart shoppingCart = new ShoppingCart();
-        shoppingCart.setUser(user);
-        shoppingCartDao.add((ShoppingCartDao) shoppingCart);
+        shoppingCartDao.add(new ShoppingCart());
     }
 
     @Override
     public void clear(ShoppingCart shoppingCart) {
         shoppingCart.getTickets().clear();
-        shoppingCartDao.update((ShoppingCartDao) shoppingCart);
+        shoppingCartDao.update(shoppingCart);
     }
 }

@@ -14,7 +14,7 @@ import org.hibernate.query.Query;
 @Dao
 public class ShoppingCartDaoImpl implements ShoppingCartDao {
     @Override
-    public ShoppingCartDao add(ShoppingCartDao shoppingCart) {
+    public ShoppingCart add(ShoppingCart shoppingCart) {
         Session session = null;
         Transaction transaction = null;
         try {
@@ -54,7 +54,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
     }
 
     @Override
-    public void update(ShoppingCartDao shoppingCart) {
+    public void update(ShoppingCart shoppingCart) {
         Session session = null;
         Transaction transaction = null;
         try {
