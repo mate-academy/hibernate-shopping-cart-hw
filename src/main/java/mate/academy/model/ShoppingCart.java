@@ -48,7 +48,7 @@ public class ShoppingCart {
     public String toString() {
         return "ShoppingCart{"
                 + "id=" + id
-                // + ", tickets=" + tickets
+                + ", tickets=" + tickets
                 + ", user=" + user
                 + '}';
     }

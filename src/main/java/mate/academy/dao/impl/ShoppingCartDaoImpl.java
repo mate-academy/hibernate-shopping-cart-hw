@@ -1,8 +1,5 @@
 package mate.academy.dao.impl;
 
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Root;
 import java.util.Optional;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.exception.DataProcessingException;
@@ -12,6 +9,7 @@ import mate.academy.model.User;
 import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 @Dao
 public class ShoppingCartDaoImpl implements ShoppingCartDao {
@@ -40,13 +38,15 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
     @Override
     public Optional<ShoppingCart> getByUser(User user) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<ShoppingCart> query = builder.createQuery(ShoppingCart.class);
-            Root<ShoppingCart> cartRoot = query.from(ShoppingCart.class);
-            //cartRoot.fetch("tickets", JoinType.LEFT);
-            query.where(builder.equal(cartRoot.get("user"), user));
-            Optional<ShoppingCart> shoppingCart = session.createQuery(query).uniqueResultOptional();
-            return shoppingCart;
+            String hql = "FROM ShoppingCart sc "
+                    + "LEFT JOIN FETCH sc.tickets t "
+                    + "LEFT JOIN FETCH t.movieSession ms "
+                    + "LEFT JOIN FETCH ms.cinemaHall ch "
+                    + "LEFT JOIN FETCH ms.movie m "
+                    + "WHERE sc.user.id = :id";
+            Query<ShoppingCart> query = session.createQuery(hql, ShoppingCart.class);
+            query.setParameter("id", user.getId());
+            return query.uniqueResultOptional();
         } catch (Exception e) {
             throw new DataProcessingException("Can't get cart of user: " + user, e);
         }
