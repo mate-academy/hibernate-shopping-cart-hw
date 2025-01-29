@@ -38,6 +38,14 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
+    public ShoppingCart getFullCartDataByUser(User user) {
+        return cartDao.getFullCartDataByUser(user)
+                .orElseThrow(() ->
+                        new EntityNotFoundException("No cart found for user: "
+                                + user.toString()));
+    }
+
+    @Override
     public void registerNewShoppingCart(User user) {
         ShoppingCart cart = new ShoppingCart();
         cart.setUser(user);

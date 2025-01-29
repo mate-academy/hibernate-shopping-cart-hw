@@ -39,16 +39,32 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
     public Optional<ShoppingCart> getByUser(User user) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             String hql = "FROM ShoppingCart sc "
+                    + "INNER JOIN FETCH sc.user u "
                     + "LEFT JOIN FETCH sc.tickets t "
-                    + "LEFT JOIN FETCH t.movieSession ms "
-                    + "LEFT JOIN FETCH ms.cinemaHall ch "
-                    + "LEFT JOIN FETCH ms.movie m "
-                    + "WHERE sc.user.id = :id";
+                    + "WHERE u.id = :id";
             Query<ShoppingCart> query = session.createQuery(hql, ShoppingCart.class);
             query.setParameter("id", user.getId());
             return query.uniqueResultOptional();
         } catch (Exception e) {
             throw new DataProcessingException("Can't get cart of user: " + user, e);
+        }
+    }
+
+    @Override
+    public Optional<ShoppingCart> getFullCartDataByUser(User user) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            String hql = "FROM ShoppingCart sc "
+                    + "INNER JOIN FETCH sc.user u "
+                    + "LEFT JOIN FETCH sc.tickets t "
+                    + "INNER JOIN FETCH t.movieSession ms "
+                    + "INNER JOIN FETCH ms.cinemaHall ch "
+                    + "INNER JOIN FETCH ms.movie m "
+                    + "WHERE u.id = :id";
+            Query<ShoppingCart> query = session.createQuery(hql, ShoppingCart.class);
+            query.setParameter("id", user.getId());
+            return query.uniqueResultOptional();
+        } catch (Exception e) {
+            throw new DataProcessingException("Can't get full cart data of user: " + user, e);
         }
     }
 
