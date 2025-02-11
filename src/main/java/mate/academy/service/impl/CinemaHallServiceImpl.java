@@ -2,7 +2,7 @@ package mate.academy.service.impl;
 
 import java.util.List;
 import mate.academy.dao.CinemaHallDao;
-import mate.academy.dao.impl.CinemaHallDaoImpl;
+import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.CinemaHall;
 import mate.academy.service.CinemaHallService;
@@ -10,7 +10,8 @@ import mate.academy.service.CinemaHallService;
 @Service
 public class CinemaHallServiceImpl implements CinemaHallService {
 
-    private CinemaHallDao cinemaHallDao = new CinemaHallDaoImpl();
+    @Inject
+    private CinemaHallDao cinemaHallDao;
 
     @Override
     public CinemaHall add(CinemaHall cinemaHall) {

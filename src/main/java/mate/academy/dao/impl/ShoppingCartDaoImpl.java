@@ -2,6 +2,7 @@ package mate.academy.dao.impl;
 
 import java.util.Optional;
 import mate.academy.dao.ShoppingCartDao;
+import mate.academy.exception.ShoppingCartException;
 import mate.academy.model.ShoppingCart;
 import mate.academy.model.User;
 import mate.academy.util.HibernateUtil;
@@ -25,7 +26,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new RuntimeException("Can`t save shopping cart: " + shoppingCart);
+            throw new ShoppingCartException("Can`t save shopping cart: " + shoppingCart);
         } finally {
             if (session != null) {
                 session.close();
@@ -41,7 +42,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
                     .createQuery("FROM ShoppingCart WHERE user = :user", ShoppingCart.class)
                     .setParameter("user", user).uniqueResult());
         } catch (Exception e) {
-            throw new RuntimeException("Can`t get shopping cart of this user: " + user);
+            throw new ShoppingCartException("Can`t get shopping cart of this user: " + user);
         }
     }
 
@@ -61,7 +62,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new RuntimeException("Can`t update shopping cart: " + shoppingCart);
+            throw new ShoppingCartException("Can`t update shopping cart: " + shoppingCart);
         } finally {
             if (session != null) {
                 session.close();
