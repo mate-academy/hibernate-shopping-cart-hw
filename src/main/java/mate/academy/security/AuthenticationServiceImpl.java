@@ -3,16 +3,16 @@ package mate.academy.security;
 import java.util.Optional;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
-import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.User;
 import mate.academy.service.UserService;
+import mate.academy.service.impl.UserServiceImpl;
 import mate.academy.util.HashUtil;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
-    @Inject
-    private UserService userService;
+
+    private UserService userService = new UserServiceImpl();
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
