@@ -44,7 +44,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             query.setParameter("id", user.getId());
             return query.uniqueResultOptional();
         } catch (Exception e) {
-            throw new RuntimeException("Get by user operation went wrong");
+            throw new DataProcessingException("Get operation went wrong, user: " + user, e);
         }
     }
 
