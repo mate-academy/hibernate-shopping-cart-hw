@@ -12,8 +12,10 @@ import org.hibernate.Transaction;
 public class TicketDaoImpl implements TicketDao {
     @Override
     public Ticket add(Ticket ticket) {
+        Session session = null;
         Transaction transaction = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
             session.persist(ticket);
             transaction.commit();
@@ -22,7 +24,11 @@ public class TicketDaoImpl implements TicketDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Can't insert ticket" + ticket, e);
+            throw new DataProcessingException("Can't insert to DB ticket: " + ticket, e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
         }
     }
 }

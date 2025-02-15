@@ -17,8 +17,8 @@ import mate.academy.service.ShoppingCartService;
 import mate.academy.service.UserService;
 
 public class Main {
-    private static final String EMAIL = "veronika@example.com";
-    private static final String PASSWORD = "qwerty";
+    private static final String EMAIL = "dima@example.com";
+    private static final String PASSWORD = "qwerty12";
     private static final Injector INJECTOR = Injector.getInstance("mate.academy");
 
     public static void main(String[] args) {
@@ -70,24 +70,23 @@ public class Main {
                 (UserService) INJECTOR.getInstance(UserService.class);
 
         AuthenticationService authenticationService =
-                (AuthenticationService) INJECTOR.getInstance(AuthenticationService.class);
-
+                (AuthenticationService) INJECTOR.getInstance(
+                        AuthenticationService.class);
         try {
             authenticationService.register(EMAIL, PASSWORD);
-        } catch (RegistrationException e) {
-            System.err.println("Registration failed: " + e.getMessage());
+        } catch (RegistrationException registrationException) {
+            System.err.println("Registration failed. This email: " + EMAIL + " already exists.");
         }
 
-        User veronikaByEmail = userService.findByEmail(EMAIL).get();
-        System.out.println("Founded user by email: " + veronikaByEmail);
+        User dima = userService.findByEmail(EMAIL).get();
+        System.out.println(dima);
 
-        ShoppingCartService shoppingCartService =
+        ShoppingCartService cartService =
                 (ShoppingCartService) INJECTOR.getInstance(ShoppingCartService.class);
 
-        shoppingCartService.addSession(yesterdayMovieSession, veronikaByEmail);
-        shoppingCartService.addSession(tomorrowMovieSession, veronikaByEmail);
+        cartService.addSession(tomorrowMovieSession, dima);
 
-        ShoppingCart shoppingCartGetByUser = shoppingCartService.getByUser(veronikaByEmail);
-        shoppingCartService.clear(shoppingCartGetByUser);
+        ShoppingCart cart = cartService.getByUser(dima);
+        cartService.clear(cart);
     }
 }

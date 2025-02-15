@@ -15,11 +15,25 @@ public class ShoppingCart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @OneToMany(fetch = FetchType.LAZY)
     private List<Ticket> tickets;
+
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     private User user;
+
+    public ShoppingCart() {
+    }
+
+    public ShoppingCart(User user) {
+        this.user = user;
+    }
+
+    public ShoppingCart(User user, List<Ticket> tickets) {
+        this.user = user;
+        this.tickets = tickets;
+    }
 
     public Long getId() {
         return id;
