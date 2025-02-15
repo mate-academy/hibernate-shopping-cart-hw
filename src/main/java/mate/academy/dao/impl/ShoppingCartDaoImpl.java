@@ -18,16 +18,23 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
     public ShoppingCart add(ShoppingCart shoppingCart) {
         Session session = null;
         Transaction transaction = null;
+
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
-            if (!session.contains(shoppingCart.getUser())) {
-                shoppingCart.setUser(
-                        session.get(User.class, shoppingCart.getUser().getId()));
+
+            if (shoppingCart.getUser() != null) {
+                if (!session.contains(shoppingCart.getUser())) {
+                    shoppingCart.setUser(
+                            session.get(User.class, shoppingCart.getUser().getId()));
+                }
+                throw new DataProcessingException("User can't be null", null);
             }
-            session.persist(shoppingCart);
+
+            session.save(shoppingCart);
             transaction.commit();
             return shoppingCart;
+
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
@@ -49,7 +56,9 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
                             + "LEFT JOIN FETCH sc.tickets "
                             + "WHERE sc.user = :user",
                     ShoppingCart.class);
+
             getShoppingCartByUserOptional.setParameter("user", user);
+
             return getShoppingCartByUserOptional.uniqueResultOptional();
         } catch (Exception e) {
             throw new DataProcessingException("Cannot find shoppingCart by user: " + user, e);
@@ -70,7 +79,8 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
                 transaction.rollback();
             }
             throw new DataProcessingException(
-                    "Cannot update DB with shoppingCart: " + shoppingCart, e);
+                    "Cannot update DB with shoppingCart: " + shoppingCart, e
+            );
         } finally {
             if (session != null) {
                 session.close();

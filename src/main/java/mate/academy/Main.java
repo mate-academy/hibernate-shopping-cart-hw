@@ -78,7 +78,10 @@ public class Main {
             System.err.println("Registration failed. This email: " + EMAIL + " already exists.");
         }
 
-        User dima = userService.findByEmail(EMAIL).get();
+        User dima = userService.findByEmail(EMAIL)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "User with email " + EMAIL + " not found"));
+
         System.out.println(dima);
 
         ShoppingCartService cartService =
