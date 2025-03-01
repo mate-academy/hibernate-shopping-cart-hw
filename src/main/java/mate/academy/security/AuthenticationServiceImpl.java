@@ -34,7 +34,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             user.setPassword(password);
             userService.add(user);
             Optional<User> userFromDB = userService.findByEmail(email);
-            shoppingCartService.registerNewShoppingCart(userFromDB.get());
+            shoppingCartService.registerNewShoppingCart(userFromDB.orElseThrow(()
+                    -> new RuntimeException("Can't register new shoppingCart")));
             return user;
         }
         throw new RegistrationException("This email is already registered.");
