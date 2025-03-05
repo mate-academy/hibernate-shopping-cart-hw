@@ -24,7 +24,12 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             ticket.setUser(user);
             ticket.setMovieSession(movieSession);
             ticketDao.add(ticket);
-            ShoppingCart shoppingCart = shoppingCartDao.getByUser(user).orElseThrow();
+            ShoppingCart shoppingCart = shoppingCartDao.getByUser(user).orElseGet(() -> {
+                ShoppingCart newShoppingCart = new ShoppingCart();
+                newShoppingCart.setUser(user);
+                shoppingCartDao.add(newShoppingCart);
+                return newShoppingCart;
+            });
             shoppingCart.getTicketList().add(ticket);
             shoppingCartDao.update(shoppingCart);
         }
@@ -33,17 +38,20 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public ShoppingCart getByUser(User user) {
         if (user != null) {
-            return shoppingCartDao.getByUser(user).orElseThrow(() -> new RuntimeException("Can't find user: " + user));
+            return shoppingCartDao.getByUser(user).orElseThrow(
+                    () -> new RuntimeException("Can't find user: " + user));
         }
         throw new RuntimeException("User can't be null!");
     }
 
     @Override
     public void registerNewShoppingCart(User user) {
-        if (user != null) {
+        if (user != null && shoppingCartDao.getByUser(user).isEmpty()) {
             ShoppingCart shoppingCart = new ShoppingCart();
             shoppingCart.setUser(user);
             shoppingCartDao.add(shoppingCart);
+        } else {
+            throw new RuntimeException("User is null or shopping cart already exists!");
         }
     }
 
@@ -52,6 +60,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         if (shoppingCart != null) {
             shoppingCart.getTicketList().clear();
             shoppingCartDao.update(shoppingCart);
+        } else {
+            throw new RuntimeException("Shopping cart can't be null!");
         }
     }
 }
