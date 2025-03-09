@@ -59,7 +59,11 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             }
             throw new DataProcessingException(
                     "Failed to update shopping cart: " + shoppingCart, e);
-        }
+        } finally {
+            if (session != null) {
+                session.close();
+            }
 
+        }
     }
 }
