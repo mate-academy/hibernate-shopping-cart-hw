@@ -63,7 +63,7 @@ public class Main {
                 fastAndFurious.getId(), LocalDate.now()));
 
         User user = new User();
-        user.setEmail("mateacadamy@gmail.com");
+        user.setEmail("mateacademy@gmail.com");
         user.setSalt(HashUtil.getSalt());
         user.setPassword(HashUtil.hashPassword("password", user.getSalt()));
         UserDao userDao = (UserDao) injector.getInstance(UserDao.class);
