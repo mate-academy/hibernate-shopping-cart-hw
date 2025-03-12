@@ -1,6 +1,6 @@
 package mate.academy.dao.impl;
 
-import mate.academy.dao.TickedDao;
+import mate.academy.dao.TicketDao;
 import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Dao;
 import mate.academy.model.Ticket;
@@ -9,7 +9,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 @Dao
-public class TickedDaoImpl implements TickedDao {
+public class TicketDaoImpl implements TicketDao {
     @Override
     public Ticket add(Ticket ticket) {
         Session session = null;
@@ -24,7 +24,7 @@ public class TickedDaoImpl implements TickedDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Can't insert to DB ticked: "
+            throw new DataProcessingException("Can't insert to DB ticket: "
                     + ticket, e);
         } finally {
             if (session != null) {

@@ -5,14 +5,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 
 @Entity
 public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @OneToOne
+    @ManyToOne
     private MovieSession movieSession;
     @ManyToOne
     private User user;
@@ -31,5 +30,14 @@ public class Ticket {
 
     public void setMovieSession(MovieSession movieSession) {
         this.movieSession = movieSession;
+    }
+
+    @Override
+    public String toString() {
+        return "Ticket{"
+                + "id=" + id
+                + ", movieSession=" + movieSession
+                + ", user=" + user
+                + '}';
     }
 }

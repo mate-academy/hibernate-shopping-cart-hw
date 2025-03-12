@@ -38,7 +38,6 @@ public class Main {
 
         CinemaHallService cinemaHallService =
                 (CinemaHallService) injector.getInstance(CinemaHallService.class);
-        ;
         cinemaHallService.add(firstCinemaHall);
         cinemaHallService.add(secondCinemaHall);
 
@@ -57,7 +56,6 @@ public class Main {
 
         MovieSessionService movieSessionService =
                 (MovieSessionService) injector.getInstance(MovieSessionService.class);
-        ;
         movieSessionService.add(tomorrowMovieSession);
         movieSessionService.add(yesterdayMovieSession);
 
@@ -88,9 +86,13 @@ public class Main {
         ShoppingService shoppingService =
                 (ShoppingService) injector.getInstance(ShoppingService.class);
         shoppingService.registerNewShoppingCart(newUser);
+        shoppingService.getByUser(newUser);
         shoppingService.addSession(yesterdayMovieSession, newUser);
+        System.out.println(shoppingService.getByUser(newUser));
         shoppingService.addSession(tomorrowMovieSession, newUser);
+        System.out.println(shoppingService.getByUser(newUser));
         shoppingService.getByUser(newUser);
         shoppingService.clear(shoppingService.getByUser(newUser));
+        System.out.println(shoppingService.getByUser(newUser));
     }
 }
