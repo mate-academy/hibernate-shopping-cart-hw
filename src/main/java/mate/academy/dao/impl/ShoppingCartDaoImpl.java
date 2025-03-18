@@ -51,7 +51,6 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             ShoppingCart shoppingCart = query.uniqueResult();
 
             transaction.commit();
-            session.close();
 
             return Optional.ofNullable(shoppingCart);
         } catch (Exception e) {
@@ -59,6 +58,10 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
                 transaction.rollback();
             }
             throw new DataProcessingException("Unable to retrieve shopping cart: " + user, e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
         }
     }
 
