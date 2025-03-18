@@ -3,6 +3,7 @@ package mate.academy.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
@@ -14,7 +15,8 @@ import java.util.List;
 public class ShoppingCart {
     @Id
     private Long id;
-    @OneToMany(mappedBy = "shoppingCart")
+    @OneToMany
+    @JoinTable(name = "shopping_carts_tickets")
     private List<Ticket> tickets;
     @OneToOne
     @MapsId
