@@ -1,8 +1,8 @@
 package mate.academy.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToMany;
@@ -12,10 +12,10 @@ import java.util.List;
 @Entity
 public class ShoppingCart {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Ticket> tickets;
+
     @OneToOne
     @MapsId
     private User user;
@@ -26,6 +26,7 @@ public class ShoppingCart {
     public ShoppingCart(List<Ticket> tickets, User user) {
         this.tickets = tickets;
         this.user = user;
+        this.id = user.getId(); // Устанавливаем ID вручную
     }
 
     public Long getId() {
@@ -50,13 +51,13 @@ public class ShoppingCart {
 
     public void setUser(User user) {
         this.user = user;
+        this.id = user.getId(); // Убеждаемся, что ID синхронизирован
     }
 
     @Override
     public String toString() {
         return "ShoppingCart{"
                 + "id=" + id
-                + ", tickets=" + tickets
                 + ", user=" + user
                 + '}';
     }
