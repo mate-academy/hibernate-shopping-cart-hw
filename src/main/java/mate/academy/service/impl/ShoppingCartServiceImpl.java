@@ -5,6 +5,7 @@ import mate.academy.dao.TicketDao;
 import mate.academy.lib.Inject;
 import mate.academy.model.MovieSession;
 import mate.academy.model.ShoppingCart;
+import mate.academy.model.Ticket;
 import mate.academy.model.User;
 import mate.academy.service.ShoppingCartService;
 
@@ -16,7 +17,10 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void addSession(MovieSession movieSession, User user) {
-        //ticketDao.add()
+        Ticket ticket = new Ticket();
+        ticket.setMovieSession(movieSession);
+        ticket.setUser(user);
+        ticketDao.add(ticket);
     }
 
     @Override
@@ -26,12 +30,14 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void registerNewShoppingCart(User user) {
-        //return shoppingCartDao.registerNewShoppingCart(user);
-
+        ShoppingCart shoppingCart = new ShoppingCart();
+        shoppingCart.setUser(user);
+        shoppingCartDao.add(shoppingCart);
     }
 
     @Override
     public void clear(ShoppingCart shoppingCart) {
+        shoppingCartDao.update(shoppingCart);
 
     }
 }
