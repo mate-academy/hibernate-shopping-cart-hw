@@ -3,26 +3,23 @@ package mate.academy.dao.impl;
 import java.util.Optional;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.exception.DataProcessingException;
-import mate.academy.lib.Inject;
 import mate.academy.model.ShoppingCart;
 import mate.academy.model.User;
+import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 public class ShoppingCartDaoImpl implements ShoppingCartDao {
-    @Inject
-    private SessionFactory sessionFactory;
 
     @Override
     public ShoppingCart add(ShoppingCart shoppingCart) {
         Session session = null;
         Transaction transaction = null;
         try {
-            session = sessionFactory.openSession();
+            session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
-            session.save(sessionFactory);
+            session.save(shoppingCart);
             transaction.commit();
         } catch (RuntimeException e) {
             if (transaction != null) {
@@ -39,7 +36,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
 
     @Override
     public Optional<ShoppingCart> getByUser(User user) {
-        try (Session session = sessionFactory.openSession()) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query<ShoppingCart> query = session.createQuery("from ShoppingCart s"
                     + " where s.user = :user", ShoppingCart.class);
             query.setParameter("user", user);
@@ -51,7 +48,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
 
     @Override
     public void update(ShoppingCart shoppingCart) {
-        try (Session session = sessionFactory.openSession()) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query<ShoppingCart> query = session.createQuery("Update ShoppingCart s "
                     + "Set tickets = :tickets, user = :user where s.id = :id", ShoppingCart.class);
             query.setParameter("tickets", shoppingCart.getTickets());
