@@ -38,8 +38,9 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
     public Optional<ShoppingCart> getByUser(User user) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query<ShoppingCart> query = session.createQuery("from ShoppingCart s"
-                    + " where s.user = :user", ShoppingCart.class);
-            query.setParameter("user", user);
+                    + " left join fetch s.users u left join fetch "
+                    + "s.tickets t where s.user.id = :user_id", ShoppingCart.class);
+            query.setParameter("user_id", user.getId());
             return query.uniqueResultOptional();
         } catch (RuntimeException e) {
             throw new DataProcessingException("Can not get shoppingCart from the db", e);
@@ -48,14 +49,22 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
 
     @Override
     public void update(ShoppingCart shoppingCart) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Query<ShoppingCart> query = session.createQuery("Update ShoppingCart s "
-                    + "Set tickets = :tickets, user = :user where s.id = :id", ShoppingCart.class);
-            query.setParameter("tickets", shoppingCart.getTickets());
-            query.setParameter("user", shoppingCart.getUser());
-            query.setParameter("id", shoppingCart.getId());
+        Transaction transaction = null;
+        Session session = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            transaction = session.beginTransaction();
+            session.merge(shoppingCart);
+            transaction.commit();
         } catch (RuntimeException e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
             throw new DataProcessingException("Can not update shoppingCart in the db", e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
         }
     }
 }
