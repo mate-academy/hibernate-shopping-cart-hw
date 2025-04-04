@@ -1,22 +1,25 @@
 package mate.academy.service.impl;
 
+import jakarta.persistence.EntityNotFoundException;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
 import mate.academy.lib.Inject;
-import mate.academy.lib.Injector;
+import mate.academy.lib.Service;
 import mate.academy.model.MovieSession;
 import mate.academy.model.ShoppingCart;
 import mate.academy.model.Ticket;
 import mate.academy.model.User;
 import mate.academy.service.ShoppingCartService;
+import mate.academy.service.UserService;
 
+@Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
-    private static final Injector instance = Injector.getInstance("mate.academy");
     @Inject
-    private ShoppingCartDao shoppingCartDao = (ShoppingCartDao)
-            instance.getInstance(ShoppingCartDao.class);
+    private ShoppingCartDao shoppingCartDao;
     @Inject
-    private TicketDao ticketDao = (TicketDao) instance.getInstance(TicketDao.class);
+    private TicketDao ticketDao;
+    @Inject
+    private UserService userService;
 
     @Override
     public void addSession(MovieSession movieSession, User user) {
@@ -24,12 +27,15 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         ticket.setMovieSession(movieSession);
         ticket.setUser(user);
         ticketDao.add(ticket);
+        ShoppingCart shoppingCart = getByUser(user);
+        shoppingCart.getTickets().add(ticket);
+        shoppingCartDao.update(shoppingCart);
     }
 
     @Override
     public ShoppingCart getByUser(User user) {
         return shoppingCartDao.getByUser(user)
-                .orElseThrow(() -> new RuntimeException("Can not "
+                .orElseThrow(() -> new EntityNotFoundException("Can not "
                         + "find ShoppingCart in User: " + user));
     }
 
@@ -42,7 +48,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void clear(ShoppingCart shoppingCart) {
+        shoppingCart.getTickets().clear();
         shoppingCartDao.update(shoppingCart);
-
     }
 }
