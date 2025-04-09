@@ -74,10 +74,9 @@ public class Main {
 
         shoppingCartService.registerNewShoppingCart(bob);
         System.out.println("Registered new shopping cart for user");
-        ShoppingCart bobsCart = shoppingCartService.getByUser(bob);
         shoppingCartService.addSession(tomorrowMovieSession, bob);
         System.out.println("Added movie session to cart");
-        bobsCart = shoppingCartService.getByUser(bob);
+        ShoppingCart bobsCart = shoppingCartService.getByUser(bob);
         System.out.println("Shopping cart after adding ticket: " + bobsCart);
         System.out.println("Number of tickets in cart: " + bobsCart.getTicketList().size());
         shoppingCartService.clear(bobsCart);
