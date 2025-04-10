@@ -23,6 +23,7 @@ public class ShoppingCart {
     private List<Ticket> ticketList;
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
+    @JoinColumn(name = "id")
     private User user;
 
     public Long getId() {
