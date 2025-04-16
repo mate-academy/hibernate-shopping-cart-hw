@@ -42,7 +42,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             Query<ShoppingCart> shoppingCartByUserQuery = session.createQuery(
                     "FROM ShoppingCart sc "
                             + "LEFT JOIN FETCH sc.tickets "
-                            + "WHERE sc.user.id = :userId"
+                            + "WHERE sc.user.id = :userId", ShoppingCart.class
             );
             shoppingCartByUserQuery.setParameter("userId", user.getId());
             return shoppingCartByUserQuery.uniqueResultOptional();
