@@ -17,8 +17,8 @@ public class Main {
     public static final Injector injector = Injector.getInstance("mate.academy");
 
     public static void main(String[] args) {
-        MovieService movieService
-                = (MovieService) injector.getInstance(MovieService.class);
+        MovieService movieService =
+                (MovieService) injector.getInstance(MovieService.class);
 
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
@@ -52,8 +52,8 @@ public class Main {
         yesterdayMovieSession.setMovie(fastAndFurious);
         yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(1L));
 
-        MovieSessionService movieSessionService
-                = (MovieSessionService) injector.getInstance(MovieSessionService.class);
+        MovieSessionService movieSessionService =
+                (MovieSessionService) injector.getInstance(MovieSessionService.class);
         movieSessionService.add(tomorrowMovieSession);
         movieSessionService.add(yesterdayMovieSession);
 
@@ -69,8 +69,8 @@ public class Main {
                 = (UserService) injector.getInstance(UserService.class);
         userService.add(user);
 
-        ShoppingCartService shoppingCartService
-                = (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
+        ShoppingCartService shoppingCartService =
+                (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
         shoppingCartService.registerNewShoppingCart(user);
         shoppingCartService.addSession(tomorrowMovieSession, user);
 
