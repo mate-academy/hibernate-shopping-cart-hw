@@ -13,7 +13,7 @@ import java.util.List;
 public class ShoppingCart {
     @Id
     private Long id;
-    @OneToMany(mappedBy = "shopping_carts")
+    @OneToMany
     private List<Ticket> tickets;
     @OneToOne
     @MapsId
