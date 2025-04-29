@@ -2,22 +2,36 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.exception.RegistrationException;
+import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.model.User;
+import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
+import mate.academy.service.ShoppingCartService;
 
 public class Main {
-    public static void main(String[] args) {
-        MovieService movieService = null;
+    private static final Injector INJECTOR = Injector.getInstance("mate.academy");
 
-        Movie fastAndFurious = new Movie("Fast and Furious");
+    public static void main(String[] args) {
+        MovieService movieService = (MovieService) INJECTOR.getInstance(MovieService.class);
+
+        Movie fastAndFurious = new Movie();
+        fastAndFurious.setTitle("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
         movieService.add(fastAndFurious);
-        System.out.println(movieService.get(fastAndFurious.getId()));
-        movieService.getAll().forEach(System.out::println);
+
+        Movie avatar = new Movie();
+        avatar.setTitle("Avatar");
+        avatar.setDescription("A science fiction film about "
+                + "a paraplegic Marine on an alien planet.");
+        movieService.add(avatar);
+
+        System.out.println(movieService.getAll());
 
         CinemaHall firstCinemaHall = new CinemaHall();
         firstCinemaHall.setCapacity(100);
@@ -27,12 +41,12 @@ public class Main {
         secondCinemaHall.setCapacity(200);
         secondCinemaHall.setDescription("second hall with capacity 200");
 
-        CinemaHallService cinemaHallService = null;
+        CinemaHallService cinemaHallService =
+                (CinemaHallService) INJECTOR.getInstance(CinemaHallService.class);
         cinemaHallService.add(firstCinemaHall);
         cinemaHallService.add(secondCinemaHall);
 
         System.out.println(cinemaHallService.getAll());
-        System.out.println(cinemaHallService.get(firstCinemaHall.getId()));
 
         MovieSession tomorrowMovieSession = new MovieSession();
         tomorrowMovieSession.setCinemaHall(firstCinemaHall);
@@ -40,16 +54,33 @@ public class Main {
         tomorrowMovieSession.setShowTime(LocalDateTime.now().plusDays(1L));
 
         MovieSession yesterdayMovieSession = new MovieSession();
-        yesterdayMovieSession.setCinemaHall(firstCinemaHall);
+        yesterdayMovieSession.setCinemaHall(secondCinemaHall);
         yesterdayMovieSession.setMovie(fastAndFurious);
         yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(1L));
 
-        MovieSessionService movieSessionService = null;
+        MovieSessionService movieSessionService =
+                (MovieSessionService) INJECTOR.getInstance(MovieSessionService.class);
         movieSessionService.add(tomorrowMovieSession);
         movieSessionService.add(yesterdayMovieSession);
 
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(
                 fastAndFurious.getId(), LocalDate.now()));
+
+        AuthenticationService authenticationService = (AuthenticationService)
+                INJECTOR.getInstance(AuthenticationService.class);
+
+        User user = null;
+        try {
+            user = authenticationService.register("example@email.ua", "1234");
+        } catch (RegistrationException e) {
+            System.err.println("Registration failed: " + e.getMessage());
+            return;
+        }
+
+        ShoppingCartService shoppingCartService =
+                (ShoppingCartService) INJECTOR.getInstance(ShoppingCartService.class);
+        shoppingCartService.addSession(tomorrowMovieSession, user);
+        shoppingCartService.clear(shoppingCartService.getByUser(user));
     }
 }
