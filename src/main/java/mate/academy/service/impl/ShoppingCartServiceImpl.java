@@ -1,8 +1,7 @@
 package mate.academy.service.impl;
 
 import jakarta.persistence.EntityNotFoundException;
-import java.util.Collections;
-import java.util.List;
+import java.util.ArrayList;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
 import mate.academy.lib.Inject;
@@ -30,7 +29,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         ticketDao.add(ticket);
 
         ShoppingCart shopCartByUser = getByUser(user);
-        shopCartByUser.setTickets(ticketDao.getAllTicketsByUser(user));
+        shopCartByUser.getTickets().add(ticket);
         shoppingCartDao.update(shopCartByUser);
     }
 
@@ -46,17 +45,14 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         if (shoppingCartDao.getByUser(user).isEmpty()) {
             ShoppingCart shoppingCart = new ShoppingCart();
             shoppingCart.setUser(user);
+            shoppingCart.setTickets(new ArrayList<>());
             shoppingCartDao.add(shoppingCart);
         }
     }
 
     @Override
     public void clear(ShoppingCart shoppingCart) {
-        List<Ticket> ticketList = shoppingCart.getTickets();
-        shoppingCart.setTickets(Collections.emptyList());
+        shoppingCart.getTickets().clear();
         shoppingCartDao.update(shoppingCart);
-        for (Ticket ticket : ticketList) {
-            ticketDao.remove(ticket);
-        }
     }
 }

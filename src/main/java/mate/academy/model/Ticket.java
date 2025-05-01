@@ -8,27 +8,22 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "tickets")
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
 public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "movie_session")
+    @ManyToOne
+    @JoinColumn(name = "movie_session_id")
     private MovieSession movieSession;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+    @ManyToOne
+    @JoinColumn(name = "shopping_cart_id")
+    private ShoppingCart shoppingCart;
 
     public Long getId() {
         return id;
@@ -40,6 +35,10 @@ public class Ticket {
 
     public User getUser() {
         return user;
+    }
+
+    public ShoppingCart getShoppingCart() {
+        return shoppingCart;
     }
 
     public void setId(Long id) {
@@ -54,12 +53,17 @@ public class Ticket {
         this.user = user;
     }
 
+    public void setShoppingCart(ShoppingCart shoppingCart) {
+        this.shoppingCart = shoppingCart;
+    }
+
     @Override
     public String toString() {
         return "Ticket{"
                 + "id=" + id
                 + ", movieSession=" + movieSession
                 + ", user=" + user
+                + ", shoppingCart=" + shoppingCart
                 + '}';
     }
 }
