@@ -61,9 +61,9 @@ public class Main {
         Injector injector = Injector.getInstance("mate.academy");
         ShoppingCartService shoppingCartService =
                 (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
-        AuthenticationServiceImpl authenticationService
-                = (AuthenticationServiceImpl) injector.getInstance(AuthenticationService.class);
-        User user = null;
+        AuthenticationService authenticationService
+                = (AuthenticationService) injector.getInstance(AuthenticationService.class);
+        User user;
         try {
             user = authenticationService.register("123@gmail.com", "1234pass");
         } catch (RegistrationException e) {
