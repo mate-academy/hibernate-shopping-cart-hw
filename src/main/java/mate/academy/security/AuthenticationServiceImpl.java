@@ -11,6 +11,7 @@ import mate.academy.util.HashUtil;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
+
     @Inject
     private UserService userService;
 
@@ -29,6 +30,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             User user = new User();
             user.setEmail(email);
             user.setPassword(password);
+
+            String salt = HashUtil.generateSalt();
+            user.setSalt(salt);
+
+            String hashedPassword = HashUtil.hashPassword(password, salt);
+            user.setPasswordHash(hashedPassword);
+
             userService.add(user);
             return user;
         }

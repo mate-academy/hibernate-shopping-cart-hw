@@ -94,6 +94,17 @@ public class Injector {
     private Object createInstance(Class<?> clazz) {
         Object newInstance;
         try {
+            Constructor<?>[] constructors = clazz.getDeclaredConstructors();
+            for (Constructor<?> constructor : constructors) {
+                if (constructor.getParameterCount() > 0) {
+                    Object[] params = new Object[constructor.getParameterCount()];
+                    for (int i = 0; i < constructor.getParameterCount(); i++) {
+                        params[i] = getInstance(constructor.getParameterTypes()[i]);
+                    }
+                    newInstance = constructor.newInstance(params);
+                    return newInstance;
+                }
+            }
             Constructor<?> classConstructor = clazz.getConstructor();
             newInstance = classConstructor.newInstance();
         } catch (Exception e) {
@@ -102,7 +113,8 @@ public class Injector {
         return newInstance;
     }
 
-    private void setValueToField(Field field, Object instanceOfClass, Object classToInject) {
+    private void setValueToField(Field field, Object instanceOfClass,
+                                 Object classToInject) {
         try {
             field.setAccessible(true);
             field.set(instanceOfClass, classToInject);
@@ -110,15 +122,6 @@ public class Injector {
             throw new RuntimeException("Can't set value to field ", e);
         }
     }
-    /**
-     * Scans all classes accessible from the context class loader which
-     * belong to the given package and subpackages.
-     *
-     * @param packageName The base package
-     * @return The classes
-     * @throws ClassNotFoundException if the class cannot be located
-     * @throws IOException            if I/O errors occur
-     */
 
     private static List<Class<?>> getClasses(String packageName)
             throws IOException, ClassNotFoundException {
@@ -139,16 +142,9 @@ public class Injector {
         }
         return classes;
     }
-    /**
-     * Recursive method used to find all classes in a given directory and subdirs.
-     *
-     * @param directory   The base directory
-     * @param packageName The package name for classes found inside the base directory
-     * @return The classes
-     * @throws ClassNotFoundException if the class cannot be located
-     */
 
-    private static List<Class<?>> findClasses(File directory, String packageName)
+    private static List<Class<?>> findClasses(File directory,
+                                              String packageName)
             throws ClassNotFoundException {
         List<Class<?>> classes = new ArrayList<>();
         if (!directory.exists()) {
