@@ -42,14 +42,14 @@ public class Injector {
             if (isFieldInitialized(field, instanceOfCurrentClass)) {
                 continue;
             }
-            if (field.getDeclaredAnnotation(Inject.class) != null) {
-                Object classToInject = getInstance(field.getType());
-                newInstanceOfClass = getNewInstance(clazz);
-                setValueToField(field, newInstanceOfClass, classToInject);
-            } else {
-                throw new RuntimeException("Class " + field.getName() + " in class "
-                        + clazz.getName() + " hasn't annotation Inject");
+            if (!field.isAnnotationPresent(Inject.class)) {
+                continue; // Pomiń pole bez adnotacji @Inject
             }
+            Object classToInject = getInstance(field.getType());
+            if (newInstanceOfClass == null) {
+                newInstanceOfClass = getNewInstance(clazz);
+            }
+            setValueToField(field, newInstanceOfClass, classToInject);
         }
         if (newInstanceOfClass == null) {
             return getNewInstance(clazz);
@@ -87,19 +87,27 @@ public class Injector {
         try {
             return field.get(instance) != null;
         } catch (IllegalAccessException e) {
-            throw new RuntimeException("Can't get access to field");
+            throw new RuntimeException("Can't get access to field", e);
         }
     }
 
     private Object createInstance(Class<?> clazz) {
-        Object newInstance;
         try {
-            Constructor<?> classConstructor = clazz.getConstructor();
-            newInstance = classConstructor.newInstance();
+            Constructor<?>[] constructors = clazz.getDeclaredConstructors();
+            for (Constructor<?> constructor : constructors) {
+                if (constructor.getParameterCount() > 0) {
+                    Object[] params = new Object[constructor.getParameterCount()];
+                    for (int i = 0; i < constructor.getParameterCount(); i++) {
+                        params[i] = getInstance(constructor.getParameterTypes()[i]);
+                    }
+                    return constructor.newInstance(params);
+                }
+            }
+            Constructor<?> defaultConstructor = clazz.getConstructor();
+            return defaultConstructor.newInstance();
         } catch (Exception e) {
             throw new RuntimeException("Can't create object of the class", e);
         }
-        return newInstance;
     }
 
     private void setValueToField(Field field, Object instanceOfClass, Object classToInject) {
@@ -107,18 +115,9 @@ public class Injector {
             field.setAccessible(true);
             field.set(instanceOfClass, classToInject);
         } catch (IllegalAccessException e) {
-            throw new RuntimeException("Can't set value to field ", e);
+            throw new RuntimeException("Can't set value to field", e);
         }
     }
-    /**
-     * Scans all classes accessible from the context class loader which
-     * belong to the given package and subpackages.
-     *
-     * @param packageName The base package
-     * @return The classes
-     * @throws ClassNotFoundException if the class cannot be located
-     * @throws IOException            if I/O errors occur
-     */
 
     private static List<Class<?>> getClasses(String packageName)
             throws IOException, ClassNotFoundException {
@@ -133,20 +132,12 @@ public class Injector {
             URL resource = resources.nextElement();
             dirs.add(new File(resource.getFile()));
         }
-        ArrayList<Class<?>> classes = new ArrayList<>();
+        List<Class<?>> classes = new ArrayList<>();
         for (File directory : dirs) {
             classes.addAll(findClasses(directory, packageName));
         }
         return classes;
     }
-    /**
-     * Recursive method used to find all classes in a given directory and subdirs.
-     *
-     * @param directory   The base directory
-     * @param packageName The package name for classes found inside the base directory
-     * @return The classes
-     * @throws ClassNotFoundException if the class cannot be located
-     */
 
     private static List<Class<?>> findClasses(File directory, String packageName)
             throws ClassNotFoundException {
@@ -159,10 +150,9 @@ public class Injector {
             for (File file : files) {
                 if (file.isDirectory()) {
                     if (file.getName().contains(".")) {
-                        throw new RuntimeException("File name shouldn't consist point.");
+                        throw new RuntimeException("File name shouldn't consist of a dot.");
                     }
-                    classes.addAll(findClasses(file, packageName + "."
-                            + file.getName()));
+                    classes.addAll(findClasses(file, packageName + "." + file.getName()));
                 } else if (file.getName().endsWith(".class")) {
                     classes.add(Class.forName(packageName + '.'
                             + file.getName().substring(0, file.getName().length() - 6)));
