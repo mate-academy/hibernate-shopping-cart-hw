@@ -2,7 +2,6 @@ package mate.academy.dao.impl;
 
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.Query;
-import java.util.List;
 import java.util.Optional;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.exception.DataProcessingException;
