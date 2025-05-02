@@ -29,7 +29,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (userService.findByEmail(email).isEmpty()) {
             User user = new User();
             user.setEmail(email);
-            user.setPassword(password);
 
             String salt = HashUtil.generateSalt();
             user.setSalt(salt);
@@ -45,6 +44,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private boolean matchPasswords(String rawPassword, User userFromDb) {
         String hashedPassword = HashUtil.hashPassword(rawPassword, userFromDb.getSalt());
-        return hashedPassword.equals(userFromDb.getPassword());
+        return hashedPassword.equals(userFromDb.getPasswordHash());
     }
 }

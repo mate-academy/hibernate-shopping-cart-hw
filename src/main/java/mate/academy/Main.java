@@ -54,7 +54,6 @@ public class Main {
         session.setShowTime(LocalDateTime.now().plusDays(1));
         movieSessionService.add(session);
 
-        shoppingCartService.registerNewShoppingCart(user);
         shoppingCartService.addSession(session, user);
 
         ShoppingCart cart = shoppingCartService.getByUser(user);
