@@ -1,5 +1,6 @@
 package mate.academy.dao.impl;
 
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.Query;
 import java.util.List;
 import java.util.Optional;
@@ -41,7 +42,11 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query query = session.createQuery("from ShoppingCart where user = :user");
             query.setParameter("user", user);
-            return Optional.of((ShoppingCart) query.getSingleResult());
+            try {
+                return Optional.of((ShoppingCart) query.getSingleResult());
+            } catch (NoResultException e) {
+                return Optional.empty();
+            }
         } catch (Exception e) {
             throw new DataProcessingException("Unable to retrieve shopping cart " + user, e);
         }
