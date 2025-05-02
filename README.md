@@ -29,7 +29,7 @@ We will continue working on our Cinema project.
             /**
              * This method is responsible for adding a Ticket to the ShoppingCart
              * @param movieSession contains the information required for the ticket
-             * @param user - the User who wants to buy the ticket for a specific movieSession
+             * @param user - the User who wants to buy the ticket for a specific movieSessio
              */
             void addSession(MovieSession movieSession, User user);
         
