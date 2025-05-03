@@ -8,7 +8,8 @@ import mate.academy.model.Movie;
 import mate.academy.service.MovieService;
 
 @Service
-public class MovieServiceImpl implements MovieService {
+public class
+        MovieServiceImpl implements MovieService {
     @Inject
     private MovieDao movieDao;
 
