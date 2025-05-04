@@ -5,7 +5,10 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 
@@ -16,10 +19,23 @@ public class MovieSession {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "movie_id", nullable = false)
     private Movie movie;
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "hall_id", nullable = false)
     private CinemaHall cinemaHall;
     private LocalDateTime showTime;
+
+    @PrePersist
+    @PreUpdate
+    private void validate() {
+        if (this.movie == null) {
+            throw new RuntimeException("Movie session must have a movie!");
+        }
+        if (this.cinemaHall == null) {
+            throw new RuntimeException("Movie session must have a cinema hall!");
+        }
+    }
 
     public Long getId() {
         return id;
