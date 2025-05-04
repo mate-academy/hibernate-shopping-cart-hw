@@ -2,16 +2,35 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import lombok.SneakyThrows;
+import mate.academy.exception.RegistrationException;
+import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.model.User;
+import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
 
 public class Main {
+    private static final Injector INJECTOR = Injector.getInstance("mate.academy");
+
+    @SneakyThrows
     public static void main(String[] args) {
-        MovieService movieService = null;
+        AuthenticationService authenticationService =
+                (AuthenticationService) INJECTOR.getInstance(AuthenticationService.class);
+
+        try {
+            User user = authenticationService.register("test22@email.ua", "test22");
+            System.out.println("User registered successfully: " + user.getEmail());
+        } catch (RegistrationException e) {
+            System.err.println("Registration failed: " + e.getMessage());
+        }
+
+        MovieService movieService =
+                (MovieService) INJECTOR.getInstance(MovieService.class);
 
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
@@ -27,7 +46,8 @@ public class Main {
         secondCinemaHall.setCapacity(200);
         secondCinemaHall.setDescription("second hall with capacity 200");
 
-        CinemaHallService cinemaHallService = null;
+        CinemaHallService cinemaHallService =
+                (CinemaHallService) INJECTOR.getInstance(CinemaHallService.class);
         cinemaHallService.add(firstCinemaHall);
         cinemaHallService.add(secondCinemaHall);
 
@@ -44,7 +64,8 @@ public class Main {
         yesterdayMovieSession.setMovie(fastAndFurious);
         yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(1L));
 
-        MovieSessionService movieSessionService = null;
+        MovieSessionService movieSessionService =
+                (MovieSessionService) INJECTOR.getInstance(MovieSessionService.class);
         movieSessionService.add(tomorrowMovieSession);
         movieSessionService.add(yesterdayMovieSession);
 
