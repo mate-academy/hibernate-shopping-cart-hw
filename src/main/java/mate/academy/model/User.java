@@ -16,7 +16,11 @@ public class User {
     @Column(unique = true)
     private String email;
     private String password;
+
     private byte[] salt;
+
+    public User() {
+    }
 
     public Long getId() {
         return id;
