@@ -16,27 +16,27 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        Optional<User> userFromDb = userService.findByEmail(email);
-        if (userFromDb.isPresent() && matchPasswords(password, userFromDb.get())) {
-            return userFromDb.get();
+        Optional<User> userFromDB = userService.findByEmail(email);
+        if (userFromDB.isEmpty() || !userFromDB.get()
+                .getPassword().equals(HashUtil.hashPassword(password,
+                        userFromDB.get().getSalt()))) {
+            throw new AuthenticationException("Can't authenticate user. "
+                    + "Login or password are wrong");
         }
-        throw new AuthenticationException("Incorrect email or password!");
+        return userFromDB.get();
     }
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        if (userService.findByEmail(email).isEmpty()) {
-            User user = new User();
-            user.setEmail(email);
-            user.setPassword(password);
-            userService.add(user);
-            return user;
+        if (userService.findByEmail(email).isPresent()) {
+            throw new RegistrationException("User with email: " + email + " already exist");
         }
-        throw new RegistrationException("This email is already registered.");
-    }
-
-    private boolean matchPasswords(String rawPassword, User userFromDb) {
-        String hashedPassword = HashUtil.hashPassword(rawPassword, userFromDb.getSalt());
-        return hashedPassword.equals(userFromDb.getPassword());
+        if (password.isBlank()) {
+            throw new RegistrationException("Password should be min 6 letters length");
+        }
+        User user = new User();
+        user.setEmail(email);
+        user.setPassword(password);
+        return userService.add(user);
     }
 }
