@@ -22,7 +22,7 @@ public class Movie {
         this.title = title;
     }
 
-    public Long getId() {
+    public Long getIdOfTheMovie() {
         return id;
     }
 
