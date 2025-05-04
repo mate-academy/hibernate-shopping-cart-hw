@@ -15,28 +15,28 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private UserService userService;
 
     @Override
-    public User login(String email, String password) throws AuthenticationException {
-        Optional<User> userFromDb = userService.findByEmail(email);
-        if (userFromDb.isPresent() && matchPasswords(password, userFromDb.get())) {
-            return userFromDb.get();
+    public User register(String email, String password) throws RegistrationException {
+        Optional<User> optionalUserByEmail = userService.findByEmail(email);
+        if (optionalUserByEmail.isPresent()) {
+            throw new RegistrationException("Email " + email + "already registered");
         }
-        throw new AuthenticationException("Incorrect email or password!");
+        User newUser = new User();
+        newUser.setEmail(email);
+        newUser.setPassword(password);
+        return userService.add(newUser);
     }
 
     @Override
-    public User register(String email, String password) throws RegistrationException {
-        if (userService.findByEmail(email).isEmpty()) {
-            User user = new User();
-            user.setEmail(email);
-            user.setPassword(password);
-            userService.add(user);
-            return user;
+    public User login(String email, String password) throws AuthenticationException {
+        Optional<User> optionalUserByEmail = userService.findByEmail(email);
+        if (optionalUserByEmail.isEmpty()) {
+            throw new AuthenticationException("no user with email:" + email);
         }
-        throw new RegistrationException("This email is already registered.");
-    }
+        User user = optionalUserByEmail.get();
+        if (user.getPassword().equals(HashUtil.hashPassword(password, user.getSalt()))) {
+            return optionalUserByEmail.get();
+        }
 
-    private boolean matchPasswords(String rawPassword, User userFromDb) {
-        String hashedPassword = HashUtil.hashPassword(rawPassword, userFromDb.getSalt());
-        return hashedPassword.equals(userFromDb.getPassword());
+        throw new AuthenticationException("wrong password");
     }
 }

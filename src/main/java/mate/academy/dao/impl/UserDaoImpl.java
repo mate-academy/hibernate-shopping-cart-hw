@@ -8,14 +8,13 @@ import mate.academy.model.User;
 import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 
 @Dao
 public class UserDaoImpl implements UserDao {
     @Override
     public User add(User user) {
-        Session session = null;
         Transaction transaction = null;
+        Session session = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
@@ -26,8 +25,7 @@ public class UserDaoImpl implements UserDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Can't insert to DB user: "
-                    + user, e);
+            throw new DataProcessingException("Can't insert user: " + user, e);
         } finally {
             if (session != null) {
                 session.close();
@@ -36,14 +34,14 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public Optional<User> findByEmail(String email) {
+    public Optional<User> get(String email) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Query<User> query = session.createQuery("FROM User u "
-                    + "WHERE u.email = :email", User.class);
-            query.setParameter("email", email);
-            return query.uniqueResultOptional();
+            return session.createQuery("from User user where user.email = :email", User.class)
+                    .setParameter("email", email)
+                    .uniqueResultOptional();
         } catch (Exception e) {
-            throw new DataProcessingException("Can't find user by email: " + email, e);
+            throw new DataProcessingException(
+                    "Can't get user related to email: " + email, e);
         }
     }
 }
