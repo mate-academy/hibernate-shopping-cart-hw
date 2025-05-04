@@ -9,6 +9,7 @@ import mate.academy.service.CinemaHallService;
 
 @Service
 public class CinemaHallServiceImpl implements CinemaHallService {
+
     @Inject
     private CinemaHallDao cinemaHallDao;
 

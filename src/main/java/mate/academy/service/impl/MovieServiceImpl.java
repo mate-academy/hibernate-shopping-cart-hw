@@ -9,6 +9,7 @@ import mate.academy.service.MovieService;
 
 @Service
 public class MovieServiceImpl implements MovieService {
+
     @Inject
     private MovieDao movieDao;
 
