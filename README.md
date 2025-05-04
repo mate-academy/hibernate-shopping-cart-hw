@@ -27,7 +27,7 @@ We will continue working on our Cinema project.
         ```java
         public interface ShoppingCartService {
             /**
-             * This method is responsible for adding a Ticket to the ShoppingCart
+             * This method is responsible for adding a Ticket to the ShoppingCartDao
              * @param movieSession contains the information required for the ticket
              * @param user - the User who wants to buy the ticket for a specific movieSession
              */
