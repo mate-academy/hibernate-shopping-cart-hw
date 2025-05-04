@@ -77,7 +77,8 @@ public class Main {
 
         System.out.println("Kate empty shopping cart after register method: "
                 + shoppingCartService.getByUser(kate));
-        shoppingCartService.addSession(movieSessionService.get(1L), kate);
+        shoppingCartService.addSession(movieSessionService.get(
+                tomorrowMovieSession.getId()), kate);
         System.out.println("Kate shopping cart with ticket: "
                 + shoppingCartService.getByUser(kate));
         shoppingCartService.clear(shoppingCartService.getByUser(kate));
