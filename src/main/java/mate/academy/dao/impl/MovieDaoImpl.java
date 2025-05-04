@@ -50,6 +50,7 @@ public class MovieDaoImpl implements MovieDao {
             CriteriaQuery<Movie> criteriaQuery = session.getCriteriaBuilder()
                     .createQuery(Movie.class);
             criteriaQuery.from(Movie.class);
+            criteriaQuery.distinct(true);
             return session.createQuery(criteriaQuery).getResultList();
         } catch (Exception e) {
             throw new DataProcessingException("Can't get all movies", e);
