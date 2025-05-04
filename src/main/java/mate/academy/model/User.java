@@ -9,7 +9,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User extends ShoppingCart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,6 +17,14 @@ public class User {
     private String email;
     private String password;
     private byte[] salt;
+
+    public User(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
+
+    public User() {
+    }
 
     public Long getId() {
         return id;
@@ -54,7 +62,9 @@ public class User {
     public String toString() {
         return "User{"
                 + "id=" + id
-                + ", email='" + email + '\''
+                + ", email='"
+                + email
+                + '\''
                 + '}';
     }
 }
