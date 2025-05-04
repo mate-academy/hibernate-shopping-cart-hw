@@ -33,10 +33,11 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public ShoppingCart getByUser(User user) {
-        try{
-        return shoppingCartDao.getByUser(user).get();
-        } catch (Exception e){
-            throw new DataProcessingException("Users: " + user + "shopping cart cannot be found", e);
+        try {
+            return shoppingCartDao.getByUser(user).get();
+        } catch (Exception e) {
+            throw new DataProcessingException("Users: " + user
+                    + "shopping cart cannot be found", e);
         }
     }
 
