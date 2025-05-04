@@ -19,6 +19,10 @@ public class UserDaoImpl implements UserDao {
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
+            Optional<User> existingUser = findByEmail(user.getEmail());
+            if (existingUser.isPresent()) {
+                return existingUser.get();
+            }
             session.persist(user);
             transaction.commit();
             return user;
