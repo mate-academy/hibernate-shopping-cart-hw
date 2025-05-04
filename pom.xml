@@ -6,7 +6,7 @@
 
 
     <groupId>mate-academy</groupId>
-    <artifactId>hibernate-shopping-cart</artifactId>
+    <artifactId>hibernate-shopping-cart-hw</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
