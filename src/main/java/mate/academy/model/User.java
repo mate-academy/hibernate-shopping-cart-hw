@@ -17,7 +17,7 @@ public class User {
     private String email;
     private String password;
     private byte[] salt;
-
+    
     public Long getId() {
         return id;
     }
