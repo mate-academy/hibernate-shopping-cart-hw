@@ -3,6 +3,7 @@ package mate.academy.util;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import mate.academy.exception.DataProcessingException;
 
 public class HashUtil {
     private static final String HASH_ALGORITHM = "SHA-512";
@@ -21,7 +22,7 @@ public class HashUtil {
             }
             return hashedPassword.toString();
         } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("Can't hash password!", e);
+            throw new DataProcessingException("Can't hash password!", e);
         }
     }
 
