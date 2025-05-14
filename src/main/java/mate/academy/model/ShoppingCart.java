@@ -18,7 +18,7 @@ public class ShoppingCart {
     @OneToOne
     private User user;
 
-    @OneToMany(mappedBy = "shoppingCard", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "shoppingCart", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Ticket> tickets;
 
     public Long getId() {

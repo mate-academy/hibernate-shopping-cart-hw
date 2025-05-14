@@ -6,7 +6,6 @@ import mate.academy.exception.RegistrationException;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
-import mate.academy.model.ShoppingCart;
 import mate.academy.model.User;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
@@ -23,12 +22,12 @@ public class Main {
         bob.setEmail("bob@gmail.com");
         bob.setPassword("1234");
 
-        MovieService filmService = new MovieServiceImpl();
+        MovieService movieService = new MovieServiceImpl();
         Movie fordVsFerrari = new Movie("Ford v. Ferrari");
         fordVsFerrari.setDescription("The film tells the true story of the "
                 + "struggle between the Ford and Ferrari teams that erupted at "
                 + "the 1966 Le Mans race.");
-        filmService.add(fordVsFerrari);
+        movieService.add(fordVsFerrari);
 
         CinemaHall cinemaHall = new CinemaHall();
         cinemaHall.setCapacity(300);
@@ -42,10 +41,8 @@ public class Main {
         ShoppingCartService shoppingCartService = new ShoppingCartServiceImpl();
         shoppingCartService.registerNewShoppingCart(bob);
         shoppingCartService.addSession(movieSession, bob);
-        ShoppingCart byUser = shoppingCartService.getByUser(bob);
-        shoppingCartService.clear(byUser);
+        shoppingCartService.clear(shoppingCartService.getByUser(bob));
 
-        MovieService movieService = new MovieServiceImpl();
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
         movieService.add(fastAndFurious);

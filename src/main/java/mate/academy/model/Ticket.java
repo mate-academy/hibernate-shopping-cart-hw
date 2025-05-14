@@ -5,7 +5,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
 
 @Entity
 public class Ticket {
@@ -17,7 +16,6 @@ public class Ticket {
     private MovieSession movieSession;
 
     @ManyToOne
-    @MapsId
     private User user;
 
     public Ticket() {
