@@ -71,14 +71,12 @@ public class Main {
         ShoppingCartService shoppingCartService = (ShoppingCartService)
                 injector.getInstance(ShoppingCartService.class);
 
-        String email = "testuser1@test.com";
-        String password = "test1234";
-        User user;
+        User user = null;
 
         try {
-            user = authenticationService.register(email, password);
+            user = authenticationService.register("testuser1@test.com", "test1234");
         } catch (RegistrationException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Registration failed", e);
         }
 
         shoppingCartService.registerNewShoppingCart(user);
