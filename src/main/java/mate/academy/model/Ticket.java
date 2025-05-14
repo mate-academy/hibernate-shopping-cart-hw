@@ -7,7 +7,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 
-
 @Entity
 public class Ticket {
     @Id

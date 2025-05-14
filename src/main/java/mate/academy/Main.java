@@ -24,19 +24,18 @@ public class Main {
         bob.setPassword("1234");
 
         MovieService filmService = new MovieServiceImpl();
-        Movie Ford_vs_Ferrari = new Movie("Ford v. Ferrari");
-        Ford_vs_Ferrari.setDescription("The film tells the true story of the "
-            + "struggle between the Ford and Ferrari teams that erupted at "
-            + "the 1966 Le Mans race.");
-        filmService.add(Ford_vs_Ferrari);
+        Movie fordVsFerrari = new Movie("Ford v. Ferrari");
+        fordVsFerrari.setDescription("The film tells the true story of the "
+                + "struggle between the Ford and Ferrari teams that erupted at "
+                + "the 1966 Le Mans race.");
+        filmService.add(fordVsFerrari);
 
         CinemaHall cinemaHall = new CinemaHall();
         cinemaHall.setCapacity(300);
         cinemaHall.setDescription("Main Hall");
 
-
         MovieSession movieSession = new MovieSession();
-        movieSession.setMovie(Ford_vs_Ferrari);
+        movieSession.setMovie(fordVsFerrari);
         movieSession.setCinemaHall(cinemaHall);
         movieSession.setShowTime(LocalDateTime.now().plusDays(1));
 

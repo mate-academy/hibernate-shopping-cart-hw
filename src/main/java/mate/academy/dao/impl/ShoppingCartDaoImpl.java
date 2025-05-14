@@ -26,7 +26,8 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Can't add ShoppingCart to the DB: " + shoppingCart, e);
+            throw new DataProcessingException("Can't add ShoppingCart to the DB: "
+                + shoppingCart, e);
         }
         return shoppingCart;
     }
@@ -41,7 +42,8 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
                 .setParameter("user", user)
                 .uniqueResultOptional();
         } catch (Exception e) {
-            throw new DataProcessingException("Failed to getByUser the ShoppingCart object with user: " + user, e);
+            throw new DataProcessingException("Failed to getByUser the ShoppingCart "
+                + "object with user: " + user, e);
         }
     }
 
@@ -59,7 +61,8 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Can't update ShoppingCart to the DB: " + shoppingCart, e);
+            throw new DataProcessingException("Can't update ShoppingCart"
+                + " to the DB: " + shoppingCart, e);
         }
     }
 }
