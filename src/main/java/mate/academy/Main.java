@@ -42,10 +42,8 @@ public class Main {
         ShoppingCartService shoppingCartService = new ShoppingCartServiceImpl();
         shoppingCartService.registerNewShoppingCart(bob);
         shoppingCartService.addSession(movieSession, bob);
-        shoppingCartService.getByUser(bob);
-
-        ShoppingCart bobCart = shoppingCartService.getByUser(bob);
-        shoppingCartService.clear(bobCart);
+        ShoppingCart byUser = shoppingCartService.getByUser(bob);
+        shoppingCartService.clear(byUser);
 
         MovieService movieService = new MovieServiceImpl();
         Movie fastAndFurious = new Movie("Fast and Furious");
