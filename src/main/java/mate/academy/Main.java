@@ -12,12 +12,9 @@ import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
 import mate.academy.service.ShoppingCartService;
 import mate.academy.service.UserService;
-import mate.academy.util.HibernateUtil;
-import org.hibernate.SessionFactory;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.academy");
-    private static final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
     public static void main(String[] args) {
         MovieService movieService = (MovieService) injector.getInstance(MovieService.class);
