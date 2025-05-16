@@ -8,8 +8,6 @@ import mate.academy.lib.Dao;
 import mate.academy.model.ShoppingCart;
 import mate.academy.model.User;
 import mate.academy.util.HibernateUtil;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -19,7 +17,7 @@ import org.hibernate.query.criteria.JpaRoot;
 
 @Dao
 public class ShoppingCartDaoImpl implements ShoppingCartDao {
-    private static final Logger logger = LogManager.getLogger(ShoppingCartDaoImpl.class);
+    //    private static final Logger logger = LogManager.getLogger(ShoppingCartDaoImpl.class);
     private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
     public ShoppingCartDaoImpl() {
@@ -35,7 +33,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             transaction = session.beginTransaction();
             session.save(shoppingCart);
             transaction.commit();
-            logger.info("Shopping cart was added: " + shoppingCart);
+            //            logger.info("Shopping cart was added: " + shoppingCart);
             return shoppingCart;
         } catch (Exception e) {
             if (transaction != null) {
@@ -72,7 +70,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             transaction = session.beginTransaction();
             session.merge(shoppingCart);
             transaction.commit();
-            logger.info("Shopping cart " + shoppingCart + " was updated.");
+            //            logger.info("Shopping cart " + shoppingCart + " was updated.");
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();

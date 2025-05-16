@@ -5,15 +5,13 @@ import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Dao;
 import mate.academy.model.Ticket;
 import mate.academy.util.HibernateUtil;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 @Dao
 public class TicketDaoImpl implements TicketDao {
-    private static final Logger logger = LogManager.getLogger(ShoppingCartDaoImpl.class);
+    //    private static final Logger logger = LogManager.getLogger(ShoppingCartDaoImpl.class);
     private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
     public TicketDaoImpl() {
@@ -28,7 +26,7 @@ public class TicketDaoImpl implements TicketDao {
             transaction = session.beginTransaction();
             session.persist(ticket);
             transaction.commit();
-            logger.info("Ticket was added: " + ticket);
+            //            logger.info("Ticket was added: " + ticket);
             return ticket;
         } catch (Exception e) {
             if (transaction != null) {

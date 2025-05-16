@@ -12,13 +12,11 @@ import mate.academy.model.ShoppingCart;
 import mate.academy.model.Ticket;
 import mate.academy.model.User;
 import mate.academy.service.ShoppingCartService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
-    @Inject
-    private static final Logger logger = LogManager.getLogger(ShoppingCartServiceImpl.class);
+    //    @Inject
+    //    private static final Logger logger = LogManager.getLogger(ShoppingCartServiceImpl.class);
     @Inject
     private ShoppingCartDao shoppingCartDao;
     @Inject
@@ -50,13 +48,13 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public void registerNewShoppingCart(User user) {
         ShoppingCart shoppingCart = new ShoppingCart(user);
         shoppingCartDao.add(shoppingCart);
-        logger.info("Registered new shopping cart for user :" + shoppingCart);
+        //        logger.info("Registered new shopping cart for user :" + shoppingCart);
     }
 
     @Override
     public void clear(ShoppingCart shoppingCart) {
         shoppingCart.setTicketList(Collections.emptyList());
         shoppingCartDao.update(shoppingCart);
-        logger.info("Cleared shoppingCart :" + shoppingCart);
+        //        logger.info("Cleared shoppingCart :" + shoppingCart);
     }
 }
