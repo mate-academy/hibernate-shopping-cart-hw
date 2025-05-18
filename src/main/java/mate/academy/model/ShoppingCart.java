@@ -12,7 +12,7 @@ import jakarta.persistence.Table;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Entity
+@Entity(name = "shopping_carts")
 @Table(name = "shopping_carts")
 public class ShoppingCart {
     @Id
