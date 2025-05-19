@@ -14,6 +14,7 @@ import mate.academy.service.ShoppingCartService;
 import mate.academy.service.UserService;
 
 public class Main {
+
     private static final Injector injector = Injector.getInstance("mate.academy");
 
     public static void main(String[] args) {

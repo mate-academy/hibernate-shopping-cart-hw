@@ -1,5 +1,6 @@
 package mate.academy.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -9,10 +10,11 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
-@Entity(name = "shopping_carts")
+@Entity
 @Table(name = "shopping_carts")
 public class ShoppingCart {
     @Id
@@ -24,8 +26,8 @@ public class ShoppingCart {
     @PrimaryKeyJoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "shoppingCart")
-    private List<Ticket> ticketList;
+    @OneToMany(mappedBy = "shoppingCart", orphanRemoval = true, cascade = CascadeType.REMOVE)
+    private Set<Ticket> ticketList = new HashSet<>();
 
     public ShoppingCart() {
     }
@@ -50,12 +52,16 @@ public class ShoppingCart {
         this.user = user;
     }
 
-    public List<Ticket> getTicketList() {
+    public Set<Ticket> getTicketList() {
         return ticketList;
     }
 
-    public void setTicketList(List<Ticket> ticketList) {
+    public void setTicketList(Set<Ticket> ticketList) {
         this.ticketList = ticketList;
+    }
+
+    public void addTicket(Ticket ticket) {
+        ticketList.add(ticket);
     }
 
     @Override
