@@ -46,11 +46,11 @@ public class TicketDaoImpl implements TicketDao {
             Root<Ticket> ticketRoot = criteriaQuery.from(Ticket.class);
             Predicate userPredicate = criteriaBuilder.equal(ticketRoot.get("user").get("id"),
                     user.getId());
-            criteriaQuery.select(ticketRoot).where(userPredicate);
             ticketRoot.fetch("user");
             ticketRoot.fetch("movieSession");
-            ticketRoot.fetch("movieSession").fetch("movie"); //
-            ticketRoot.fetch("movieSession").fetch("cinemaHall");//
+            ticketRoot.fetch("movieSession").fetch("movie");
+            ticketRoot.fetch("movieSession").fetch("cinemaHall");
+            criteriaQuery.select(ticketRoot).where(userPredicate);
             return session.createQuery(criteriaQuery).getResultList();
         } catch (Exception e) {
             throw new DataProcessingException("Can't get all tickets by user: " + user, e);

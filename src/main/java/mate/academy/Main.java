@@ -74,13 +74,13 @@ public class Main {
         AuthenticationService authenticationService = (AuthenticationService)
                 injector.getInstance(AuthenticationService.class);
         User registeredFirstUser;
-        User registerSecondUser;
+        User registeredSecondUser;
         try {
             registeredFirstUser = authenticationService
                     .register(firstUser.getEmail(), firstUser.getPassword());
             authenticationService.login(firstUser.getEmail(), firstUser.getPassword());
 
-            registerSecondUser = authenticationService
+            registeredSecondUser = authenticationService
                     .register(secondUser.getEmail(), secondUser.getPassword());
             authenticationService.login(secondUser.getEmail(), secondUser.getPassword());
         } catch (RegistrationException | AuthenticationException e) {
@@ -92,11 +92,11 @@ public class Main {
         shoppingCartService.addSession(yesterdayMovieSession, registeredFirstUser);
         shoppingCartService.addSession(yesterdayMovieSession, registeredFirstUser);
 
-        shoppingCartService.addSession(tomorrowMovieSession, registerSecondUser);
-        shoppingCartService.addSession(tomorrowMovieSession, registerSecondUser);
-        shoppingCartService.addSession(tomorrowMovieSession, registerSecondUser);
+        shoppingCartService.addSession(tomorrowMovieSession, registeredSecondUser);
+        shoppingCartService.addSession(tomorrowMovieSession, registeredSecondUser);
+        shoppingCartService.addSession(tomorrowMovieSession, registeredSecondUser);
 
-        ShoppingCart shopCartBySecondUser = shoppingCartService.getByUser(registerSecondUser);
+        ShoppingCart shopCartBySecondUser = shoppingCartService.getByUser(registeredSecondUser);
         shoppingCartService.clear(shopCartBySecondUser);
     }
 }
