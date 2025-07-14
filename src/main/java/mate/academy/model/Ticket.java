@@ -16,6 +16,8 @@ public class Ticket {
     private MovieSession movieSession;
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private ShoppingCart shoppingCart;
 
     public Ticket() {
 
