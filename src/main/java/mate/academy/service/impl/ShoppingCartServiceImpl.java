@@ -29,6 +29,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         Optional<ShoppingCart> shoppingCart = shoppingCartDao.getByUser(user);
         if (shoppingCart.isPresent()) {
             List<Ticket> tickets = shoppingCart.get().getTickets();
+            ticket.setShoppingCart(shoppingCart.get());
             tickets.add(ticket);
             shoppingCart.get().setTickets(tickets);
             shoppingCartDao.update(shoppingCart.get());
@@ -36,6 +37,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             ShoppingCart shoppingCartNew = new ShoppingCart();
             shoppingCartNew.setUser(user);
             shoppingCartNew.setTickets(List.of(ticket));
+            ticket.setShoppingCart(shoppingCartNew);
             shoppingCartDao.add(shoppingCartNew);
         }
 
