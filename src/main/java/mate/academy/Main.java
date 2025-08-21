@@ -2,16 +2,24 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.model.ShoppingCart;
+import mate.academy.model.User;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
+import mate.academy.service.ShoppingCartService;
+import mate.academy.service.UserService;
 
 public class Main {
     public static void main(String[] args) {
-        MovieService movieService = null;
+        Injector instance = Injector.getInstance("mate.academy");
+
+        MovieService movieService = (MovieService) instance
+                .getInstance(MovieService.class);
 
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
@@ -27,7 +35,15 @@ public class Main {
         secondCinemaHall.setCapacity(200);
         secondCinemaHall.setDescription("second hall with capacity 200");
 
-        CinemaHallService cinemaHallService = null;
+        User bob = new User();
+        bob.setEmail("bob@example.com");
+        bob.setPassword("password");
+
+        UserService userService = (UserService) instance.getInstance(UserService.class);
+        userService.add(bob);
+
+        CinemaHallService cinemaHallService = (CinemaHallService) instance
+                .getInstance(CinemaHallService.class);
         cinemaHallService.add(firstCinemaHall);
         cinemaHallService.add(secondCinemaHall);
 
@@ -44,9 +60,19 @@ public class Main {
         yesterdayMovieSession.setMovie(fastAndFurious);
         yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(1L));
 
-        MovieSessionService movieSessionService = null;
+        MovieSessionService movieSessionService = (MovieSessionService) instance
+                .getInstance(MovieSessionService.class);
         movieSessionService.add(tomorrowMovieSession);
         movieSessionService.add(yesterdayMovieSession);
+
+        ShoppingCartService shoppingCartService = (ShoppingCartService) instance
+                .getInstance(ShoppingCartService.class);
+        shoppingCartService.ensureCart(bob);
+        shoppingCartService.addSession(tomorrowMovieSession, bob);
+        ShoppingCart cart = shoppingCartService.getByUser(bob);
+        System.out.println("Cart before clear: " + cart.getTickets());
+        shoppingCartService.clear(cart);
+        System.out.println("Cart after clear: " + shoppingCartService.getByUser(bob).getTickets());
 
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(
