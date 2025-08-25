@@ -8,10 +8,12 @@ import mate.academy.model.MovieSession;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
+import mate.academy.service.impl.MovieServiceImpl;
 
 public class Main {
     public static void main(String[] args) {
-        MovieService movieService = null;
+
+        MovieService movieService = new MovieServiceImpl();
 
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
