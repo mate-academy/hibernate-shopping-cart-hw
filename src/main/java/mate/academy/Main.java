@@ -12,6 +12,7 @@ import mate.academy.service.impl.MovieServiceImpl;
 
 public class Main {
     public static void main(String[] args) {
+
         MovieService movieService = new MovieServiceImpl();
 
         Movie fastAndFurious = new Movie("Fast and Furious");
