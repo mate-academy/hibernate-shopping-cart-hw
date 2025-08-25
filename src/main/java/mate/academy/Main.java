@@ -11,6 +11,7 @@ import mate.academy.service.MovieSessionService;
 
 public class Main {
     public static void main(String[] args) {
+
         MovieService movieService = null;
 
         Movie fastAndFurious = new Movie("Fast and Furious");
