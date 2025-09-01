@@ -65,7 +65,8 @@ public class Main {
                 fastAndFurious.getId(), LocalDate.now().plusDays(1L)));
 
         AuthenticationService authenticationService =
-                (AuthenticationService) injector.getInstance(AuthenticationService.class);
+                (AuthenticationService) injector.getInstance(
+                        AuthenticationService.class);
         System.out.println(authenticationService.register(
                 "bob@gmail.com", "1234"));
         System.out.println(authenticationService.login(
