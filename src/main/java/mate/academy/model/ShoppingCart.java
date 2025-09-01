@@ -10,7 +10,7 @@ import jakarta.persistence.Table;
 import java.util.List;
 
 @Entity
-@Table(name = "shopping_cards")
+@Table(name = "shopping_carts")
 public class ShoppingCart {
     @Id
     private Long id;
