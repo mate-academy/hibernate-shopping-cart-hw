@@ -1,6 +1,5 @@
 package mate.academy.service.impl;
 
-import java.util.List;
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
 import mate.academy.exception.DataProcessingException;
@@ -56,7 +55,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public void clear(ShoppingCart shoppingCart) {
         if (shoppingCartDao.getByUser(shoppingCart.getUser()).isPresent()) {
-            shoppingCart.setTickets(List.of());
+            shoppingCart.getTickets().clear();
             shoppingCartDao.update(shoppingCart);
         } else {
             throw new DataProcessingException("Can't clear shopping cart: " + shoppingCart);

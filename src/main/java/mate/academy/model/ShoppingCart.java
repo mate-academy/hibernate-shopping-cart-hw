@@ -1,5 +1,6 @@
 package mate.academy.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -7,6 +8,7 @@ import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -17,8 +19,8 @@ public class ShoppingCart {
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     private User user;
-    @OneToMany
-    private List<Ticket> tickets;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Ticket> tickets = new ArrayList<>();
 
     public Long getId() {
         return id;
