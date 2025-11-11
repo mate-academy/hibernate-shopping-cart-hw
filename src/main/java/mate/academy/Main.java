@@ -16,7 +16,7 @@ public class Main {
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
         movieService.add(fastAndFurious);
-        System.out.println(movieService.get(fastAndFurious.getId()));
+        System.out.println("movieService = " + movieService);
         movieService.getAll().forEach(System.out::println);
 
         CinemaHall firstCinemaHall = new CinemaHall();
