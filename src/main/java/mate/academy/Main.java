@@ -1,55 +1,73 @@
 package mate.academy;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.exception.RegistrationException;
+import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.model.ShoppingCart;
+import mate.academy.model.User;
+import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
+import mate.academy.service.ShoppingCartService;
 
 public class Main {
+
     public static void main(String[] args) {
-        MovieService movieService = null;
+        Injector injector = Injector.getInstance("mate.academy");
 
-        Movie fastAndFurious = new Movie("Fast and Furious");
-        fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
-        movieService.add(fastAndFurious);
-        System.out.println(movieService.get(fastAndFurious.getId()));
-        movieService.getAll().forEach(System.out::println);
+        final MovieService movieService = (MovieService) injector.getInstance(MovieService.class);
+        final CinemaHallService cinemaHallService =
+                (CinemaHallService) injector.getInstance(CinemaHallService.class);
+        final MovieSessionService movieSessionService =
+                (MovieSessionService) injector.getInstance(MovieSessionService.class);
+        final AuthenticationService authService =
+                (AuthenticationService) injector.getInstance(AuthenticationService.class);
+        final ShoppingCartService shoppingCartService =
+                (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
 
-        CinemaHall firstCinemaHall = new CinemaHall();
-        firstCinemaHall.setCapacity(100);
-        firstCinemaHall.setDescription("first hall with capacity 100");
+        // 1️⃣ Rejestracja użytkownika
+        User user;
+        try {
+            user = authService.register("test@gmail.com", "1111");
+        } catch (RegistrationException e) {
+            System.out.println("Nie udało się zarejestrować użytkownika: " + e.getMessage());
+            return;
+        }
 
-        CinemaHall secondCinemaHall = new CinemaHall();
-        secondCinemaHall.setCapacity(200);
-        secondCinemaHall.setDescription("second hall with capacity 200");
+        // 2️⃣ Rejestracja pustego koszyka
+        shoppingCartService.registerNewShoppingCart(user);
 
-        CinemaHallService cinemaHallService = null;
-        cinemaHallService.add(firstCinemaHall);
-        cinemaHallService.add(secondCinemaHall);
+        // 3️⃣ Dodanie filmu
+        final Movie movie = new Movie("Matrix");
+        movie.setDescription("Sci-fi classic");
+        movieService.add(movie);
 
-        System.out.println(cinemaHallService.getAll());
-        System.out.println(cinemaHallService.get(firstCinemaHall.getId()));
+        // 4️⃣ Dodanie sali kinowej
+        final CinemaHall hall = new CinemaHall();
+        hall.setCapacity(100);
+        hall.setDescription("Hall 1");
+        cinemaHallService.add(hall);
 
-        MovieSession tomorrowMovieSession = new MovieSession();
-        tomorrowMovieSession.setCinemaHall(firstCinemaHall);
-        tomorrowMovieSession.setMovie(fastAndFurious);
-        tomorrowMovieSession.setShowTime(LocalDateTime.now().plusDays(1L));
+        // 5️⃣ Utworzenie sesji filmowej
+        final MovieSession tomorrowSession = new MovieSession();
+        tomorrowSession.setMovie(movie);
+        tomorrowSession.setCinemaHall(hall);
+        tomorrowSession.setShowTime(LocalDateTime.now().plusDays(1));
+        movieSessionService.add(tomorrowSession);
 
-        MovieSession yesterdayMovieSession = new MovieSession();
-        yesterdayMovieSession.setCinemaHall(firstCinemaHall);
-        yesterdayMovieSession.setMovie(fastAndFurious);
-        yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(1L));
+        // 6️⃣ Dodanie biletu do koszyka
+        shoppingCartService.addSession(tomorrowSession, user);
 
-        MovieSessionService movieSessionService = null;
-        movieSessionService.add(tomorrowMovieSession);
-        movieSessionService.add(yesterdayMovieSession);
+        // 7️⃣ Wyświetlenie koszyka
+        final ShoppingCart cart = shoppingCartService.getByUser(user);
+        System.out.println("Koszyk po dodaniu biletu: " + cart);
 
-        System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
-        System.out.println(movieSessionService.findAvailableSessions(
-                fastAndFurious.getId(), LocalDate.now()));
+        // 8️⃣ Wyczyszczenie koszyka
+        shoppingCartService.clear(cart);
+        System.out.println("Koszyk po wyczyszczeniu: " + shoppingCartService.getByUser(user));
     }
 }
