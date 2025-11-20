@@ -41,6 +41,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         tickets.add(ticket);
         shoppingCart.setTickets(List.copyOf(tickets));
         tickets.clear();
+        shoppingCartDao.update(shoppingCart);
     }
 
     @Override
