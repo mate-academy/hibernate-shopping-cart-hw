@@ -6,8 +6,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 
-import javax.annotation.processing.Generated;
-
 @Entity
 public class Ticket {
     @Id
@@ -17,6 +15,14 @@ public class Ticket {
     private MovieSession movieSession;
     @ManyToOne
     private User user;
+
+    public Ticket() {
+    }
+
+    public Ticket(MovieSession movieSession, User user) {
+        this.movieSession = movieSession;
+        this.user = user;
+    }
 
     public Long getId() {
         return id;
