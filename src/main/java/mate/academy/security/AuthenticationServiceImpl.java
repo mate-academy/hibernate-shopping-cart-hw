@@ -32,10 +32,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             User user = new User();
             user.setEmail(email);
             user.setPassword(password);
-            userService.add(user);
-            User user1 = userService.findByEmail(email).get();
-            shoppingCartService.registerNewShoppingCart(user1);
-            return user1;
+            User addedUser = userService.add(user);
+            shoppingCartService.registerNewShoppingCart(addedUser);
+            return addedUser;
         }
         throw new RegistrationException("This email is already registered.");
     }
