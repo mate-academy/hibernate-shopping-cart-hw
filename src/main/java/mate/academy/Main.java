@@ -12,6 +12,7 @@ import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
 import mate.academy.service.ShoppingCartService;
+import mate.academy.service.UserService;
 
 public class Main {
     public static void main(String[] args) {
@@ -59,19 +60,21 @@ public class Main {
         System.out.println(movieSessionService.findAvailableSessions(
                 fastAndFurious.getId(), LocalDate.now()));
 
+        UserService userService = (UserService) injector.getInstance(UserService.class);
+
         User user = new User();
         user.setPassword("password");
         user.setEmail("email");
+        userService.add(user);
 
         ShoppingCartService shoppingCartService = (ShoppingCartService)
                 injector.getInstance(ShoppingCartService.class);
 
-        ShoppingCart shoppingCart = new ShoppingCart();
-        user.setShoppingCart(shoppingCart);
-
         shoppingCartService.registerNewShoppingCart(user);
-        shoppingCartService.addSession(yesterdayMovieSession,user);
-        shoppingCartService.getByUser(user);
+        ShoppingCart shoppingCart = shoppingCartService.getByUser(user);
+        shoppingCartService.addSession(yesterdayMovieSession, user);
+        System.out.println("Full shoppingCart: " + shoppingCartService.getByUser(user));
         shoppingCartService.clear(shoppingCart);
+        System.out.println("Cleared shoppingCart: " + shoppingCartService.getByUser(user));
     }
 }
