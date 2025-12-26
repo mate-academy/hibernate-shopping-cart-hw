@@ -6,8 +6,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "movie_sessions")
@@ -20,6 +22,9 @@ public class MovieSession {
     @ManyToOne(fetch = FetchType.LAZY)
     private CinemaHall cinemaHall;
     private LocalDateTime showTime;
+
+    @OneToMany(mappedBy = "movieSession")
+    private List<Ticket> tickets;
 
     public Long getId() {
         return id;
