@@ -17,7 +17,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     public ShoppingCartServiceImpl() {
     }
-got
+
     @Override
     public void addSession(MovieSession movieSession, User user) {
         ShoppingCart shoppingCart = shoppingCartDao.getByUser(user)
