@@ -2,13 +2,18 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.model.ShoppingCart;
+import mate.academy.model.User;
+import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
+import mate.academy.service.ShoppingCartService;
 
 public class Main {
     public static void main(String[] args) {
@@ -57,5 +62,25 @@ public class Main {
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(
                 fastAndFurious.getId(), LocalDate.now()));
+
+        AuthenticationService authenticationService =
+                (AuthenticationService) injector.getInstance(AuthenticationService.class);
+        ShoppingCartService shoppingCartService =
+                (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
+        try {
+            User user = authenticationService.register("bob@example.com", "1234");
+            shoppingCartService.registerNewShoppingCart(user);
+            shoppingCartService.addSession(tomorrowMovieSession, user);
+
+            ShoppingCart shoppingCart = shoppingCartService.getByUser(user);
+            System.out.println(shoppingCart);
+            System.out.println(shoppingCart.getTickets());
+
+            shoppingCartService.clear(shoppingCart);
+            System.out.println(shoppingCartService.getByUser(user).getTickets());
+
+        } catch (RegistrationException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
