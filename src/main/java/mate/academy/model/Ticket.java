@@ -21,17 +21,6 @@ public class Ticket {
     @ManyToOne(fetch = FetchType.LAZY)
     private MovieSession movieSession;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private ShoppingCart shoppingCart;
-
-    public ShoppingCart getShoppingCart() {
-        return shoppingCart;
-    }
-
-    public void setShoppingCart(ShoppingCart shoppingCart) {
-        this.shoppingCart = shoppingCart;
-    }
-
     public Long getId() {
         return id;
     }

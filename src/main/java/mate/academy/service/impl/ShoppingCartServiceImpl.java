@@ -20,11 +20,11 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void addSession(MovieSession movieSession, User user) {
-        ShoppingCart shoppingCart = shoppingCartDao.getByUser(user).get();
+        ShoppingCart shoppingCart = shoppingCartDao.getByUser(user)
+                .orElseThrow(()-> new RuntimeException("ShoppingCart not found"));
         Ticket ticket = new Ticket();
         ticket.setUser(user);
         ticket.setMovieSession(movieSession);
-        ticket.setShoppingCart(shoppingCart);
         ticketDao.add(ticket);
 
         shoppingCart.getTickets().add(ticket);
@@ -33,7 +33,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public ShoppingCart getByUser(User user) {
-        return shoppingCartDao.getByUser(user).get();
+        return shoppingCartDao.getByUser(user).orElseThrow(()-> new RuntimeException("Can't find shopping cart for user: " + user.getEmail()));
     }
 
     @Override
