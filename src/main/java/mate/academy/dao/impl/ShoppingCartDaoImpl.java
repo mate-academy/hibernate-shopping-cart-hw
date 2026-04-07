@@ -43,7 +43,16 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
     @Override
     public Optional<ShoppingCart> getByUser(User user) {
         try (Session session = factory.openSession()) {
-            return Optional.ofNullable(session.get(ShoppingCart.class, user.getId()));
+            return session.createQuery(
+                            "select distinct sc from ShoppingCart sc "
+                                    + "left join fetch sc.tickets t "
+                                    + "left join fetch t.movieSession ms "
+                                    + "left join fetch ms.movie "
+                                    + "left join fetch ms.cinemaHall "
+                                    + "left join fetch t.user "
+                                    + "where sc.user = :user", ShoppingCart.class)
+                    .setParameter("user", user)
+                    .uniqueResultOptional();
         } catch (Exception e) {
             throw new DataProcessingException(
                     "Cannot get a shopping cart by user: " + user, e);
