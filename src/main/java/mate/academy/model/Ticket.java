@@ -22,20 +22,10 @@ public class Ticket {
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
-    @OneToMany
-    private List<Ticket> tickets = new ArrayList<>();
-
     public Long getId() {
         return id;
     }
 
-    public List<Ticket> getTickets() {
-        return tickets;
-    }
-
-    public void setTickets(List<Ticket> tickets) {
-        this.tickets = tickets;
-    }
 
     public void setId(Long id) {
         this.id = id;
