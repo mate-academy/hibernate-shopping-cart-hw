@@ -2,6 +2,7 @@ package mate.academy.service.impl;
 
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
+import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.MovieSession;
@@ -27,8 +28,13 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         ticketDao.add(ticket);
 
         ShoppingCart shoppingCart = getByUser(user);
-        shoppingCart.getTickets().add(ticket);
-        shoppingCartDao.update(shoppingCart);
+
+        if (shoppingCart.getTickets() != null) {
+            shoppingCart.getTickets().add(ticket);
+            shoppingCartDao.update(shoppingCart);
+        } else {
+            throw new RuntimeException("Ticket list can't be null");
+        }
     }
 
     @Override
