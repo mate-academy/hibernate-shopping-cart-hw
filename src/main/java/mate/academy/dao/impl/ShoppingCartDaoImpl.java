@@ -18,16 +18,12 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
 
-            // KLUCZ: Musimy "przypiąć" usera do bieżącej sesji,
-            // zanim persist() spróbuje go użyć do wyciągnięcia ID koszyka.
             if (shoppingCart.getUser() != null) {
-                // merge zwróci "zarządzaną" (managed) kopię usera
                 User managedUser = session.merge(shoppingCart.getUser());
                 shoppingCart.setUser(managedUser);
                 shoppingCart.setId(managedUser.getId());
             }
-
-            session.persist(shoppingCart);
+            session.save(shoppingCart);
             transaction.commit();
             return shoppingCart;
         } catch (Exception e) {
