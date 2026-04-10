@@ -22,10 +22,10 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             transaction = session.beginTransaction();
             session.save(shoppingCart);
             transaction.commit();
+            return shoppingCart;
         } catch (Exception ex) {
             if (transaction != null) {
                 transaction.rollback();
-                ;
             }
             throw new DataProcessingException("Couldn't add shopping cart: " + shoppingCart, ex);
         } finally {
@@ -33,7 +33,6 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
                 session.close();
             }
         }
-        return shoppingCart;
     }
 
     @Override

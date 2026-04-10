@@ -2,7 +2,6 @@ package mate.academy.service.impl;
 
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
-import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.MovieSession;
@@ -10,8 +9,6 @@ import mate.academy.model.ShoppingCart;
 import mate.academy.model.Ticket;
 import mate.academy.model.User;
 import mate.academy.service.ShoppingCartService;
-import mate.academy.util.HibernateUtil;
-import org.hibernate.Session;
 
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
@@ -49,11 +46,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void clear(ShoppingCart shoppingCart) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            shoppingCart.getTickets().clear();
-            shoppingCartDao.update(shoppingCart);
-        } catch (Exception e) {
-            throw new DataProcessingException("Couldn't remove shopping cart: " + shoppingCart, e);
-        }
+        shoppingCart.getTickets().clear();
+        shoppingCartDao.update(shoppingCart);
     }
 }
