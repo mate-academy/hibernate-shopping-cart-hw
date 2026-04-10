@@ -68,6 +68,7 @@ public class Main {
         ShoppingCartService shoppingCartService
                 = (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
         shoppingCartService.addSession(movieSessionService.get(1L), registeredUser);
+        System.out.println(shoppingCartService.getByUser(registeredUser));
 
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(
