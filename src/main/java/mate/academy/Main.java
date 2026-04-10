@@ -41,19 +41,13 @@ public class Main {
         System.out.println(cinemaHallService.getAll());
         System.out.println(cinemaHallService.get(firstCinemaHall.getId()));
 
-        MovieSessionService movieSessionService =
-                (MovieSessionService) injector.getInstance(MovieSessionService.class);
         MovieSession tomorrowMovieSession = new MovieSession();
         tomorrowMovieSession.setCinemaHall(firstCinemaHall);
         tomorrowMovieSession.setMovie(fastAndFurious);
         tomorrowMovieSession.setShowTime(LocalDateTime.now().plusDays(1L));
+        MovieSessionService movieSessionService =
+                (MovieSessionService) injector.getInstance(MovieSessionService.class);
         movieSessionService.add(tomorrowMovieSession);
-
-        MovieSession yesterdayMovieSession = new MovieSession();
-        yesterdayMovieSession.setCinemaHall(firstCinemaHall);
-        yesterdayMovieSession.setMovie(fastAndFurious);
-        yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(1L));
-        movieSessionService.add(yesterdayMovieSession);
 
         AuthenticationService authenticationService =
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
@@ -68,7 +62,8 @@ public class Main {
         System.out.println("Koszyk przed czyszczeniem: " + shoppingCart);
 
         shoppingCartService.clear(shoppingCart);
-        System.out.println("Koszyk po czyszczeniu: " + shoppingCartService.getByUser(registeredUser));
+        System.out.println("Koszyk po czyszczeniu: "
+                + shoppingCartService.getByUser(registeredUser));
 
         System.out.println("Available sessions: " + movieSessionService.findAvailableSessions(
                 fastAndFurious.getId(), LocalDate.now()));
