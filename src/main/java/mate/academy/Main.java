@@ -20,62 +20,57 @@ public class Main {
 
     public static void main(String[] args) throws RegistrationException {
         MovieService movieService = (MovieService) injector.getInstance(MovieService.class);
-
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
         movieService.add(fastAndFurious);
         System.out.println(movieService.get(fastAndFurious.getId()));
         movieService.getAll().forEach(System.out::println);
 
+        CinemaHallService cinemaHallService =
+                (CinemaHallService) injector.getInstance(CinemaHallService.class);
         CinemaHall firstCinemaHall = new CinemaHall();
         firstCinemaHall.setCapacity(100);
         firstCinemaHall.setDescription("first hall with capacity 100");
+        cinemaHallService.add(firstCinemaHall);
 
         CinemaHall secondCinemaHall = new CinemaHall();
         secondCinemaHall.setCapacity(200);
         secondCinemaHall.setDescription("second hall with capacity 200");
-
-        CinemaHallService cinemaHallService
-                = (CinemaHallService) injector.getInstance(CinemaHallService.class);
-        cinemaHallService.add(firstCinemaHall);
         cinemaHallService.add(secondCinemaHall);
 
         System.out.println(cinemaHallService.getAll());
         System.out.println(cinemaHallService.get(firstCinemaHall.getId()));
 
+        MovieSessionService movieSessionService =
+                (MovieSessionService) injector.getInstance(MovieSessionService.class);
         MovieSession tomorrowMovieSession = new MovieSession();
         tomorrowMovieSession.setCinemaHall(firstCinemaHall);
         tomorrowMovieSession.setMovie(fastAndFurious);
         tomorrowMovieSession.setShowTime(LocalDateTime.now().plusDays(1L));
+        movieSessionService.add(tomorrowMovieSession);
 
         MovieSession yesterdayMovieSession = new MovieSession();
         yesterdayMovieSession.setCinemaHall(firstCinemaHall);
         yesterdayMovieSession.setMovie(fastAndFurious);
         yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(1L));
-
-        MovieSessionService movieSessionService
-                = (MovieSessionService) injector.getInstance(MovieSessionService.class);
-        movieSessionService.add(tomorrowMovieSession);
         movieSessionService.add(yesterdayMovieSession);
 
-        User user = new User();
-        user.setPassword("12345");
-        user.setEmail("email12@gmail.com");
+        AuthenticationService authenticationService =
+                (AuthenticationService) injector.getInstance(AuthenticationService.class);
+        User registeredUser = authenticationService.register("email12@gmail.com", "12345");
 
-        AuthenticationService authenticationService
-                = (AuthenticationService) injector.getInstance(AuthenticationService.class);
-        User registeredUser = authenticationService.register(user.getEmail(), user.getPassword());
+        ShoppingCartService shoppingCartService =
+                (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
 
-        ShoppingCartService shoppingCartService
-                = (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
-        shoppingCartService.addSession(movieSessionService.get(1L), registeredUser);
-        System.out.println(shoppingCartService.getByUser(registeredUser));
+        shoppingCartService.addSession(tomorrowMovieSession, registeredUser);
+
         ShoppingCart shoppingCart = shoppingCartService.getByUser(registeredUser);
+        System.out.println("Koszyk przed czyszczeniem: " + shoppingCart);
+
         shoppingCartService.clear(shoppingCart);
+        System.out.println("Koszyk po czyszczeniu: " + shoppingCartService.getByUser(registeredUser));
 
-        System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
-        System.out.println(movieSessionService.findAvailableSessions(
+        System.out.println("Available sessions: " + movieSessionService.findAvailableSessions(
                 fastAndFurious.getId(), LocalDate.now()));
-
     }
 }

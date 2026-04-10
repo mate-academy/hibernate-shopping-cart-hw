@@ -41,6 +41,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public void registerNewShoppingCart(User user) {
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setUser(user);
+        // Usuń ręczne setId(user.getId()) jeśli persist nadal rzuca błędy,
+        // MapsId samo to powiąże.
+
         shoppingCartDao.add(shoppingCart);
     }
 

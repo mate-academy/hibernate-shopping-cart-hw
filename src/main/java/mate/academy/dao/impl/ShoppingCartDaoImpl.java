@@ -13,25 +13,26 @@ import org.hibernate.Transaction;
 @Dao
 public class ShoppingCartDaoImpl implements ShoppingCartDao {
 
-    @Override
     public ShoppingCart add(ShoppingCart shoppingCart) {
-        Session session = null;
         Transaction transaction = null;
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.save(shoppingCart);
+
+            // KLUCZ: Musimy "przypiąć" usera do bieżącej sesji,
+            // zanim persist() spróbuje go użyć do wyciągnięcia ID koszyka.
+            if (shoppingCart.getUser() != null) {
+                // merge zwróci "zarządzaną" (managed) kopię usera
+                User managedUser = session.merge(shoppingCart.getUser());
+                shoppingCart.setUser(managedUser);
+                shoppingCart.setId(managedUser.getId());
+            }
+
+            session.persist(shoppingCart);
             transaction.commit();
             return shoppingCart;
-        } catch (Exception ex) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            throw new DataProcessingException("Couldn't add shopping cart: " + shoppingCart, ex);
-        } finally {
-            if (session != null) {
-                session.close();
-            }
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            throw new DataProcessingException("Couldn't add shopping cart: " + shoppingCart, e);
         }
     }
 
