@@ -15,6 +15,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Inject
     private TicketDao ticketDao;
+
     @Inject
     private ShoppingCartDao shoppingCartDao;
 
