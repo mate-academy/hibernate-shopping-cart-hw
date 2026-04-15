@@ -20,9 +20,9 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
-            ShoppingCart saved = session.merge(shoppingCart);
+            session.save(shoppingCart);
             transaction.commit();
-            return saved;
+            return shoppingCart;
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();

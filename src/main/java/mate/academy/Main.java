@@ -23,12 +23,12 @@ public class Main {
         Optional<User> userFromDb = userService.findByEmail("user@gmail.com");
         MovieSession movieSessionFromDb = movieSessionService.get(1L);
 
-        shoppingCartService.registerNewShoppingCart(userFromDb.get());
-        shoppingCartService.addSession(movieSessionFromDb, userFromDb.get());
-        ShoppingCart cart = shoppingCartService.getByUser(userFromDb.get());
+        shoppingCartService.registerNewShoppingCart(userFromDb.orElseThrow());
+        shoppingCartService.addSession(movieSessionFromDb, userFromDb.orElseThrow());
+        ShoppingCart cart = shoppingCartService.getByUser(userFromDb.orElseThrow());
         System.out.println("Tickets in cart: " + cart.getTickets().size());
         shoppingCartService.clear(cart);
         System.out.println("Tickets after clear: " + shoppingCartService
-                .getByUser(userFromDb.get()).getTickets().size());
+                .getByUser(userFromDb.orElseThrow()).getTickets().size());
     }
 }
