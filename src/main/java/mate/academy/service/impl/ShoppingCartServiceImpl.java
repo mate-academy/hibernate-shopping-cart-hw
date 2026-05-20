@@ -29,6 +29,7 @@ public class ShoppingCartServiceImpl
 
         Ticket ticket = new Ticket();
         ticket.setMovieSession(movieSession);
+        ticket.setUser(user);
 
         ticket = ticketDao.add(ticket);
 
