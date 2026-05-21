@@ -17,41 +17,45 @@ public class Main {
     private static final Injector injector = Injector.getInstance("mate.academy");
 
     public static void main(String[] args) {
-        MovieService movieService =
-                (MovieService) injector.getInstance(MovieService.class);
-        CinemaHallService cinemaHallService =
-                (CinemaHallService) injector.getInstance(CinemaHallService.class);
-        MovieSessionService movieSessionService =
-                (MovieSessionService) injector.getInstance(MovieSessionService.class);
-        UserService userService =
-                (UserService) injector.getInstance(UserService.class);
-        ShoppingCartService shoppingCartService =
-                (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
-
         Movie movie = new Movie("Fast and Furious");
         movie.setDescription("Action movie");
+
+        MovieService movieService =
+                (MovieService) injector.getInstance(MovieService.class);
         movieService.add(movie);
 
         CinemaHall cinemaHall = new CinemaHall();
         cinemaHall.setCapacity(100);
         cinemaHall.setDescription("Main hall");
+
+        CinemaHallService cinemaHallService =
+                (CinemaHallService) injector.getInstance(CinemaHallService.class);
         cinemaHallService.add(cinemaHall);
 
         MovieSession movieSession = new MovieSession();
         movieSession.setMovie(movie);
         movieSession.setCinemaHall(cinemaHall);
         movieSession.setShowTime(LocalDateTime.now().plusDays(1));
+
+        MovieSessionService movieSessionService =
+                (MovieSessionService) injector.getInstance(MovieSessionService.class);
         movieSessionService.add(movieSession);
 
         User user = new User();
         user.setEmail("weronika" + System.currentTimeMillis() + "@cinema.com");
         user.setPassword("1234");
+
+        UserService userService =
+                (UserService) injector.getInstance(UserService.class);
         userService.add(user);
 
+        ShoppingCartService shoppingCartService =
+                (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
         shoppingCartService.registerNewShoppingCart(user);
         shoppingCartService.addSession(movieSession, user);
 
         ShoppingCart cart = shoppingCartService.getByUser(user);
+
         System.out.println("SHOPPING CART:");
         System.out.println(cart);
 
