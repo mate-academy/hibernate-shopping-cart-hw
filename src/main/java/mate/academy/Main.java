@@ -26,7 +26,6 @@ public class Main {
             throw new RuntimeException(e);
         }
 
-        shoppingCartService.registerNewShoppingCart(firstUser);
         shoppingCartService.addSession(firstMovieSession, firstUser);
         ShoppingCart firstShoppingCart = shoppingCartService.getByUser(firstUser);
         System.out.println(firstShoppingCart);
