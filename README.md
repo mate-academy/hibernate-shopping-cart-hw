@@ -1,4 +1,9 @@
 # Implement a shopping cart
+
+
+`mvn -DskipTests=false clean package`
+
+
 We will continue working on our Cinema project.
 
 - Create models
