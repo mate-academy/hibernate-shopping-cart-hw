@@ -2,7 +2,6 @@ package mate.academy.service.impl;
 
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.dao.TicketDao;
-import mate.academy.dao.impl.TicketDaoImpl;
 import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
