@@ -18,12 +18,12 @@ public class TicketDaoImpl implements TicketDao {
             session.persist(ticket);
             transaction.commit();
         } catch (Exception e) {
-            if (session != null) {
+            if (transaction != null) {
                 transaction.rollback();
             }
             throw new DataProcessingException("Can't add new ticket: " + ticket, e);
         } finally {
-            if (transaction != null) {
+            if (session != null) {
                 session.close();
             }
         }
