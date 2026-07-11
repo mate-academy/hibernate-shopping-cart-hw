@@ -1,10 +1,13 @@
 package mate.academy.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -14,18 +17,21 @@ import java.util.List;
 @Table(name = "shopping_carts")
 public class ShoppingCart {
 
-    public ShoppingCart() {
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "shopping_cart_id")
     private List<Ticket> tickets;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @MapsId
+    @JoinColumn(name = "user_id")
     private User user;
+
+    public ShoppingCart() {
+    }
 
     public Long getId() {
         return id;
@@ -53,10 +59,13 @@ public class ShoppingCart {
 
     @Override
     public String toString() {
-        return "ShoppingCart{" +
-                "id=" + id +
-                ", tickets=" + tickets +
-                ", user=" + user +
-                '}';
+        return "ShoppingCart{"
+                + "id="
+                + id
+                + ", tickets="
+                + tickets
+                + ", user="
+                + user
+                + '}';
     }
 }
