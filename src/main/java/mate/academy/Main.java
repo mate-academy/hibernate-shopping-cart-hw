@@ -1,8 +1,10 @@
 package mate.academy;
 
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.MovieSession;
 import mate.academy.model.User;
+import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
@@ -10,7 +12,7 @@ import mate.academy.service.ShoppingCartService;
 import mate.academy.service.UserService;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws RegistrationException {
         Injector injector = Injector.getInstance("mate.academy");
 
         MovieService movieService =
@@ -19,10 +21,10 @@ public class Main {
                 (CinemaHallService) injector.getInstance(CinemaHallService.class);
         UserService userService =
                 (UserService) injector.getInstance(UserService.class);
-        User user = new User();
-        user.setEmail("artemnurmetow@gmail.com");
-        user.setPassword("qwerty");
-        userService.add(user);
+
+        AuthenticationService authenticationService =
+                (AuthenticationService) injector.getInstance(AuthenticationService.class);
+
         MovieSession movieSession = new MovieSession();
         MovieSessionService movieSessionService =
                 (MovieSessionService) injector.getInstance(MovieSessionService.class);
@@ -30,7 +32,11 @@ public class Main {
         ShoppingCartService shoppingCartService =
                 (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
 
-        shoppingCartService.registerNewShoppingCart(user);
-        shoppingCartService.addSession(movieSession,user);
+        User registredUser = authenticationService.register(
+                "artemnurmetowsadads@gmail.com",
+                "qwerty");
+        shoppingCartService.registerNewShoppingCart(registredUser);
+        shoppingCartService.addSession(movieSession, registredUser);
+
     }
 }

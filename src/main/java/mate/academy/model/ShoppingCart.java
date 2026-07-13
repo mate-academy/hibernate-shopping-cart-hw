@@ -1,10 +1,7 @@
 package mate.academy.model;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.MapsId;
@@ -18,14 +15,13 @@ import java.util.List;
 public class ShoppingCart {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "shopping_cart_id")
     private List<Ticket> tickets;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     @JoinColumn(name = "user_id")
     private User user;
