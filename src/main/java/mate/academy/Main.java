@@ -35,7 +35,6 @@ public class Main {
         User registredUser = authenticationService.register(
                 "artemnurmetowsadads@gmail.com",
                 "qwerty");
-        shoppingCartService.registerNewShoppingCart(registredUser);
         shoppingCartService.addSession(movieSession, registredUser);
 
     }

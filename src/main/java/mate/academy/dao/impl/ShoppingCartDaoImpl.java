@@ -46,6 +46,8 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
                     .setParameter("user_id", user.getId())
                     .getResultList();
             return carts.stream().findFirst();
+        } catch (Exception e) {
+            throw new DataProcessingException("Can not get User from DB", e);
         }
     }
 
@@ -53,6 +55,8 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
     public void update(ShoppingCart shoppingCart) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             session.merge(shoppingCart);
+        } catch (Exception e) {
+            throw new DataProcessingException("Can not get User from DB", e);
         }
     }
 }
