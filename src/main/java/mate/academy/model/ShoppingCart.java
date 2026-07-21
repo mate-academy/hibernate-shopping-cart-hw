@@ -1,12 +1,11 @@
 package mate.academy.model;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,15 +14,16 @@ import java.util.List;
 @Table(name = "shopping cart")
 public class ShoppingCart {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @MapsId("user")
     private Long id;
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
     @OneToMany
     private List<Ticket> tickets = new ArrayList<>();
 
     public ShoppingCart(User user) {
+        this.user = user;
     }
 
     public User getUser() {
@@ -32,14 +32,6 @@ public class ShoppingCart {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public List<Ticket> getTickets() {
@@ -53,7 +45,6 @@ public class ShoppingCart {
     @Override
     public String toString() {
         return "Shopping Cart{"
-                + "id=" + id
                 + ", user='" + user + '\''
                 + ", tickets='" + tickets + '\''
                 + '}';

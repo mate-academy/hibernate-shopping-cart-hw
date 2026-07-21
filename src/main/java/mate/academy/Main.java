@@ -12,6 +12,7 @@ import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
 import mate.academy.service.ShoppingCartService;
+import mate.academy.service.UserService;
 
 public class Main {
     public static void main(String[] args) {
@@ -52,9 +53,15 @@ public class Main {
         movieSessionService.add(tomorrowMovieSession);
         movieSessionService.add(yesterdayMovieSession);
 
+        UserService userService = (UserService) Injector
+                .getInstance(String.valueOf(UserService.class));
+        User user = new User();
+        user.setEmail("test@example.com");
+        user.setPassword("password");
+        userService.add(user);
+
         ShoppingCartService shoppingCartService = (ShoppingCartService) Injector
                 .getInstance(String.valueOf(ShoppingCartService.class));
-        User user = null;
         shoppingCartService.registerNewShoppingCart(user);
         shoppingCartService.addSession(tomorrowMovieSession, user);
         ShoppingCart shoppingCart = shoppingCartService.getByUser(user);
