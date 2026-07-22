@@ -26,6 +26,9 @@ public class ShoppingCart {
         this.user = user;
     }
 
+    public ShoppingCart() {
+    }
+
     public User getUser() {
         return user;
     }
