@@ -2,12 +2,17 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.model.ShoppingCart;
+import mate.academy.model.User;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
+import mate.academy.service.ShoppingCartService;
+import mate.academy.service.UserService;
 
 public class Main {
     public static void main(String[] args) {
@@ -47,6 +52,21 @@ public class Main {
         MovieSessionService movieSessionService = null;
         movieSessionService.add(tomorrowMovieSession);
         movieSessionService.add(yesterdayMovieSession);
+
+        UserService userService = (UserService) Injector
+                .getInstance(String.valueOf(UserService.class));
+        User user = new User();
+        user.setEmail("test@example.com");
+        user.setPassword("password");
+        userService.add(user);
+
+        ShoppingCartService shoppingCartService = (ShoppingCartService) Injector
+                .getInstance(String.valueOf(ShoppingCartService.class));
+        shoppingCartService.registerNewShoppingCart(user);
+        shoppingCartService.addSession(tomorrowMovieSession, user);
+        ShoppingCart shoppingCart = shoppingCartService.getByUser(user);
+        System.out.println(shoppingCart);
+        shoppingCartService.clear(shoppingCart);
 
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(
