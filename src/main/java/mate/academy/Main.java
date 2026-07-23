@@ -1,10 +1,11 @@
 package mate.academy;
 
+import mate.academy.dao.TicketDao;
+import mate.academy.dao.impl.TicketDaoImpl;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
-import mate.academy.model.ShoppingCart;
 import mate.academy.model.User;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
@@ -26,30 +27,32 @@ public class Main {
         final CinemaHallService cinemaHallService =
                 (CinemaHallService) injector.getInstance(CinemaHallService.class);
 
+        final TicketDao ticketDao = new TicketDaoImpl();
+
         User bob = new User();
         bob.setEmail("bob@bob.com");
         bob.setPassword("bob");
         userService.add(bob);
 
-        ShoppingCart shoppingCart = new ShoppingCart();
-        shoppingCart.setUser(bob);
-        shoppingCartService.registerNewShoppingCart(bob);
+        CinemaHall cinemaHall = new CinemaHall();
+        cinemaHall.setDescription("Cinema City");
+        cinemaHall.setCapacity(100);
+        cinemaHallService.add(cinemaHall);
 
         Movie movie = new Movie();
-        movie.setTitle("Monk");
-        movie.setDescription("Detective movie");
+        movie.setTitle("Detective Monk");
+        movie.setDescription("Movie about genius detective");
         movieService.add(movie);
 
-        CinemaHall cinemaHall = new CinemaHall();
-        cinemaHall.setCapacity(100);
-        cinemaHall.setDescription("CinemaCity");
-        cinemaHallService.add(cinemaHall);
+        shoppingCartService.registerNewShoppingCart(bob);
 
         MovieSession movieSession = new MovieSession();
         movieSession.setMovie(movie);
         movieSession.setCinemaHall(cinemaHall);
         movieSessionService.add(movieSession);
 
-        shoppingCartService.addSession(movieSessionService.get(1L), bob);
+        shoppingCartService.addSession(movieSession, bob);
+        shoppingCartService.getByUser(bob);
+        shoppingCartService.clear(shoppingCartService.getByUser(bob));
     }
 }

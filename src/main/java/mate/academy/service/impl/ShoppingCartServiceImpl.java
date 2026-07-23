@@ -24,18 +24,19 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void addSession(MovieSession movieSession, User user) {
+        MovieSession persistedSession = movieSessionDao.get(movieSession.getId())
+                .orElseThrow(() -> new DataProcessingException("MovieSession not found"));
+
         ShoppingCart shoppingCart = shoppingCartDao.getByUser(user)
                 .orElseGet(() -> {
                     ShoppingCart newCart = new ShoppingCart().setUser(user);
                     return shoppingCartDao.add(newCart);
                 });
-
-        User freshUser = shoppingCart.getUser();
         Ticket ticket = new Ticket()
-                .setMovieSession(movieSession)
-                .setUser(freshUser);
+                .setMovieSession(persistedSession)
+                .setUser(shoppingCart.getUser())
+                .setShoppingCart(shoppingCart);
         ticketDao.add(ticket);
-
         shoppingCart.addTicket(ticket);
         shoppingCartDao.update(shoppingCart);
     }
