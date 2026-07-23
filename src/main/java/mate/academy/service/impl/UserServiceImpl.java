@@ -10,6 +10,7 @@ import mate.academy.util.HashUtil;
 
 @Service
 public class UserServiceImpl implements UserService {
+
     @Inject
     private UserDao userDao;
 
