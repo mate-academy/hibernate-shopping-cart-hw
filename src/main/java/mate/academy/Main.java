@@ -71,9 +71,6 @@ public class Main {
             User bob = authenticationService.register("bob@example.com", "password123");
             System.out.println("User: " + bob + "registered.");
 
-            shoppingCartService.registerNewShoppingCart(bob);
-            System.out.println("Added shopping cart for user " + bob);
-
             shoppingCartService.addSession(tomorrowMovieSession, bob);
             ShoppingCart bobsCart = shoppingCartService.getByUser(bob);
             System.out.println(bobsCart);
