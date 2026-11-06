@@ -76,6 +76,8 @@ public class Main {
 
         ShoppingCartService shoppingCartService = (ShoppingCartService)
                 injector.getInstance(ShoppingCartService.class);
+        User userAlice = authenticationService.login("alice@gmail.com", "12345");
+        shoppingCartService.registerNewShoppingCart(userAlice);
         User userBob = authenticationService.login("bob@gmail.com", "45456456");
         shoppingCartService.addSession(tomorrowMovieSession, userBob);
         shoppingCartService.addSession(tomorrowMovieSession, userBob);
