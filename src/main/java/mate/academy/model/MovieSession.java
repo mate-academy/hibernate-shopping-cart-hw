@@ -15,10 +15,13 @@ public class MovieSession {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private Movie movie;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private CinemaHall cinemaHall;
+
     private LocalDateTime showTime;
 
     public Long getId() {
@@ -57,8 +60,6 @@ public class MovieSession {
     public String toString() {
         return "MovieSession{"
                 + "id=" + id
-                + ", movie=" + movie
-                + ", cinemaHall=" + cinemaHall
                 + ", showTime=" + showTime
                 + '}';
     }
